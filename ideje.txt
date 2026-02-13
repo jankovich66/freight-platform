@@ -1,0 +1,55 @@
+*******************Tables*******************
+    users:
+        id
+        email
+        password
+        phoneNumber
+        role (admin, carrier, shipper)
+        companyName
+
+        createdAt
+        updatedAt
+
+    loads:
+        id
+        shipperId
+        title
+        description
+
+        pickupAddress
+        pickupCity
+        deliveryAddress
+        deliveryCity
+
+        weight
+        price
+
+        status (open, accepted, inProgress, completed, canceled)
+
+        pickupDate
+        deliveryDate
+
+        createdAt
+        updatedAt
+
+    loadAplications
+        id
+        loadId
+        carrierId
+        offeredPrice
+        status (pending, accepted, rejected)
+
+        createdAt
+        updatedAt
+
+    loadAssignments
+        id
+        loadId
+        carrierId
+        assignedAt
+
+***************Relations******************
+    shipper -> many loads
+    load -> many applications
+    load -> one assignment
+    carrier -> many applications
