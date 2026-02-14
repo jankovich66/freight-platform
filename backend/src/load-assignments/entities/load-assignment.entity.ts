@@ -1,6 +1,6 @@
 import { Load } from "src/loads/entities/load.entity";
 import { User } from "src/users/entities/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'load_assignment' })
 export class LoadAssignment {
@@ -10,9 +10,11 @@ export class LoadAssignment {
     @Column({ name: 'assigned_at' })
     assignedAt: Date;
 
-    @ManyToOne(() => User, carrier => carrier.loadAssignment)
+    @JoinColumn({ name: 'carrier_id' })
+    @ManyToOne(() => User, carrier => carrier.loadAssignment, { onDelete: 'CASCADE' })
     carrier: User;
 
-    @ManyToOne(() => Load, load => load.loadAssignment)
+    @JoinColumn({ name: 'load_id' })
+    @ManyToOne(() => Load, load => load.loadAssignment, { onDelete: 'CASCADE' })
     load: Load;
 }

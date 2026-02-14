@@ -23,6 +23,9 @@ export class User {
     @Column({ name: 'phone_number' })
     phoneNumber: string;
 
+    @Column({ name: 'company_name' })
+    companyName: string;
+
     @Column({
         type: 'enum',
         enum: UserRole,
