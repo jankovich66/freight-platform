@@ -1,9 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { LoadAplication } from "src/load-aplications/entities/load-aplication.entity";
+import { LoadAssignment } from "src/load-assignments/entities/load-assignment.entity";
+import { Load } from "src/loads/entities/load.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum UserRole {
-    ADMIN = 'admin',
-    CARRIER = 'carrier',
-    SHIPPER = 'shipper'
+    ADMIN = 'ADMIN',
+    CARRIER = 'CARRIER',
+    SHIPPER = 'SHIPPER'
 }
 
 @Entity()
@@ -17,7 +20,7 @@ export class User {
     @Column()
     password: string;
 
-    @Column()
+    @Column({ name: 'phone_number' })
     phoneNumber: string;
 
     @Column({
@@ -26,4 +29,13 @@ export class User {
         default: UserRole.SHIPPER
     })
     role: UserRole;
+
+    @OneToMany(() => Load, loads => loads.shipper)
+    loads: Load[];
+
+    @OneToMany(() => LoadAplication, loadAplications => loadAplications.carrier)
+    loadAplications: LoadAplication[];
+
+    @OneToMany(() => LoadAssignment, loadAssignment => loadAssignment.carrier)
+    loadAssignment: LoadAssignment[];
 }

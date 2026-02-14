@@ -1,7 +1,7 @@
 import { IsEmail, IsEnum, IsNotEmpty } from "class-validator";
 import { UserRole } from "src/users/entities/user.entity";
 
-export class SingUpDto {
+export class RegisterDto {
     @IsEmail({}, { message: 'Invalid email address' })
     @IsNotEmpty({ message: '' })
     email: string;
