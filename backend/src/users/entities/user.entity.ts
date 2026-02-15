@@ -23,7 +23,7 @@ export class User {
     @Column({ name: 'phone_number' })
     phoneNumber: string;
 
-    @Column({ name: 'company_name' })
+    @Column({ name: 'company_name', nullable: true })
     companyName: string;
 
     @Column({

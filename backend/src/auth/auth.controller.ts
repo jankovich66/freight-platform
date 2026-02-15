@@ -15,8 +15,8 @@ export class AuthController {
     }
 
     @Post('register')
-    register(@Body() signUpDto: RegisterDto): Promise<User> {
-        return this.authService.signUp(signUpDto.email, signUpDto.password, signUpDto.phoneNumber, signUpDto.role);
+    register(@Body() registerDto: RegisterDto): Promise<User> {
+        return this.authService.register(registerDto.email, registerDto.password, registerDto.phoneNumber, registerDto.companyName, registerDto.role);
     }
 
     @UseGuards(JwtAuthGuard)

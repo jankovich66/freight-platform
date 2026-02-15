@@ -25,15 +25,20 @@ export class AuthService {
         throw new UnauthorizedException('Invalid credentials');
     }
 
-    async signUp(email: string, unhashedPassword: string, phoneNumber: string, role: UserRole): Promise<any> {
-        const user = await this.usersService.findOneByEmail(email);
-        if(user) {
+    async register(email: string, unhashedPassword: string, phoneNumber: string, companyName: string, role: UserRole): Promise<any> {
+        const exists = await this.usersService.findOneByEmail(email);
+        if(exists) {
             throw new UnauthorizedException('Email already exists');
         }
         
         const SALT_ROUNDS = 10;
         const hashedPassword = await bcrypt.hash(unhashedPassword, SALT_ROUNDS);
         
-        return await this.usersService.create(email, hashedPassword, phoneNumber, role);
+        const user = await this.usersService.create(email, hashedPassword, phoneNumber, companyName, role);
+        const payload = { sub: user.id, role: user.role }
+
+        return {
+            accessToken: this.jwtService.sign(payload)
+        };
     }
 }

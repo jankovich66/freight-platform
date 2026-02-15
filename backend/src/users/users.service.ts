@@ -18,11 +18,12 @@ export class UsersService {
         return await this.usersRepository.findOneBy({ email });
     }
 
-    async create(email: string, password: string, phoneNumber: string, role: UserRole) {
+    async create(email: string, password: string, phoneNumber: string, companyName: string, role: UserRole) {
         const user = {
             email: email,
             password: password,
             phoneNumber: phoneNumber,
+            companyName: companyName,
             role: role
         }
 
