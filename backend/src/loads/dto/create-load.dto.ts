@@ -1,5 +1,6 @@
 import { Type } from "class-transformer";
-import { IsDate, IsInt, IsNotEmpty, IsOptional, IsPositive, MinDate } from "class-validator";
+import { IsDate, IsEnum, IsInt, IsNotEmpty, IsOptional, IsPositive, MinDate } from "class-validator";
+import { LoadStatus } from "../entities/load.entity";
 
 export class CreateLoadDto {
     @IsNotEmpty({ message: 'Title cannot be empty' })
@@ -35,6 +36,10 @@ export class CreateLoadDto {
     @Type(() => Date)
     @MinDate(() => new Date())
     readonly deliveryDate: Date;
+
+    @IsEnum(LoadStatus)
+    @IsOptional()
+    readonly status?: LoadStatus;
 
     @IsInt()
     @IsPositive()

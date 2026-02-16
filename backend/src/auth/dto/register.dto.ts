@@ -13,7 +13,7 @@ export class RegisterDto {
     @IsNotEmpty({ message: 'Phone number cannot be empty' })
     readonly phoneNumber: string;
 
-    @IsNotEmpty({ message: 'Company name cannot be empty' })
+    //@IsNotEmpty({ message: 'Company name cannot be empty' })
     readonly companyName: string;
 
     @IsNotEmpty({ message: 'Role cannot be empty' })
