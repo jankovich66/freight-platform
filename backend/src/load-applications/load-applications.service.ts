@@ -1,12 +1,14 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LoadApplication } from './entities/load-application.entity';
-import { Repository } from 'typeorm';
+import { LoadApplication, LoadApplicationStatus } from './entities/load-application.entity';
+import { Not, Repository } from 'typeorm';
 import { CreateLoadApplicationDto } from './dto/create-load-application.dto';
 import { UpdateLoadApplicationDto } from './dto/update-load-application.dto';
 import { UserFromRequest } from 'src/auth/interfaces/user-from-request.interface';
 import { UserRole } from 'src/users/entities/user.entity';
 import { Load, LoadStatus } from 'src/loads/entities/load.entity';
+import { LoadAssignment } from 'src/load-assignments/entities/load-assignment.entity';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class LoadApplicationsService {
@@ -14,8 +16,10 @@ export class LoadApplicationsService {
         @InjectRepository(LoadApplication)
         private readonly loadApplicationRepository: Repository<LoadApplication>,
         @InjectRepository(Load)
-        private readonly loadRepository: Repository<Load>
-    
+        private readonly loadRepository: Repository<Load>,
+        @InjectRepository(LoadAssignment)
+        private readonly loadAssignmentRepository: Repository<LoadAssignment>,
+        private dataSource: DataSource
     ) {}
 
     async findAll(): Promise<LoadApplication[]> {
@@ -67,6 +71,47 @@ export class LoadApplicationsService {
         });
 
         return this.loadApplicationRepository.save(loadApplication);
+    }
+
+    async accept(user: UserFromRequest, applicationId: number): Promise<LoadAssignment> {
+        return this.dataSource.transaction(async (manager) => {
+            const application = await manager.findOne(LoadApplication, {
+                where: { id: applicationId },
+                relations: ['load', 'load.shipper', 'carrier']
+            });
+
+            if(!application) {
+                throw new NotFoundException('Application not found');
+            }
+
+            if(application.load.shipper.id !== user.id) {
+                throw new ForbiddenException(`You don't have access to this load`);
+            }
+
+            application.status = LoadApplicationStatus.ACCEPTED;
+            await manager.save(application);
+
+            await manager.update(
+                LoadApplication,
+                {
+                    load: { id: application.load.id },
+                    id: Not(applicationId)
+                },
+                { status: LoadApplicationStatus.REJECTED }
+            );
+
+            application.load.status = LoadStatus.ACCEPTED;
+            await manager.save(application.load);
+
+            const assignment = manager.create(LoadAssignment, {
+                load: { id: application.load.id },
+                carrier: { id: application.carrier.id }
+            });
+
+            await manager.save(assignment);
+
+            return assignment;
+        });
     }
 
     async update(id: number, updateLoadAplicationDto: UpdateLoadApplicationDto): Promise<LoadApplication> {

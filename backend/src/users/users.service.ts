@@ -18,14 +18,26 @@ export class UsersService {
         return await this.usersRepository.findOneBy({ email });
     }
 
-    async create(email: string, password: string, phoneNumber: string, companyName: string, role: UserRole) {
-        const user = this.usersRepository.create({
-            email: email,
-            password: password,
-            phoneNumber: phoneNumber,
-            companyName: companyName,
-            role: role
-        });
+    async create(email: string, password: string, phoneNumber: string, companyName: string | undefined, role: UserRole) {
+        let user;
+        if(companyName === undefined) {
+             user = this.usersRepository.create({
+                email: email,
+                password: password,
+                phoneNumber: phoneNumber,
+                companyName: '',
+                role: role
+            });
+        }
+        else {
+            user = this.usersRepository.create({
+                email: email,
+                password: password,
+                phoneNumber: phoneNumber,
+                companyName: companyName,
+                role: role
+            });
+        }
 
         return await this.usersRepository.save(user);
     }

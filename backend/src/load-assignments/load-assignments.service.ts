@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LoadAssignment } from './entities/load-assignment.entity';
 import { Repository } from 'typeorm';
-import { CreateLoadAssignmentDto } from './dto/create-load-assignment.dto';
+import { UserFromRequest } from 'src/auth/interfaces/user-from-request.interface';
 
 @Injectable()
 export class LoadAssignmentsService {
@@ -24,14 +24,34 @@ export class LoadAssignmentsService {
         return loadAssignment;
     }
 
-    async create(createLoadAssignmentDto: CreateLoadAssignmentDto): Promise<LoadAssignment> {
-        const loadAssignment = this.loadAssignmentsRepository.create({
-            ...createLoadAssignmentDto,
-            carrier: { id: createLoadAssignmentDto.carrierId },
-            load: { id: createLoadAssignmentDto.loadId }
+    async findByCarrier(carrierId: number): Promise<LoadAssignment[]> {
+        const loadAssignments = await this.loadAssignmentsRepository.find({
+            where: {
+                carrier: { id: carrierId }
+            },
+            relations: ['load']
         });
 
-        return this.loadAssignmentsRepository.save(loadAssignment);
+        return loadAssignments;
+    }
+
+    async findForLoad(loadId: number, user: UserFromRequest): Promise<LoadAssignment> {
+        const loadAssignments = await this.loadAssignmentsRepository.findOne({
+            where: {
+                load: { id: loadId }
+            },
+            relations: ['load', 'carrier', 'load.shipper']
+        });
+
+        if(!loadAssignments) {
+            throw new NotFoundException('Load not found');
+        }
+        
+        if(loadAssignments.load.shipper.id !== user.id) {
+            throw new ForbiddenException(`You don't have access to this load`);
+        }
+
+        return loadAssignments;
     }
 
     async remove(id: number): Promise<void> {

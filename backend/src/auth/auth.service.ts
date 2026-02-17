@@ -25,7 +25,7 @@ export class AuthService {
         throw new UnauthorizedException('Invalid credentials');
     }
 
-    async register(email: string, unhashedPassword: string, phoneNumber: string, companyName: string, role: UserRole): Promise<any> {
+    async register(email: string, unhashedPassword: string, phoneNumber: string, companyName: string | undefined, role: UserRole): Promise<any> {
         const exists = await this.usersService.findOneByEmail(email);
         if(exists) {
             throw new UnauthorizedException('Email already exists');

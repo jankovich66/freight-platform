@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { LoadApplicationsService } from './load-applications.service';
@@ -28,6 +28,12 @@ export class LoadApplicationsController {
     @Post(':loadId/apply')
     apply(@GetUser() user, @Param('loadId', ParseIntPipe) loadId: number, @Body() createLoadAplicationDto: CreateLoadApplicationDto) {
         return this.loadApplicationsService.create(user, loadId, createLoadAplicationDto);
+    }
+
+    @Roles(UserRole.ADMIN, UserRole.SHIPPER)
+    @Patch(':applicationId/accept')
+    accept(@Param('applicationId', ParseIntPipe) applicationId: number, @GetUser() user) {
+        return this.loadApplicationsService.accept(user, applicationId);
     }
 
     @Roles(UserRole.ADMIN, UserRole.CARRIER)
