@@ -1,10 +1,11 @@
-import { Controller, Get, Param, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query, UseGuards } from '@nestjs/common';
 import { LoadAssignmentsService } from './load-assignments.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { GetUser } from 'src/common/decorators/get-user.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { UserRole } from 'src/users/entities/user.entity';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('load-assignments')
@@ -15,8 +16,8 @@ export class LoadAssignmentsController {
 
     @Roles(UserRole.ADMIN, UserRole.CARRIER)
     @Get('my')
-    findMyAssignments(@GetUser() user) {
-        return this.loadAssignmentsService.findByCarrier(user.id);
+    findMyAssignments(@GetUser() user, @Query() paginationDto: PaginationDto) {
+        return this.loadAssignmentsService.findByCarrier(user, paginationDto);
     }
 
     @Roles(UserRole.ADMIN, UserRole.SHIPPER)

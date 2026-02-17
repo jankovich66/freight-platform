@@ -1,11 +1,12 @@
-import { ForbiddenException, Injectable, NotFoundException, Req } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Load } from './entities/load.entity';
+import { Load, LoadStatus } from './entities/load.entity';
 import { Repository } from 'typeorm';
 import { CreateLoadDto } from './dto/create-load.dto';
 import { UpdateLoadDto } from './dto/update-load.dto';
 import { UserRole } from 'src/users/entities/user.entity';
 import { UserFromRequest } from 'src/auth/interfaces/user-from-request.interface';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class LoadsService {
@@ -14,11 +15,27 @@ export class LoadsService {
         private readonly loadsRepository: Repository<Load>
     ) {}
 
-    async findAll(): Promise<Load[]> {
-        return await this.loadsRepository.find();
+    async findAll(user: UserFromRequest, paginationDto: PaginationDto) {
+        if(user.role !== UserRole.ADMIN && user.role !== UserRole.SHIPPER) {
+            throw new ForbiddenException('Only shippers can access');
+        }
+
+        const { page = 1, limit = 10} = paginationDto;
+
+        const [data, total] = await this.loadsRepository.findAndCount({
+            skip: (page - 1) * limit,
+            take: limit
+        });
+
+        return {
+            data,
+            total,
+            page,
+            lastPage: Math.ceil(total / limit)
+        };
     }
 
-    async findOne(id: number): Promise<Load> {
+    async findOne(user: UserFromRequest, id: number): Promise<Load> {
         const load = await this.loadsRepository.findOneBy({ id });
     
         if(!load) {
@@ -27,17 +44,58 @@ export class LoadsService {
         return load;
     }
 
-    async create(shipperId: number, createLoadDto: CreateLoadDto): Promise<Load> {
+    async findMyLoads(user: UserFromRequest, paginationDto: PaginationDto) {
+        if(user.role !== UserRole.ADMIN && user.role !== UserRole.SHIPPER) {
+            throw new ForbiddenException('Only shippers can access');
+        }
+        
+        const { page = 1, limit = 10 } = paginationDto;
+
+        const [data, total] = await this.loadsRepository.findAndCount({
+            where: { shipper: { id: user.id }},
+            skip: (page - 1) / limit,
+            take: limit
+        });
+
+        return {
+            data,
+            total,
+            page,
+            lastPage: Math.ceil(total / limit)
+        };
+    }
+
+    async findOpenLoads(paginationDto: PaginationDto) {
+        const { page = 1, limit = 10 } = paginationDto;
+
+        const [data, total] = await this.loadsRepository.findAndCount({
+            where: { status: LoadStatus.OPEN },
+            skip: (page - 1) / limit,
+            take: limit
+        });
+
+        return {
+            data,
+            total,
+            page,
+            lastPage: Math.ceil(total / limit)
+        };
+    }
+
+    async create(user: UserFromRequest, createLoadDto: CreateLoadDto): Promise<Load> {
+        if(user.role !== UserRole.ADMIN && user.role !== UserRole.SHIPPER) {
+            throw new ForbiddenException('Only shippers can access');
+        }
+        
         const load = this.loadsRepository.create({
             ...createLoadDto,
-            shipper: { id: shipperId }
+            shipper: { id: user.id }
         });
-        console.log(load);
         
         return await this.loadsRepository.save(load);
     }
 
-    async update(user: UserFromRequest, id: number, updateLoadDto: UpdateLoadDto): Promise<Load | null> {
+    async update(user: UserFromRequest, id: number, updateLoadDto: UpdateLoadDto): Promise<Load | null> {        
         const load = await this.loadsRepository.findOne({
             where: { id },
             relations: ['shipper']
@@ -58,7 +116,11 @@ export class LoadsService {
         return this.loadsRepository.save(load);
     }
 
-    async remove(id: number): Promise<void> {
+    async remove(user: UserFromRequest, id: number): Promise<void> {
+        if(user.role !== UserRole.ADMIN && user.role !== UserRole.SHIPPER) {
+            throw new ForbiddenException('Only shippers can access');
+        }
+
         await this.loadsRepository.delete(id);
     }
 }

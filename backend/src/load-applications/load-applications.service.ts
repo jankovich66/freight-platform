@@ -9,6 +9,7 @@ import { UserRole } from 'src/users/entities/user.entity';
 import { Load, LoadStatus } from 'src/loads/entities/load.entity';
 import { LoadAssignment } from 'src/load-assignments/entities/load-assignment.entity';
 import { DataSource } from 'typeorm';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class LoadApplicationsService {
@@ -17,16 +18,34 @@ export class LoadApplicationsService {
         private readonly loadApplicationRepository: Repository<LoadApplication>,
         @InjectRepository(Load)
         private readonly loadRepository: Repository<Load>,
-        @InjectRepository(LoadAssignment)
-        private readonly loadAssignmentRepository: Repository<LoadAssignment>,
         private dataSource: DataSource
     ) {}
 
-    async findAll(): Promise<LoadApplication[]> {
-        return await this.loadApplicationRepository.find();
+    async findAll(user: UserFromRequest, paginationDto: PaginationDto) {
+        if(user.role !== UserRole.ADMIN) {
+            throw new ForbiddenException('Only admin can access');
+        }
+        
+        const { page = 1, limit = 10 } = paginationDto;
+
+        const [data, total] = await this.loadApplicationRepository.findAndCount({
+            skip: (page - 1) * limit,
+            take: limit
+        });
+
+        return {
+            data,
+            total,
+            page,
+            lastPage: Math.ceil(total / limit)
+        };
     }
 
-    async findOne(id: number): Promise<LoadApplication> {
+    async findOne(user: UserFromRequest, id: number): Promise<LoadApplication> {
+        if(user.role !== UserRole.ADMIN && user.role !== UserRole.CARRIER) {
+            throw new ForbiddenException('Only shippers can access');
+        }
+        
         const loadAplication = await this.loadApplicationRepository.findOneBy({ id });
 
         if(!loadAplication) {
@@ -34,6 +53,60 @@ export class LoadApplicationsService {
         }
 
         return loadAplication;
+    }
+
+    async findByLoad(user: UserFromRequest, loadId: number, paginationDto: PaginationDto) {
+        if(user.role !== UserRole.ADMIN && user.role !== UserRole.SHIPPER) {
+            throw new ForbiddenException('Only shippers can access applications')
+        }
+
+        const load = await this.loadRepository.findOne({
+            where: { id: loadId }
+        });
+
+        if(!load) {
+            throw new NotFoundException('Load not found');
+        }
+
+        if(load.shipper.id !== user.id) {
+            throw new ForbiddenException(`You don't have access to this load`);
+        }
+
+        const { page = 1, limit = 10 } = paginationDto;
+
+        const [data, total] = await this.loadApplicationRepository.findAndCount({
+            where: { load: { id: loadId }},
+            skip: (page - 1) / limit,
+            take: limit
+        });
+
+        return {
+            data,
+            total,
+            page,
+            totalPages: Math.ceil(total / limit)
+        };
+    }
+
+    async findMyApplications(user: UserFromRequest, paginationDto: PaginationDto) {
+        if(user.role !== UserRole.ADMIN && user.role !== UserRole.CARRIER) {
+            throw new ForbiddenException('Only carriers can access')
+        }
+        
+        const { page = 1, limit = 10 } = paginationDto;
+
+        const [data, total] = await this.loadApplicationRepository.findAndCount({
+            where: { carrier: { id: user.id }},
+            skip: (page - 1) / limit,
+            take: limit
+        });
+
+        return {
+            data,
+            total,
+            page,
+            totalPages: Math.ceil(total / limit)
+        };
     }
 
     async create(user: UserFromRequest, loadId:number, createLoadAplicationDto: CreateLoadApplicationDto): Promise<LoadApplication> {
@@ -74,6 +147,10 @@ export class LoadApplicationsService {
     }
 
     async accept(user: UserFromRequest, applicationId: number): Promise<LoadAssignment> {
+        if(user.role !== UserRole.ADMIN && user.role !== UserRole.SHIPPER) {
+            throw new ForbiddenException('Only shippers can access');
+        }
+        
         return this.dataSource.transaction(async (manager) => {
             const application = await manager.findOne(LoadApplication, {
                 where: { id: applicationId },
@@ -86,6 +163,10 @@ export class LoadApplicationsService {
 
             if(application.load.shipper.id !== user.id) {
                 throw new ForbiddenException(`You don't have access to this load`);
+            }
+
+            if(application.status !== LoadApplicationStatus.PENDING) {
+                throw new BadRequestException('Application already accepted');
             }
 
             application.status = LoadApplicationStatus.ACCEPTED;
@@ -114,13 +195,29 @@ export class LoadApplicationsService {
         });
     }
 
-    async update(id: number, updateLoadAplicationDto: UpdateLoadApplicationDto): Promise<LoadApplication> {
+    async update(user: UserFromRequest, id: number, updateLoadAplicationDto: UpdateLoadApplicationDto): Promise<LoadApplication> {
+        if(user.role !== UserRole.ADMIN && user.role !== UserRole.SHIPPER) {
+            throw new ForbiddenException('Only shippers can access');
+        }
+
+        const loadApplication = await this.loadApplicationRepository.find({
+            where: { id: id }
+        });
+
+        if(!loadApplication) {
+            throw new NotFoundException('Load application not found');
+        }
+        
         await this.loadApplicationRepository.update(id, updateLoadAplicationDto);
         
-        return this.findOne(id);
+        return this.findOne(user, id);
     }
 
-    async remove(id: number): Promise<void> {
+    async remove(user: UserFromRequest, id: number): Promise<void> {
+        if(user.role !== UserRole.ADMIN && user.role !== UserRole.CARRIER) {
+            throw new ForbiddenException('Only carriers can access');
+        }
+
         await this.loadApplicationRepository.delete(id);
     }
 }
