@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable, NotFoundException, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Load, LoadStatus } from './entities/load.entity';
+import { Load } from './entities/load.entity';
 import { Repository } from 'typeorm';
 import { CreateLoadDto } from './dto/create-load.dto';
 import { UpdateLoadDto } from './dto/update-load.dto';
@@ -32,6 +32,7 @@ export class LoadsService {
             ...createLoadDto,
             shipper: { id: shipperId }
         });
+        console.log(load);
         
         return await this.loadsRepository.save(load);
     }
@@ -53,9 +54,8 @@ export class LoadsService {
         }
         
         Object.assign(load, updateLoadDto);
-        return this.loadsRepository.save(load);
         
-        //return this.findOne(id);
+        return this.loadsRepository.save(load);
     }
 
     async remove(id: number): Promise<void> {

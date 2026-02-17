@@ -3,11 +3,11 @@ import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Load } from 'src/loads/entities/load.entity';
-import { LoadAplication } from 'src/load-aplications/entities/load-aplication.entity';
+import { LoadApplication } from 'src/load-applications/entities/load-application.entity';
 import { LoadAssignment } from 'src/load-assignments/entities/load-assignment.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Load, LoadAplication, LoadAssignment])],
+  imports: [TypeOrmModule.forFeature([User, Load, LoadApplication, LoadAssignment])],
   providers: [UsersService],
   exports: [UsersService]
 })

@@ -1,4 +1,4 @@
-import { LoadAplication } from "src/load-aplications/entities/load-aplication.entity";
+import { LoadApplication } from "src/load-applications/entities/load-application.entity";
 import { LoadAssignment } from "src/load-assignments/entities/load-assignment.entity";
 import { Load } from "src/loads/entities/load.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
@@ -36,8 +36,8 @@ export class User {
     @OneToMany(() => Load, loads => loads.shipper)
     loads: Load[];
 
-    @OneToMany(() => LoadAplication, loadAplications => loadAplications.carrier)
-    loadAplications: LoadAplication[];
+    @OneToMany(() => LoadApplication, loadApplications => loadApplications.carrier)
+    loadApplications: LoadApplication[];
 
     @OneToMany(() => LoadAssignment, loadAssignment => loadAssignment.carrier)
     loadAssignment: LoadAssignment[];

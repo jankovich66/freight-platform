@@ -2,14 +2,14 @@ import { Load } from "src/loads/entities/load.entity";
 import { User } from "src/users/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-export enum LoadAplicationStatus {
+export enum LoadApplicationStatus {
     PENDING = 'PENDING',
     ACCEPTED = 'ACCEPTED',
     REJECTED = 'REJECTED'
 }
 
-@Entity({ name: 'load_aplication' })
-export class LoadAplication {
+@Entity({ name: 'load_application' })
+export class LoadApplication {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -18,16 +18,16 @@ export class LoadAplication {
 
     @Column({
         type: 'enum',
-        enum: LoadAplicationStatus,
-        default: LoadAplicationStatus.PENDING
+        enum: LoadApplicationStatus,
+        default: LoadApplicationStatus.PENDING
     })
-    status: LoadAplicationStatus;
+    status: LoadApplicationStatus;
 
     @JoinColumn({ name: 'load_id' })
-    @ManyToOne(() => Load, load => load.loadAplications, { onDelete: 'CASCADE' })
+    @ManyToOne(() => Load, load => load.loadApplications, { onDelete: 'CASCADE' })
     load: Load;
 
     @JoinColumn({ name: 'carrier_id' })
-    @ManyToOne(() => User, carrier => carrier.loadAplications, { onDelete: 'CASCADE' })
+    @ManyToOne(() => User, carrier => carrier.loadApplications, { onDelete: 'CASCADE' })
     carrier: User;
 }

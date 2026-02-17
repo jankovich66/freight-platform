@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsDate, IsEnum, IsInt, IsNotEmpty, IsOptional, IsPositive, MinDate } from "class-validator";
+import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, MinDate } from "class-validator";
 import { LoadStatus } from "../entities/load.entity";
 
 export class CreateLoadDto {
@@ -24,6 +24,7 @@ export class CreateLoadDto {
     @IsNotEmpty({ message: 'Weight cannot be empty' })
     readonly weight: number;
 
+    @IsNumber()
     @IsNotEmpty({ message: 'Price cannot be empty' })
     readonly price: number;
 
@@ -40,9 +41,4 @@ export class CreateLoadDto {
     @IsEnum(LoadStatus)
     @IsOptional()
     readonly status?: LoadStatus;
-
-    @IsInt()
-    @IsPositive()
-    @IsNotEmpty()
-    readonly shipperId: number;
 }

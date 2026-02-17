@@ -26,8 +26,8 @@ export class LoadsController {
 
     @Roles(UserRole.ADMIN, UserRole.SHIPPER)
     @Post()
-    create(@Req() req, @Body() createLoadDto: CreateLoadDto) {
-        return this.loadsService.create(req.user.id, createLoadDto);
+    create(@GetUser() user, @Body() createLoadDto: CreateLoadDto) {
+        return this.loadsService.create(user.id, createLoadDto);
     }
 
     @Roles(UserRole.ADMIN, UserRole.SHIPPER)

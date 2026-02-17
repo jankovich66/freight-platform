@@ -6,7 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { LoadsModule } from './loads/loads.module';
-import { LoadAplicationsModule } from './load-aplications/load-aplications.module';
+import { LoadApplicationsModule } from './load-applications/load-applications.module';
 import { LoadAssignmentsModule } from './load-assignments/load-assignments.module';
 
 @Module({
@@ -27,7 +27,7 @@ import { LoadAssignmentsModule } from './load-assignments/load-assignments.modul
     AuthModule,
     UsersModule,
     LoadsModule,
-    LoadAplicationsModule,
+    LoadApplicationsModule,
     LoadAssignmentsModule,
   ],
   controllers: [AppController],

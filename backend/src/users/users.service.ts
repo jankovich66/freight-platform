@@ -19,13 +19,13 @@ export class UsersService {
     }
 
     async create(email: string, password: string, phoneNumber: string, companyName: string, role: UserRole) {
-        const user = {
+        const user = this.usersRepository.create({
             email: email,
             password: password,
             phoneNumber: phoneNumber,
             companyName: companyName,
             role: role
-        }
+        });
 
         return await this.usersRepository.save(user);
     }

@@ -1,4 +1,4 @@
-import { LoadAplication } from "src/load-aplications/entities/load-aplication.entity";
+import { LoadApplication } from "src/load-applications/entities/load-application.entity";
 import { LoadAssignment } from "src/load-assignments/entities/load-assignment.entity";
 import { User } from "src/users/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
@@ -57,8 +57,8 @@ export class Load {
     @ManyToOne(() => User, shipper => shipper.loads, { onDelete: 'CASCADE' })
     shipper: User;
 
-    @OneToMany(() => LoadAplication, loadAplications => loadAplications.load)
-    loadAplications: LoadAplication[];
+    @OneToMany(() => LoadApplication, loadApplications => loadApplications.load)
+    loadApplications: LoadApplication[];
 
     @OneToMany(() => LoadAssignment, loadAssignment => loadAssignment.load)
     loadAssignment: LoadAssignment[];

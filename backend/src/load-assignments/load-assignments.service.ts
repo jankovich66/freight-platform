@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LoadAssignment } from './entities/load-assignment.entity';
 import { Repository } from 'typeorm';
 import { CreateLoadAssignmentDto } from './dto/create-load-assignment.dto';
-import { UpdateLoadAssignmentDto } from './dto/update-load-assignment.dto';
 
 @Injectable()
 export class LoadAssignmentsService {
@@ -33,15 +32,6 @@ export class LoadAssignmentsService {
         });
 
         return this.loadAssignmentsRepository.save(loadAssignment);
-    }
-
-    async update(id: number, updateLoadAssignmentDto: UpdateLoadAssignmentDto): Promise<LoadAssignment> {
-        await this.loadAssignmentsRepository.update(id, {
-            carrier: { id: updateLoadAssignmentDto.loadId },
-            load: { id: updateLoadAssignmentDto.loadId }
-        });
-
-        return this.findOne(id);
     }
 
     async remove(id: number): Promise<void> {
