@@ -5,10 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoadAssignment } from './entities/load-assignment.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Load } from 'src/loads/entities/load.entity';
+import { QueryService } from 'src/common/query/query.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([LoadAssignment, User, Load])],
-  providers: [LoadAssignmentsService],
+  providers: [LoadAssignmentsService, QueryService],
   controllers: [LoadAssignmentsController]
 })
 export class LoadAssignmentsModule {}

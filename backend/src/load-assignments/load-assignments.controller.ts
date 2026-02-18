@@ -5,7 +5,7 @@ import { RolesGuard } from 'src/common/guards/roles.guard';
 import { GetUser } from 'src/common/decorators/get-user.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { UserRole } from 'src/users/entities/user.entity';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { LoadAssignmentQueryDto } from './dto/load-assignment-query.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('load-assignments')
@@ -16,8 +16,8 @@ export class LoadAssignmentsController {
 
     @Roles(UserRole.ADMIN, UserRole.CARRIER)
     @Get('my')
-    findMyAssignments(@GetUser() user, @Query() paginationDto: PaginationDto) {
-        return this.loadAssignmentsService.findByCarrier(user, paginationDto);
+    findMyAssignments(@GetUser() user, @Query() loadAssignmentQueryDto: LoadAssignmentQueryDto) {
+        return this.loadAssignmentsService.findByCarrier(user, loadAssignmentQueryDto);
     }
 
     @Roles(UserRole.ADMIN, UserRole.SHIPPER)

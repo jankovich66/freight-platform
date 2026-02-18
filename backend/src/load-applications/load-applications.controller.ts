@@ -6,7 +6,7 @@ import { CreateLoadApplicationDto } from './dto/create-load-application.dto';
 import { UserRole } from 'src/users/entities/user.entity';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { GetUser } from 'src/common/decorators/get-user.decorator';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { LoadApplicationQueryDto } from './dto/load-application-query.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('load-applications')
@@ -15,26 +15,26 @@ export class LoadApplicationsController {
 
     @Roles(UserRole.ADMIN)
     @Get()
-    findAll(@GetUser() user, @Query() paginationDto: PaginationDto) {
-        return this.loadApplicationsService.findAll(user, paginationDto);
-    }
-
-    @Roles(UserRole.ADMIN, UserRole.CARRIER)
-    @Get(':id')
-    findOne(@GetUser() user, @Param() id: number) {
-        return this.loadApplicationsService.findOne(user, id);
-    }
-
-    @Roles(UserRole.ADMIN, UserRole.SHIPPER)
-    @Get('by-load:loadId')
-    findByLoad(@GetUser() user, @Param('loadId', ParseIntPipe) loadId: number, @Query() paginationDto: PaginationDto) {
-        return this.loadApplicationsService.findByLoad(user, loadId, paginationDto);
+    findAll(@GetUser() user, @Query() loadApplicationQueryDto: LoadApplicationQueryDto) {
+        return this.loadApplicationsService.findAll(user, loadApplicationQueryDto);
     }
 
     @Roles(UserRole.ADMIN, UserRole.CARRIER)
     @Get('my')
-    findMyApplications(@GetUser() user, @Query() paginationDto: PaginationDto) {
-        return this.loadApplicationsService.findMyApplications(user, paginationDto);
+    findMyApplications(@GetUser() user, @Query() loadApplicationQueryDto: LoadApplicationQueryDto) {
+        return this.loadApplicationsService.findMyApplications(user, loadApplicationQueryDto);
+    }
+
+    @Roles(UserRole.ADMIN, UserRole.CARRIER)
+    @Get(':id')
+    findOne(@GetUser() user, @Param('id', ParseIntPipe) id: number) {
+        return this.loadApplicationsService.findOne(user, id);
+    }
+
+    @Roles(UserRole.ADMIN, UserRole.SHIPPER)
+    @Get('by-load/:loadId')
+    findByLoad(@GetUser() user, @Param('loadId', ParseIntPipe) loadId: number, @Query() laodApplicationQueryDto: LoadApplicationQueryDto) {
+        return this.loadApplicationsService.findByLoad(user, loadId, laodApplicationQueryDto);
     }
 
     @Roles(UserRole.ADMIN, UserRole.CARRIER)
@@ -51,7 +51,7 @@ export class LoadApplicationsController {
 
     @Roles(UserRole.ADMIN, UserRole.CARRIER)
     @Delete(':id')
-    remove(@GetUser() user, @Param() id: number) {
+    remove(@GetUser() user, @Param('id', ParseIntPipe) id: number) {
         return this.loadApplicationsService.remove(user, id);
     }
 }

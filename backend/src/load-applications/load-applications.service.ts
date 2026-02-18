@@ -9,11 +9,14 @@ import { UserRole } from 'src/users/entities/user.entity';
 import { Load, LoadStatus } from 'src/loads/entities/load.entity';
 import { LoadAssignment } from 'src/load-assignments/entities/load-assignment.entity';
 import { DataSource } from 'typeorm';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { LoadApplicationQueryDto } from './dto/load-application-query.dto';
+import { QueryService } from 'src/common/query/query.service';
+import { LOAD_APPLICATION_QUERY_CONFIG } from './load-application-query.config';
 
 @Injectable()
 export class LoadApplicationsService {
     constructor(
+        private readonly queryService: QueryService,
         @InjectRepository(LoadApplication)
         private readonly loadApplicationRepository: Repository<LoadApplication>,
         @InjectRepository(Load)
@@ -21,24 +24,12 @@ export class LoadApplicationsService {
         private dataSource: DataSource
     ) {}
 
-    async findAll(user: UserFromRequest, paginationDto: PaginationDto) {
+    async findAll(user: UserFromRequest, loadApplicationQueryDto: LoadApplicationQueryDto) {
         if(user.role !== UserRole.ADMIN) {
             throw new ForbiddenException('Only admin can access');
         }
-        
-        const { page = 1, limit = 10 } = paginationDto;
 
-        const [data, total] = await this.loadApplicationRepository.findAndCount({
-            skip: (page - 1) * limit,
-            take: limit
-        });
-
-        return {
-            data,
-            total,
-            page,
-            lastPage: Math.ceil(total / limit)
-        };
+        return this.queryService.findWithQuery(this.loadApplicationRepository, loadApplicationQueryDto, LOAD_APPLICATION_QUERY_CONFIG);
     }
 
     async findOne(user: UserFromRequest, id: number): Promise<LoadApplication> {
@@ -55,58 +46,33 @@ export class LoadApplicationsService {
         return loadAplication;
     }
 
-    async findByLoad(user: UserFromRequest, loadId: number, paginationDto: PaginationDto) {
+    async findByLoad(user: UserFromRequest, loadId: number, loadApplicationQueryDto: LoadApplicationQueryDto) {
         if(user.role !== UserRole.ADMIN && user.role !== UserRole.SHIPPER) {
             throw new ForbiddenException('Only shippers can access applications')
         }
 
         const load = await this.loadRepository.findOne({
-            where: { id: loadId }
+            where: { id: loadId },
+            relations: ['shipper']
         });
 
         if(!load) {
             throw new NotFoundException('Load not found');
         }
 
-        if(load.shipper.id !== user.id) {
+        if(load.shipper.id !== user.id && user.role !== UserRole.ADMIN) {
             throw new ForbiddenException(`You don't have access to this load`);
         }
 
-        const { page = 1, limit = 10 } = paginationDto;
-
-        const [data, total] = await this.loadApplicationRepository.findAndCount({
-            where: { load: { id: loadId }},
-            skip: (page - 1) / limit,
-            take: limit
-        });
-
-        return {
-            data,
-            total,
-            page,
-            totalPages: Math.ceil(total / limit)
-        };
+        return this.queryService.findWithQuery(this.loadApplicationRepository, loadApplicationQueryDto, LOAD_APPLICATION_QUERY_CONFIG, (qb) => { qb.andWhere('loadApplication.load.id = :loadId', { loadId }) });
     }
 
-    async findMyApplications(user: UserFromRequest, paginationDto: PaginationDto) {
+    async findMyApplications(user: UserFromRequest, loadApplicationQueryDto: LoadApplicationQueryDto) {
         if(user.role !== UserRole.ADMIN && user.role !== UserRole.CARRIER) {
             throw new ForbiddenException('Only carriers can access')
         }
         
-        const { page = 1, limit = 10 } = paginationDto;
-
-        const [data, total] = await this.loadApplicationRepository.findAndCount({
-            where: { carrier: { id: user.id }},
-            skip: (page - 1) / limit,
-            take: limit
-        });
-
-        return {
-            data,
-            total,
-            page,
-            totalPages: Math.ceil(total / limit)
-        };
+        return this.queryService.findWithQuery(this.loadApplicationRepository, loadApplicationQueryDto, LOAD_APPLICATION_QUERY_CONFIG, (qb) => { qb.andWhere('loadApplication.carrier.id = :userId', { userId: user.id }) });
     }
 
     async create(user: UserFromRequest, loadId:number, createLoadAplicationDto: CreateLoadApplicationDto): Promise<LoadApplication> {

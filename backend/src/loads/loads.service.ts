@@ -6,33 +6,24 @@ import { CreateLoadDto } from './dto/create-load.dto';
 import { UpdateLoadDto } from './dto/update-load.dto';
 import { UserRole } from 'src/users/entities/user.entity';
 import { UserFromRequest } from 'src/auth/interfaces/user-from-request.interface';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { LoadQueryDto } from './dto/load-query.dto';
+import { QueryService } from 'src/common/query/query.service';
+import { LOAD_QUERY_CONFIG } from './load-query.config';
 
 @Injectable()
 export class LoadsService {
     constructor(
+        private readonly queryService: QueryService,
         @InjectRepository(Load)
         private readonly loadsRepository: Repository<Load>
     ) {}
 
-    async findAll(user: UserFromRequest, paginationDto: PaginationDto) {
+    async findAll(user: UserFromRequest, loadQueryDto: LoadQueryDto) {
         if(user.role !== UserRole.ADMIN && user.role !== UserRole.SHIPPER) {
             throw new ForbiddenException('Only shippers can access');
         }
-
-        const { page = 1, limit = 10} = paginationDto;
-
-        const [data, total] = await this.loadsRepository.findAndCount({
-            skip: (page - 1) * limit,
-            take: limit
-        });
-
-        return {
-            data,
-            total,
-            page,
-            lastPage: Math.ceil(total / limit)
-        };
+        
+        return this.queryService.findWithQuery(this.loadsRepository, loadQueryDto, LOAD_QUERY_CONFIG);
     }
 
     async findOne(user: UserFromRequest, id: number): Promise<Load> {
@@ -44,42 +35,16 @@ export class LoadsService {
         return load;
     }
 
-    async findMyLoads(user: UserFromRequest, paginationDto: PaginationDto) {
+    async findMyLoads(user: UserFromRequest, loadQueryDto: LoadQueryDto) {
         if(user.role !== UserRole.ADMIN && user.role !== UserRole.SHIPPER) {
             throw new ForbiddenException('Only shippers can access');
         }
         
-        const { page = 1, limit = 10 } = paginationDto;
-
-        const [data, total] = await this.loadsRepository.findAndCount({
-            where: { shipper: { id: user.id }},
-            skip: (page - 1) / limit,
-            take: limit
-        });
-
-        return {
-            data,
-            total,
-            page,
-            lastPage: Math.ceil(total / limit)
-        };
+        return this.queryService.findWithQuery(this.loadsRepository, loadQueryDto, LOAD_QUERY_CONFIG, (qb) => { qb.andWhere('load.shipper.id = :userId', { userId: user.id }) });
     }
 
-    async findOpenLoads(paginationDto: PaginationDto) {
-        const { page = 1, limit = 10 } = paginationDto;
-
-        const [data, total] = await this.loadsRepository.findAndCount({
-            where: { status: LoadStatus.OPEN },
-            skip: (page - 1) / limit,
-            take: limit
-        });
-
-        return {
-            data,
-            total,
-            page,
-            lastPage: Math.ceil(total / limit)
-        };
+    async findOpenLoads(loadQueryDto: LoadQueryDto) {
+        return this.queryService.findWithQuery(this.loadsRepository, loadQueryDto, LOAD_QUERY_CONFIG, (qb => { qb.andWhere('load.status = :status', { status: LoadStatus.OPEN }) }));
     }
 
     async create(user: UserFromRequest, createLoadDto: CreateLoadDto): Promise<Load> {
