@@ -1,6 +1,6 @@
 import { Load } from "src/loads/entities/load.entity";
 import { User } from "src/users/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum LoadApplicationStatus {
     PENDING = 'PENDING',
@@ -22,6 +22,9 @@ export class LoadApplication {
         default: LoadApplicationStatus.PENDING
     })
     status: LoadApplicationStatus;
+    
+    @CreateDateColumn({ name: 'created_at' })
+    createdAt: Date;
 
     @JoinColumn({ name: 'load_id' })
     @ManyToOne(() => Load, load => load.loadApplications, { onDelete: 'CASCADE' })

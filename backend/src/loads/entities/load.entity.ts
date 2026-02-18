@@ -1,7 +1,7 @@
 import { LoadApplication } from "src/load-applications/entities/load-application.entity";
 import { LoadAssignment } from "src/load-assignments/entities/load-assignment.entity";
 import { User } from "src/users/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum LoadStatus {
     OPEN = 'OPEN',
@@ -52,6 +52,9 @@ export class Load {
         default: LoadStatus.OPEN
     })
     status: LoadStatus;
+
+    @CreateDateColumn({ name: 'created_at' })
+    createdAt: Date;
 
     @JoinColumn({ name: 'shipper_id' })
     @ManyToOne(() => User, shipper => shipper.loads, { onDelete: 'CASCADE' })
