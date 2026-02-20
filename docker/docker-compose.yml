@@ -11,9 +11,9 @@ services:
       - ../backend/.env
     ports:
       - "3000:3000"
-    volumes:
-      - ../backend:/usr/src/app
-      - /usr/src/app/node_modules
+    #volumes:
+      #- ../backend:/usr/src/app
+      #- /usr/src/app/node_modules
     depends_on:
       - db
 
