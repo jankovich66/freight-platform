@@ -1,5 +1,4 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
-import { UserRole } from "src/users/entities/user.entity";
+import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
 
 export class RegisterDto {
     @IsEmail({}, { message: 'Invalid email address' })
@@ -13,11 +12,6 @@ export class RegisterDto {
     @IsNotEmpty({ message: 'Phone number cannot be empty' })
     readonly phoneNumber: string;
 
-    //@IsNotEmpty({ message: 'Company name cannot be empty' })
-    @IsOptional()
-    readonly companyName?: string;
-
-    @IsNotEmpty({ message: 'Role cannot be empty' })
-    @IsEnum(UserRole, { message: 'Invali role' })
-    readonly role: UserRole;
+    @IsNotEmpty({ message: 'Company name cannot be empty' })
+    readonly companyName: string;
 }

@@ -14,9 +14,14 @@ export class AuthController {
         return this.authService.validateUser(loginDto);
     }
 
-    @Post('register')
-    register(@Body() registerDto: RegisterDto): Promise<User> {
-        return this.authService.register(registerDto.email, registerDto.password, registerDto.phoneNumber, registerDto.companyName, registerDto.role);
+    @Post('register/carrier')
+    registerCarrier(@Body() registerDto: RegisterDto): Promise<User> {
+        return this.authService.registerCarrier(registerDto.email, registerDto.password, registerDto.phoneNumber, registerDto.companyName);
+    }
+
+    @Post('register/shipper')
+    registerShipper(@Body() registerDto: RegisterDto): Promise<User> {
+        return this.authService.registerShipper(registerDto.email, registerDto.password, registerDto.phoneNumber, registerDto.companyName);
     }
 
     @UseGuards(JwtAuthGuard)

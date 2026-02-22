@@ -1,7 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, tap } from "rxjs";
-import { RegisterRequest } from "../models/register/register-request.model";
+import { RegisterRequest } from "../models/register-request.model";
+import { AuthResponse } from "../models/auth-response.model";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -9,21 +10,22 @@ export class AuthService {
 
     constructor(private http: HttpClient) {}
 
-    login(email: string, password: string): Observable<any> {
+    login(email: string, password: string): Observable<AuthResponse> {
         const credentials = { email, password };
 
-        return this.http.post<any>(`${ this.authUrl }/login`, credentials)
-            .pipe(
+        return this.http.post<AuthResponse>(`${ this.authUrl }/login`, credentials)
+            /*.pipe(
                 tap(response => {
                     if(response && response.accessToken) {
+                        console.log(response.user);
                         localStorage.setItem('accessToken', response.accessToken);
                     }
                 })
-            )
-        }
+            )*/
+    }
 
-    register(userData: RegisterRequest): Observable<any> {
-        return this.http.post<any>(`${ this.authUrl }/register`, userData)
+    registerCarrier(userData: RegisterRequest): Observable<AuthResponse> {
+        return this.http.post<AuthResponse>(`${ this.authUrl }/register/carrier`, userData)
             .pipe(
                 tap(response => {
                     if(response && response.accessToken) {
@@ -31,5 +33,20 @@ export class AuthService {
                     }
                 })
             )
+    }
+
+    registerShipper(userData: RegisterRequest): Observable<AuthResponse> {
+        return this.http.post<AuthResponse>(`${ this.authUrl }/register/shipper`, userData)
+            .pipe(
+                tap(response => {
+                    if(response && response.accessToken) {
+                        localStorage.setItem('accessToken', response.accessToken);
+                    }
+                })
+            )
+    }
+
+    public getToken(): string | null {
+        return localStorage.getItem('accessToken');
     }
 }

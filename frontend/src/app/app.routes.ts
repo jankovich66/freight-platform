@@ -1,9 +1,7 @@
 import { Routes } from '@angular/router';
-import { Login } from './features/auth/pages/login/login';
-import { Register } from './features/auth/pages/register/register';
 
 export const routes: Routes = [
+    { path: 'auth', loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES) },
+    //{ path: 'loads', loadChildren: () => import().then(m => m.) },
     { path: '', redirectTo: 'home', pathMatch: 'full' },
-    { path: 'login', component: Login },
-    { path: 'register', component: Register }
 ];
