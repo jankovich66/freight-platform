@@ -3,6 +3,8 @@ import { Injectable } from "@angular/core";
 import { Observable, tap } from "rxjs";
 import { RegisterRequest } from "../models/register-request.model";
 import { AuthResponse } from "../models/auth-response.model";
+import { jwtDecode } from "jwt-decode";
+import { User } from "../../../core/models/user.model";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -14,14 +16,13 @@ export class AuthService {
         const credentials = { email, password };
 
         return this.http.post<AuthResponse>(`${ this.authUrl }/login`, credentials)
-            /*.pipe(
+            .pipe(
                 tap(response => {
                     if(response && response.accessToken) {
-                        console.log(response.user);
                         localStorage.setItem('accessToken', response.accessToken);
                     }
                 })
-            )*/
+            )
     }
 
     registerCarrier(userData: RegisterRequest): Observable<AuthResponse> {
@@ -46,7 +47,44 @@ export class AuthService {
             )
     }
 
-    public getToken(): string | null {
+    getCurrentUser(): Observable<User> {
+        return this.http.get<User>(`${ this.authUrl }/profile`)
+            .pipe(
+                tap(response => {
+                    if(response) {
+                        // console.log(response);
+                    }
+                })
+            )
+    }
+
+    getToken(): string | null {
         return localStorage.getItem('accessToken');
+    }
+
+    isLoggedIn(): boolean {
+        const token = this.getToken();
+        if(!token) return false;
+
+        return !this.isTokenExpired(token);
+    }
+
+    private isTokenExpired(token: string): boolean {
+        try {
+            const decoded: any = jwtDecode(token);
+
+            // console.log(decoded.exp < Date.now());
+            if(!decoded.exp) return true;
+
+            const expirationDate = decoded.exp * 1000;
+            return expirationDate < Date.now();
+        }
+        catch {
+            return true;
+        }
+    }
+
+    logout() {
+        localStorage.removeItem('accessToken');
     }
 }

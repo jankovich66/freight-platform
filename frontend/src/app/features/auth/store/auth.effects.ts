@@ -9,9 +9,7 @@ export class AuthEffects {
     private actions$ = inject(Actions);
     constructor(
         private authService: AuthService
-    ) {
-        console.log('Action is: ', this.actions$);
-    }
+    ) {}
 
     login$ = createEffect(() =>
         this.actions$.pipe(
@@ -22,6 +20,20 @@ export class AuthEffects {
                         map((response) => AuthActions.loginSuccess({ user: response.user })),
                         catchError((error) => of(AuthActions.loginFailure({ error: error.message })))
                     )
+            )
+        )
+    )
+
+    loadCurrentUser$ = createEffect(() => 
+        this.actions$.pipe(
+            ofType(AuthActions.loadCurrentUser),
+            mergeMap(() => 
+                this.authService.getCurrentUser().pipe(
+                    map(user =>  AuthActions.loadCurrentUserSuccess({ user })),
+                    catchError(() =>
+                        of(AuthActions.loadCurrentUserFailure())
+                    )
+                )
             )
         )
     )

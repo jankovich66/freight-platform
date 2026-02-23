@@ -3,9 +3,10 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { selectCurrentUser, selectIsLoading } from '../../store/auth.selectors';
+import { selectAuthState, selectCurrentUser, selectIsLoading } from '../../store/auth.selectors';
 import { login } from '../../store/auth.actions';
 import { LoginRequest } from '../../models/login-request.model';
+import { map, take } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -47,5 +48,9 @@ export class Login {
         }
       });*/
     }
+  }
+
+  idiNaLoads() {
+    this.router.navigate(['/loads/create']);
   }
 }

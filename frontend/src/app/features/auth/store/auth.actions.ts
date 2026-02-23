@@ -8,3 +8,9 @@ export const loginSuccess = createAction('[Auth] Login success', props<{ user: U
 export const loginFailure = createAction('[Auth] Login failure', props<{ error: string }>());
 
 export const logout = createAction('[Auth] Logout');
+
+export const loadCurrentUser = createAction('[Auth] Load current user');
+
+export const loadCurrentUserSuccess = createAction('[Auth] load current user success', props<{user: User }>());
+
+export const loadCurrentUserFailure = createAction('[Auth] Load current user failure');
