@@ -30,7 +30,7 @@ export class LoadsController {
         return this.loadsService.findOpenLoads(loadQueryDto);
     }
 
-    @Roles(UserRole.ADMIN, UserRole.SHIPPER)
+    @Roles(UserRole.ADMIN, UserRole.SHIPPER, UserRole.CARRIER)
     @Get(':id')
     findOne(@GetUser() user, @Param('id', ParseIntPipe) id: number) {
         return this.loadsService.findOne(user, id);

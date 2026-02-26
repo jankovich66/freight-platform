@@ -1,4 +1,7 @@
-<p>load-details works!</p>
-<div>
-    {{ load$ }}
-</div>
+@if(load$ | async; as load) {
+    <div>
+        {{ load.title }}
+    </div>
+    <input type="number" [(ngModel)]="offeredPrice">
+    <button (click)="apply()">Apply</button>
+}
