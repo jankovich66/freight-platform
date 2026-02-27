@@ -3,10 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Load } from '../../models/load.model';
 import { LoadsService } from '../../services/loads.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-my-loads',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './my-loads.html',
   styleUrl: './my-loads.scss',
 })

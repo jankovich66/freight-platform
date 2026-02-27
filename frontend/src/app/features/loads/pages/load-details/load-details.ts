@@ -1,12 +1,16 @@
 import { Component, DestroyRef, inject, Input, OnInit } from '@angular/core';
 import { LoadsService } from '../../services/loads.service';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Load } from '../../models/load.model';
 import { CommonModule } from '@angular/common';
 import { LoadApplicationsService } from '../../../load-applications/services/load-applications.service';
 import { CreateLoadApplication } from '../../../load-applications/models/create-load-application.model';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Store } from '@ngrx/store';
+import { selectUserRole } from '../../../auth/store/auth.selectors';
+import { UserRole } from '../../../../core/enums/user-role.enum';
+import { LoadApplication } from '../../../load-applications/models/load-application.model';
 
 @Component({
   selector: 'app-load-details',
@@ -19,6 +23,10 @@ export class LoadDetails implements OnInit {
   offeredPrice: number = 0;
 
   load$!: Observable<Load>;
+  userRole$?: Observable<UserRole | null>;
+  loadApplications$!: Observable<LoadApplication[]>;
+
+  store = inject(Store);
 
   private destroyRef = inject(DestroyRef);
   constructor(
@@ -28,9 +36,12 @@ export class LoadDetails implements OnInit {
 
   ngOnInit(): void {
     this.load$ = this.loadsService.getLoadDetails(this.id);
+    this.userRole$ = this.store.select(selectUserRole);
+    this.loadApplications$ = this.loadApplicationsService.findByLoad(this.id);
   }
 
   apply() {
+    //Dodati proveru da li je validna vrednost
     const createLoadApplication: CreateLoadApplication = {
       loadId: this.id,
       offeredPrice: this.offeredPrice
@@ -43,6 +54,18 @@ export class LoadDetails implements OnInit {
           console.log("Applied successfully: ", response);
         },
         error: err => console.log(err.message)
+      })
+  }
+
+  accept(applicationId: number) {
+    this.loadApplicationsService.accept(applicationId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: response => {
+          console.log(response)
+          this.loadApplications$ = this.loadApplicationsService.findByLoad(this.id);
+        },
+        error: err => console.log(err)
       })
   }
 }

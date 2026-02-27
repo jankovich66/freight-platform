@@ -2,6 +2,17 @@
     <div>
         {{ load.title }}
     </div>
-    <input type="number" [(ngModel)]="offeredPrice">
-    <button (click)="apply()">Apply</button>
+    @if(userRole$ | async; as userRole) {
+        @if(userRole === 'CARRIER') {
+            <input type="number" [(ngModel)]="offeredPrice">
+            <button (click)="apply()">Apply</button>
+        }
+        @else {
+            <p>Applications</p>
+            <div *ngFor="let loadApplication of loadApplications$ | async">
+                {{ loadApplication.offeredPrice }} - {{ loadApplication.status }}
+                <button (click)="accept(loadApplication.id)">Accept</button>
+            </div>
+        }
+    }
 }

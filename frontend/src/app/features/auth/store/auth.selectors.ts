@@ -9,6 +9,6 @@ export const selectIsLoading = createSelector(selectAuthState, (state) => state.
 
 export const selectIsLoggedIn = createSelector(selectCurrentUser, (user) => !!user);
 
-export const selectUserRole = createSelector(selectAuthState, (state) => state.user?.role);
+export const selectUserRole = createSelector(selectAuthState, (state) => state.user!.role);
 
 export const selectIsAuthenticated = createSelector(selectAuthState, (state) => !!state.user?.role);
