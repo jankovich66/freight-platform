@@ -38,7 +38,15 @@
                     <div class="error-message">Password is required.</div>
                 }
             </div>
-            <button type="submit" class="btn btn-primary w-100 py-2" [disabled]="!loginForm.valid">Login</button>
+            <button type="submit" class="btn btn-primary w-100 py-2" [disabled]="!loginForm.valid">
+                @if((isLoading$ | async) === true) {
+                    <span class="spinner-border spinner-border-sm" role="status"></span>
+                    Checking
+                }
+                @else {
+                    Login
+                }
+            </button>
         </form>
     </div>
 </div>

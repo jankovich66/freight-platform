@@ -1,0 +1,19 @@
+<div class="card shadow-sm h-100">
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title mb-3">{{ load.title }}</h5>
+        <p class="card-text mb-2"><strong>Route: </strong>{{ load.pickupCity }} -> {{ load.deliveryCity }}</p>
+        <p class="card-text mb-2"><strong>Pickup: </strong>{{ load.pickupDate | date:'mediumDate' }}</p>
+        <p class="card-text mb-2"><strong>Weight: </strong>{{ load.weight }} kg</p>
+        <h5 class="mt-auto text-primary">{{ load.price }} &euro;</h5>
+        @if(userRole === 'SHIPPER') {
+            <span class="badge mt-2" [ngClass]="{
+                'bg-dark': load.status === 'OPEN',
+                'bg-success': load.status === 'ACCEPTED',
+                'bg-info': load.status === 'IN_PROGRESS',
+                'bg-danger': load.status === 'CANCELED',
+                'bg-secondary': load.status === 'COMPLETED'
+            }">{{ load.status }}</span>
+        }
+        <a [routerLink]="['/loads/details', load.id]" class="btn btn-outline-primary mt-3 w-100">View details</a>
+    </div>
+</div>

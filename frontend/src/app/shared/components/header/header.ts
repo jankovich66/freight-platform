@@ -20,7 +20,7 @@ export class Header {
   constructor(private authService: AuthService) {}
 
   user$: Observable<User | null> = this.store.select(selectCurrentUser);
-  
+
   isLoggedIn$: Observable<boolean> = this.store.select(selectIsLoggedIn);
 
   logout() {

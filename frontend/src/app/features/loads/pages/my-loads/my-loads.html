@@ -1,7 +1,18 @@
-<h2>My loads</h2>
+<!-- <h2>My loads</h2>
 <div *ngFor="let load of loads$ | async">
     <div>
         {{ load.title }} - {{ load.price }}
         <a [routerLink]="['/loads/details', load.id]">See more</a>
+    </div>
+</div> -->
+<div class="container">
+    <div class="row">
+        @if(user$ | async; as user) {
+            @for(load of loads$ | async; track load.id) {
+                <div class="col-md-4 mb-4">
+                    <app-load-card [load]="load" [userRole]="user.role"></app-load-card>
+                </div>
+            }
+        }
     </div>
 </div>

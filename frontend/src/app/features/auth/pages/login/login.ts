@@ -1,16 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { selectAuthState, selectCurrentUser, selectIsLoading } from '../../store/auth.selectors';
+import { selectCurrentUser, selectIsLoading } from '../../store/auth.selectors';
 import { login } from '../../store/auth.actions';
-import { LoginRequest } from '../../models/login-request.model';
-import { map, take } from 'rxjs';
+import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -18,13 +16,11 @@ export class Login {
   loginForm: FormGroup;
 
   private readonly store = inject(Store);
-  isLoading$ = this.store.select(selectIsLoading);
   user$ = this.store.select(selectCurrentUser);
+  isLoading$!: Observable<boolean>;
 
   constructor(
-    private authService: AuthService,
-    private fb: FormBuilder,
-    private router: Router
+    private fb: FormBuilder
   ) {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
@@ -36,8 +32,9 @@ export class Login {
     if(this.loginForm.valid) {
       const email = this.loginForm.value.email;
       const password = this.loginForm.value.password;
-
+      
       this.store.dispatch(login({ email, password }));
+      this.isLoading$ = this.store.select(selectIsLoading);
       /*
       this.authService.login(email, password).subscribe({
         next: () => {
@@ -48,9 +45,5 @@ export class Login {
         }
       });*/
     }
-  }
-
-  idiNaLoads() {
-    this.router.navigate(['/loads/create']);
   }
 }
