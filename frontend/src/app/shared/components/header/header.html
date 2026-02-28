@@ -1,0 +1,44 @@
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a routerLink="/" class="d-inline-flex link-body-emphasis text-decoration-none">FreightPlatform</a>
+        </div>
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-mb-0">
+            @if(user$ && user$ | async; as user) {
+                @if(user.role === 'CARRIER') {   
+                    <li>
+                        <a routerLink="loads/open" class="nav-link px-2">Open loads</a>
+                    </li>
+                }
+                @else if(user.role === 'SHIPPER') {
+                    <li>
+                        <a routerLink="loads/my" class="nav-link px-2">My loads</a>
+                    </li>
+                    <li>
+                        <a routerLink="loads/create" class="nav-link px-2">Create load</a>
+                    </li>
+                }
+                @else if(user.role === 'ADMIN') {
+                    <li>
+                        <a routerLink="loads/open" class="nav-link px-2">Open loads</a>
+                    </li>
+                }
+                @else {
+                    
+                }
+            }
+            @else {
+
+            }
+        </ul>
+        <div class="col-md-3 text-end">
+            @if((isLoggedIn$ | async) !== true) {
+                <a routerLink="auth/login" class="btn btn-outline-primary me-2">Login</a>
+                <a routerLink="auth/register" class="btn btn-primary">Register</a>
+            }
+            @else {
+                <a (click)="logout()" class="btn btn-primary">Logout</a>
+            }
+        </div>
+    </header>
+</div>

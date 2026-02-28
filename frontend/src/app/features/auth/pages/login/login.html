@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
     <h2>Login</h2>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
@@ -19,4 +19,26 @@
     </form>
 </div>
 
-<button (click)="idiNaLoads()">Loads</button>
+<button (click)="idiNaLoads()">Loads</button> -->
+<div class="d-flex align-items-center py-4 bg-body-tertiary">
+    <div class="form-login w-100 m-auto">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <h1 class="h3 mb-3 fw-normal">Please login</h1>
+            <div class="form-floating">
+                <input type="email" class="form-control" id="email" placeholder="name@example.com" formControlName="email">
+                <label for="email">Email address</label>
+                @if(loginForm.controls['email'].touched && loginForm.controls['email'].invalid) {
+                    <div class="error-message">Email is required.</div>
+                }
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password">
+                <label for="password">Password</label>
+                @if(loginForm.controls['password'].touched && loginForm.controls['password'].invalid) {
+                    <div class="error-message">Password is required.</div>
+                }
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-2" [disabled]="!loginForm.valid">Login</button>
+        </form>
+    </div>
+</div>

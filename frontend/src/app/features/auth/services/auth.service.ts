@@ -5,12 +5,16 @@ import { RegisterRequest } from "../models/register-request.model";
 import { AuthResponse } from "../models/auth-response.model";
 import { jwtDecode } from "jwt-decode";
 import { User } from "../../../core/models/user.model";
+import { Router } from "@angular/router";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
     private authUrl = 'http://localhost:3000/auth';
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        private router: Router
+    ) {}
 
     login(email: string, password: string): Observable<AuthResponse> {
         const credentials = { email, password };
@@ -20,6 +24,12 @@ export class AuthService {
                 tap(response => {
                     if(response && response.accessToken) {
                         localStorage.setItem('accessToken', response.accessToken);
+                        if(response.user.role === 'SHIPPER') {
+                            this.router.navigate(['loads/my']);
+                        }
+                        else if(response.user.role === 'CARRIER') {
+                            this.router.navigate(['loads/open']);
+                        }
                     }
                 })
             )
@@ -86,5 +96,6 @@ export class AuthService {
 
     logout() {
         localStorage.removeItem('accessToken');
+        this.router.navigate(['auth/login']);
     }
 }
