@@ -1,0 +1,7 @@
+@if(alertService.alert$ | async; as alert) {
+    <div class="container mt-3">
+        <div class="alert alert-{{ alert.type }} alert-dismissible fade show">
+            {{ alert.text }}
+        </div>
+    </div>
+}

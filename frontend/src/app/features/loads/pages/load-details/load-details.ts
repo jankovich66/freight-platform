@@ -13,6 +13,7 @@ import { UserRole } from '../../../../core/enums/user-role.enum';
 import { LoadApplication } from '../../../load-applications/models/load-application.model';
 import { Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
+import { AlertService } from '../../../../shared/components/alert/services/alert.service';
 
 @Component({
   selector: 'app-load-details',
@@ -34,6 +35,7 @@ export class LoadDetails implements OnInit {
   constructor(
     private loadsService: LoadsService,
     private loadApplicationsService: LoadApplicationsService,
+    private alertService: AlertService,
     private router: Router
   ) {}
 
@@ -55,10 +57,11 @@ export class LoadDetails implements OnInit {
     .subscribe({
       next: response => {
         // console.log("Applied successfully: ", response);
+        this.alertService.show('success', 'You have successfully applied for this load');
         this.refreshApplications();
         this.offeredPrice = 0;
       },
-      error: err => console.log(err.message)
+      error: err => this.alertService.show('warning', err.error.message)
     })
   }
   
@@ -68,10 +71,11 @@ export class LoadDetails implements OnInit {
     .subscribe({
       next: response => {
         // console.log(response)
+        this.alertService.show('success', 'You have successfully accepted this application');
         this.refreshApplications();
         this.refreshLoad();
       },
-      error: err => console.log(err)
+      error: err => this.alertService.show('warning', err.error.message)
     })
   }
   
@@ -80,6 +84,8 @@ export class LoadDetails implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: response => {
+          this.alertService.show('success', 'You have successfully deleted this load', 4000);
+
           const modalElement = document.getElementById('deleteModal');
           const modal = bootstrap.Modal.getInstance(modalElement!);
           modal?.hide();
@@ -90,7 +96,7 @@ export class LoadDetails implements OnInit {
             this.router.navigate(['loads/my'])
           }, 5000);
         },
-        error: err => console.log(err)
+        error: err => this.alertService.show('warning', err.error.message)
       })
   }
 

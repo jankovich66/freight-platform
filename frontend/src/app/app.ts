@@ -4,10 +4,11 @@ import { AuthService } from './features/auth/services/auth.service';
 import { Store } from '@ngrx/store';
 import { loadCurrentUser } from './features/auth/store/auth.actions';
 import { Header } from './shared/components/header/header';
+import { Alert } from './shared/components/alert/alert';
 
 @Component({
   selector: 'app-root',
-  imports: [Header, RouterOutlet],
+  imports: [Header, Alert, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

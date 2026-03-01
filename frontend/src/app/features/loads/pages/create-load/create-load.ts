@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { LoadsService } from '../../services/loads.service';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AlertService } from '../../../../shared/components/alert/services/alert.service';
 
 @Component({
   selector: 'app-create-load',
@@ -17,7 +18,8 @@ export class CreateLoad {
   constructor(
     private loadsService: LoadsService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {
     this.registerForm = this.formBuilder.group({
       title: ['', Validators.required],
@@ -43,10 +45,12 @@ export class CreateLoad {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.router.navigate(['/']);
+          this.alertService.showAndNavigate('success', 'Load successfully created', this.router, '/loads/my');
+          // this.router.navigate(['/loads/my']);
         },
         error: err => {
-          console.log(err);
+          this.alertService.show('warning', err.error.message);
+          // console.log(err);
         }
       })
   }
