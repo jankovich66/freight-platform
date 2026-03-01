@@ -35,15 +35,6 @@ export class Login {
       
       this.store.dispatch(login({ email, password }));
       this.isLoading$ = this.store.select(selectIsLoading);
-      /*
-      this.authService.login(email, password).subscribe({
-        next: () => {
-          this.router.navigate(['/']);
-        },
-        error: err => {
-          console.log(err);
-        }
-      });*/
     }
   }
 }
