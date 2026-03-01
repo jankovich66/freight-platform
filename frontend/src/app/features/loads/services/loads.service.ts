@@ -29,4 +29,8 @@ export class LoadsService {
     createLoad(createLoadModel: CreateLoad) {
         return this.http.post<Load>(`${ this.apiUrl }`, createLoadModel);
     }
+
+    deleteLoad(loadId: number) {
+        return this.http.delete<any>(`${ this.apiUrl }/${ loadId }`);
+    }
 }

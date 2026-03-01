@@ -1,4 +1,4 @@
-@if(load$ | async; as load) {
+<!-- @if(load$ | async; as load) {
     <div>
         {{ load.title }}
     </div>
@@ -15,4 +15,99 @@
             </div>
         }
     }
+} -->
+
+@if(load$ | async; as load) {
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>{{ load.title }}</h2>
+            <span class="badge bg-secondary">{{ load.status }}</span>
+        </div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Route: </strong>{{ load.pickupCity }} -> {{ load.deliveryCity }}</p>
+                        <p><strong>Pickup address: </strong>{{ load.pickupAddress }}</p>
+                        <p><strong>Delivery address: </strong>{{ load.deliveryAddress }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Pickup date: </strong>{{ load.pickupDate | date }}</p>
+                        <p><strong>Delivery date: </strong>{{ load.deliveryDate | date }}</p>
+                        <p><strong>Weight: </strong>{{ load.weight }}</p>
+                        <h5 class="text-primary">{{ load.price }}</h5>
+                    </div>
+                </div>
+                <hr>
+                <p>{{ load.description }}</p>
+            </div>
+        </div>
+
+        @if(userRole$ | async; as role) {
+            @if(role === 'CARRIER') {
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5>Make an offer</h5>
+                        <div class="input-group mt-3">
+                            <input type="number" class="form-control" [(ngModel)]="offeredPrice" placeholder="Your price">
+                            <button class="btn btn-primary" (click)="apply()">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            }
+            @else if(role === 'SHIPPER') {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>Applications</h5>
+                            @if(load.status === 'OPEN') {
+                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete load</button>
+                            }
+                        </div>
+                        @if(loadApplications$ | async; as apps) {
+                            @if(apps.length === 0) {
+                                <div class="text-muted mt-3">No applications yet</div>
+                            }
+                            @else {
+                                @for(app of apps; track app.id) {
+                                    <div class="border rounded p-3 mt-3 d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <!-- <p class="mb-1"><strong>Carrier: </strong>{{ app. }}</p> -->
+                                            <p class="mb-1"><strong>Offered price: </strong>{{ app.offeredPrice }}</p>
+                                            <span class="badge bg-info">{{ app.status }}</span>
+                                        </div>
+                                        @if(app.status === 'PENDING') {
+                                            <button class="btn btn-success btn-sm" (click)="accept(app.id)">Accept</button>
+                                        }
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </div>
 }
+
+<!-- Modal za potvrdu brisanja -->
+ <div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete load</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete load?
+                <br>
+                <strong>This action cannot be undoen</strong>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" (click)="deleteLoad()">Delete</button>
+            </div>
+        </div>
+    </div>
+ </div>
+ 
