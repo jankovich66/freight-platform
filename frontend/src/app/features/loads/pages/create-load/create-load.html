@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
     <h2>Create load</h2>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
@@ -70,4 +70,64 @@
         </div>
         <button type="submit" class="btn-submit" [disabled]="!registerForm.valid">Register</button>
     </form>
+</div> -->
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="mb-4 text-center">Create load</h3>
+                    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" name="title" id="title" class="form-control" formControlName="title">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="weight" class="form-label">Weight</label>
+                                <input type="number" name="weight" id="weight" class="form-control" formControlName="weight">
+                            </div>
+                        </div>
+                        <div class=" mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea name="description" id="description" class="form-control" rows="3" formControlName="description"></textarea>
+                        </div>
+                        <hr>
+                        <h5>Pickup</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <input type="text" name="pickup-address" id="pickup-address" class="form-control" placeholder="Pickup address" formControlName="pickupAddress">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <input type="text" name="pickup-city" id="pickup-city" class="form-control" placeholder="Pickup city" formControlName="pickupCity">
+                            </div>
+                        </div>
+                        <h5>Delivery</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <input type="text" name="delivery-address" id="delivery-address" class="form-control" placeholder="Delivery address" formControlName="deliveryAddress">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <input type="text" name="delivery-city" id="delivery-city" class="form-control" placeholder="Delivery city" formControlName="deliveryCity">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <input type="datetime-local" name="pickup-date" id="pickup-date" class="form-control" formControlName="pickupDate">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <input type="datetime-local" name="delivery-date" id="delivery-date" class="form-control" formControlName="deliveryDate">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Price (&euro;)</label>
+                            <input type="number" name="price" id="price" class="form-control" formControlName="price">
+                        </div>
+                        <button class="btn btn-primary w-100" [disabled]="registerForm.invalid">Create load</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
