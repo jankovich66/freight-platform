@@ -9,7 +9,7 @@ import { LoadDetails } from "./pages/load-details/load-details";
 
 export const LOADS_ROUTES: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full' },
-    { path: 'create', component: CreateLoad, canActivate: [roleGuard, authGuard], data: { expectedRoles: ['SHIPPER'] } },
+    { path: 'create', component: CreateLoad, canActivate: [authGuard, roleGuard], data: { expectedRoles: ['SHIPPER'] } },
     { path: 'all', component: LoadList, canActivate: [authGuard, roleGuard], data: { expectedRoles: ['SHIPPER']} },
     { path: 'my', component: MyLoads, canActivate: [authGuard, roleGuard], data: { expectedRoles: ['SHIPPER']} },
     { path: 'open', component: OpenLoads, canActivate: [authGuard, roleGuard], data: { expectedRoles: ['CARRIER']} },
