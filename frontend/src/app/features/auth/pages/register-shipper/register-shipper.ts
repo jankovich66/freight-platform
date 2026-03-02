@@ -18,8 +18,8 @@ export class RegisterShipper {
     private router: Router
   ) {
     this.registerForm = this.formBuilder.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       phoneNumber: ['', Validators.required],
       companyName: ['', Validators.required]
     });
