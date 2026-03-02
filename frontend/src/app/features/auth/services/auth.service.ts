@@ -83,7 +83,6 @@ export class AuthService {
         try {
             const decoded: any = jwtDecode(token);
 
-            // console.log(decoded.exp < Date.now());
             if(!decoded.exp) return true;
 
             const expirationDate = decoded.exp * 1000;

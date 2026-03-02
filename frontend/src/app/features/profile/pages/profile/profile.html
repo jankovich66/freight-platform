@@ -1,0 +1,16 @@
+@if(user$ | async; as user) {
+    <div class="container mt-4">
+        <div class="card shadow">
+            <div class="card-body">
+                <h3 class="mb-3">Profile</h3>
+                <p><strong>Email: </strong>{{ user.email }}</p>
+                <p><strong>Phone: </strong>{{ user.phoneNumber }}</p>
+                <p><strong>Company name: </strong>{{ user.companyName }}</p>
+                <p><strong>Role: </strong>{{ user.role }}</p>
+            
+                <button class="btn btn-primary me-2" [routerLink]="['edit']">Edit profile</button>
+                <!-- <button class="btn btn-outline-secondary">Change password</button> -->
+            </div>
+        </div>
+    </div>
+}
