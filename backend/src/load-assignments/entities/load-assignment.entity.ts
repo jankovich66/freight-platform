@@ -1,6 +1,6 @@
 import { Load } from "src/loads/entities/load.entity";
 import { User } from "src/users/entities/user.entity";
-import { CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'load_assignment' })
 export class LoadAssignment {
@@ -15,6 +15,6 @@ export class LoadAssignment {
     carrier: User;
 
     @JoinColumn({ name: 'load_id' })
-    @ManyToOne(() => Load, load => load.loadAssignment, { onDelete: 'CASCADE' })
+    @OneToOne(() => Load, load => load.loadAssignment, { onDelete: 'CASCADE' })
     load: Load;
 }

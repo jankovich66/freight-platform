@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
 import { Load } from "../models/load.model";
 import { CreateLoad } from "../models/create-load.model";
+import { LoadStatus } from "../enums/load-status.enum";
 
 @Injectable({ providedIn: 'root' })
 export class LoadsService {
@@ -28,6 +29,10 @@ export class LoadsService {
 
     createLoad(createLoadModel: CreateLoad) {
         return this.http.post<Load>(`${ this.apiUrl }`, createLoadModel);
+    }
+
+    changeStatus(load: Load) {
+        return this.http.patch<Load>(`${ this.apiUrl }/${ load.id }/status`, load);
     }
 
     deleteLoad(loadId: number) {

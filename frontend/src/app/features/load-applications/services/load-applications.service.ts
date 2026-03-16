@@ -18,6 +18,10 @@ export class LoadApplicationsService {
         return this.http.get<{ data: LoadApplication[] }>(`${ this.apiUrl }/by-load/${ loadId }`).pipe(map(response => response.data));
     }
 
+    findByCarrier() {
+        return this.http.get<{ data: LoadApplication[] }>(`${ this.apiUrl }/my`).pipe(map(response => response.data));
+    }
+
     accept(applicationId: number) {
         return this.http.patch<any>(`${ this.apiUrl }/${ applicationId }/accept`, null);
     }

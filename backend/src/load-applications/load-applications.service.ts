@@ -72,7 +72,7 @@ export class LoadApplicationsService {
             throw new ForbiddenException('Only carriers can access')
         }
         
-        return this.queryService.findWithQuery(this.loadApplicationRepository, loadApplicationQueryDto, LOAD_APPLICATION_QUERY_CONFIG, (qb) => { qb.andWhere('loadApplication.carrier.id = :userId', { userId: user.id }) });
+        return this.queryService.findWithQuery(this.loadApplicationRepository, loadApplicationQueryDto, LOAD_APPLICATION_QUERY_CONFIG, (qb) => { qb.leftJoinAndSelect('loadApplication.load', 'load').andWhere('loadApplication.carrier.id = :userId', { userId: user.id }) });
     }
 
     async create(user: UserFromRequest, loadId:number, createLoadAplicationDto: CreateLoadApplicationDto): Promise<LoadApplication> {

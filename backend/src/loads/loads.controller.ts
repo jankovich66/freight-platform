@@ -48,7 +48,7 @@ export class LoadsController {
         return this.loadsService.update(user, id, updateLoadDto);
     }
 
-    @Roles(UserRole.ADMIN, UserRole.SHIPPER)
+    @Roles(UserRole.ADMIN, UserRole.SHIPPER, UserRole.CARRIER)
     @Patch(':id/status')
     updateStatus(@GetUser() user, @Param('id', ParseIntPipe) id: number, @Body() updateLoadDto: UpdateLoadDto) {
         return this.loadsService.update(user, id, updateLoadDto);

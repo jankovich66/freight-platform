@@ -24,7 +24,7 @@ export class LoadAssignmentsService {
             throw new ForbiddenException('Only carriers can access');
         }
         
-        return this.queryService.findWithQuery(this.loadAssignmentsRepository, loadAssignmentQueryDto, LOAD_ASSIGNMENT_QUERY_CONFIG, (qb) => { qb.andWhere('loadAssignment.carrier.id = :userId', { userId: user.id }) });
+        return this.queryService.findWithQuery(this.loadAssignmentsRepository, loadAssignmentQueryDto, LOAD_ASSIGNMENT_QUERY_CONFIG, (qb) => { qb.leftJoinAndSelect('loadAssignment.load', 'load').andWhere('loadAssignment.carrier.id = :userId', { userId: user.id }) });
     }
 
     async findForLoad(loadId: number, user: UserFromRequest): Promise<LoadAssignment> {

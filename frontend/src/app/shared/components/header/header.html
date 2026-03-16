@@ -9,6 +9,12 @@
                     <li>
                         <a routerLink="loads/open" class="nav-link px-2">Open loads</a>
                     </li>
+                    <li>
+                        <a routerLink="applications/my-applications" class="nav-link px-2">My applications</a>
+                    </li>
+                    <li>
+                        <a routerLink="assignments/my-assignments" class="nav-link px-2">My assignments</a>
+                    </li>
                 }
                 @else if(user.role === 'SHIPPER') {
                     <li>

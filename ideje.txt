@@ -53,3 +53,10 @@
     load -> many applications
     load -> one assignment
     carrier -> many applications
+
+
+******************Za uraditi********************
+1.  nakon registracije ne update-uje se header 
+    i ne salje na odredjeni page
+2.  zabraniti da 2 puta aplicira carrier za 
+    isti load

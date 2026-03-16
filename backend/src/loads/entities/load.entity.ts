@@ -1,7 +1,7 @@
 import { LoadApplication } from "src/load-applications/entities/load-application.entity";
 import { LoadAssignment } from "src/load-assignments/entities/load-assignment.entity";
 import { User } from "src/users/entities/user.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum LoadStatus {
     OPEN = 'OPEN',
@@ -63,6 +63,6 @@ export class Load {
     @OneToMany(() => LoadApplication, loadApplications => loadApplications.load)
     loadApplications: LoadApplication[];
 
-    @OneToMany(() => LoadAssignment, loadAssignment => loadAssignment.load)
-    loadAssignment: LoadAssignment[];
+    @OneToOne(() => LoadAssignment, loadAssignment => loadAssignment.load)
+    loadAssignment: LoadAssignment;
 }

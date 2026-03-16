@@ -63,20 +63,44 @@ export class LoadsService {
     async update(user: UserFromRequest, id: number, updateLoadDto: UpdateLoadDto): Promise<Load | null> {        
         const load = await this.loadsRepository.findOne({
             where: { id },
-            relations: ['shipper']
+            relations: ['shipper', 'loadAssignment', 'loadAssignment.carrier']
         });
 
         if(!load) {
             throw new NotFoundException(`Load with id ${ id } not found`);
         }
 
-        if(user.role !== UserRole.ADMIN) {
+        // if(user.role !== UserRole.ADMIN) {
+        //     if(load.shipper.id !== user.id) {
+        //         throw new ForbiddenException(`U don't have permission to access this load`);
+        //     }
+        // }
+        if(user.role === UserRole.SHIPPER) {
             if(load.shipper.id !== user.id) {
                 throw new ForbiddenException(`U don't have permission to access this load`);
             }
+
+            if(updateLoadDto.status === LoadStatus.CANCELED && load.status === LoadStatus.OPEN) {
+                load.status = updateLoadDto.status;
+            }
+        }
+        else if(user.role === UserRole.CARRIER) {
+            if(load.loadAssignment.carrier.id !== user.id) {
+                throw new ForbiddenException(`U don't have permission to access this load`);
+            }
+
+            if(updateLoadDto.status === LoadStatus.IN_PROGRESS && load.status === LoadStatus.ACCEPTED) {
+                load.status = updateLoadDto.status;
+            }
+            else if(updateLoadDto.status === LoadStatus.COMPLETED && load.status === LoadStatus.IN_PROGRESS) {
+                load.status = updateLoadDto.status;
+            }
+            else if(updateLoadDto.status === LoadStatus.CANCELED && load.status === LoadStatus.IN_PROGRESS) {
+                load.status = updateLoadDto.status;
+            }
         }
         
-        Object.assign(load, updateLoadDto);
+        // Object.assign(load, updateLoadDto);
         
         return this.loadsRepository.save(load);
     }
