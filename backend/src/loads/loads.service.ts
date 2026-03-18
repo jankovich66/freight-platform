@@ -47,6 +47,14 @@ export class LoadsService {
         return this.queryService.findWithQuery(this.loadsRepository, loadQueryDto, LOAD_QUERY_CONFIG, (qb => { qb.andWhere('load.status = :status', { status: LoadStatus.OPEN }) }));
     }
 
+    async findNumberOfActiveLoads(loadQueryDto: LoadQueryDto) {
+        return (await this.queryService.findWithQuery(this.loadsRepository, loadQueryDto, LOAD_QUERY_CONFIG, (qb => { qb.andWhere('load.status = :status', { status: LoadStatus.IN_PROGRESS }) }))).data.length;
+    }
+
+    async findNumberOfLoads(loadQueryDto: LoadQueryDto) {
+        return (await this.loadsRepository.find()).length;
+    }
+
     async create(user: UserFromRequest, createLoadDto: CreateLoadDto): Promise<Load> {
         if(user.role !== UserRole.ADMIN && user.role !== UserRole.SHIPPER) {
             throw new ForbiddenException('Only shippers can access');

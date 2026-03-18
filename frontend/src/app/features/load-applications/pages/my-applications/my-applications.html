@@ -19,8 +19,8 @@
                                 <th>Applied at</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @for(application of applications; track application.id) {
+                        @for(application of applications; track application.id) {
+                            <tbody>
                                 <td>{{ application.load.pickupCity }}</td>
                                 <td>{{ application.load.deliveryCity }}</td>
                                 <td>{{ application.load.weight }}</td>
@@ -37,8 +37,8 @@
                                     }
                                 </td>
                                 <td>{{ application.createdAt | date }}</td>
-                            }
-                        </tbody>
+                            </tbody>
+                        }
                     </table>
                 }
             }

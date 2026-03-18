@@ -13,7 +13,7 @@ import { LoadQueryDto } from './dto/load-query.dto';
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class LoadsController {
     constructor(private readonly loadsService: LoadsService) {}
-    @Roles(UserRole.ADMIN, UserRole.SHIPPER)
+    @Roles(UserRole.ADMIN)
     @Get()
     findAll(@GetUser() user, @Query() loadQueryDto: LoadQueryDto) {
         return this.loadsService.findAll(user, loadQueryDto);
@@ -28,6 +28,18 @@ export class LoadsController {
     @Get('open')
     findOpenLoads(@Query() loadQueryDto: LoadQueryDto) {
         return this.loadsService.findOpenLoads(loadQueryDto);
+    }
+
+    @Roles(UserRole.ADMIN)
+    @Get('number-of-active')
+    findNumberOfActiveLoads(@Query() loadQueryDto: LoadQueryDto) {
+        return this.loadsService.findNumberOfActiveLoads(loadQueryDto);
+    }
+
+    @Roles(UserRole.ADMIN)
+    @Get('number-of-loads')
+    findNumberOfLoads(@Query() loadQueryDto: LoadQueryDto) {
+        return this.loadsService.findNumberOfLoads(loadQueryDto);
     }
 
     @Roles(UserRole.ADMIN, UserRole.SHIPPER, UserRole.CARRIER)

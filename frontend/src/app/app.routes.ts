@@ -2,9 +2,11 @@ import { Routes } from '@angular/router';
 import { Unauthorized } from './shared/unauthorized/unauthorized';
 import { guestGuard } from './core/guards/guest.guard';
 import { authGuard } from './core/guards/auth.guard';
+import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
     { path: 'auth', loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES), canActivate: [guestGuard] },
+    { path: 'admin', loadChildren: () => import('./features/admin/admin.routes').then(m => m.ADMIN_ROUTES), canActivate: [authGuard, roleGuard], data: { expectedRoles: ['ADMIN'] } },
     { path: 'loads', loadChildren: () => import('./features/loads/loads.routes').then(m => m.LOADS_ROUTES) },
     { path: 'profile', loadChildren: () => import('./features/profile/profile.routes').then(m => m.PROFILE_ROUTES), canActivate: [authGuard] },
     { path: 'assignments', loadChildren: () => import('./features/load-assignments/load-assignments.routes').then(m => m.LOAD_ASSIGNMENTS_ROUTES), canActivate: [authGuard] },

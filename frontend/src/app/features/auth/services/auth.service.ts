@@ -30,6 +30,9 @@ export class AuthService {
                         else if(response.user.role === 'CARRIER') {
                             this.router.navigate(['loads/open']);
                         }
+                        else if(response.user.role === 'ADMIN') {
+                            this.router.navigate(['admin/dashboard']);
+                        }
                     }
                 })
             )

@@ -1,0 +1,38 @@
+<div class="container mt-4">
+    <h2 class="mb-4">Dashboard</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h5>Total users</h5>
+                    @if(numberOfUsers$ | async; as numberOfUsers) {
+                        <h2>{{ numberOfUsers }}</h2>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h5>Total loads</h5>
+                    @if(numberOfLoads$ | async; as numberOfLoads) {
+                        <h2>{{ numberOfLoads }}</h2>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h5>Active transports</h5>
+                    @if(numberOfActiveLoads$ | async; as numberOfActiveLoads) {
+                        <h2>{{ numberOfActiveLoads }}</h2>
+                    }
+                    @else {
+                        <p>No active loads</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

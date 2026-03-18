@@ -26,7 +26,19 @@
                 }
                 @else if(user.role === 'ADMIN') {
                     <li>
-                        <a routerLink="loads/open" class="nav-link px-2">Open loads</a>
+                        <a routerLink="admin/dashboard" class="nav-link px-2">Dashboard</a>
+                    </li>
+                    <li>
+                        <a routerLink="admin/users" class="nav-link px-2">Users</a>
+                    </li>
+                    <li>
+                        <a routerLink="admin/loads" class="nav-link px-2">Loads</a>
+                    </li>
+                    <li>
+                        <a routerLink="admin/applications" class="nav-link px-2">Applications</a>
+                    </li>
+                    <li>
+                        <a routerLink="admin/assignments" class="nav-link px-2">Assignments</a>
                     </li>
                 }
                 @else {
