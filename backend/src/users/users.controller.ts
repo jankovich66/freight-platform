@@ -23,7 +23,7 @@ export class UsersController {
     }
 
     @Delete()
-    remove(@GetUser() user, @Body() email: string) {
-        return this.usersService.remove(user, email);
+    remove(@GetUser() user, @Body() body: any) {
+        return this.usersService.remove(user, body.email);
     }
 }

@@ -14,6 +14,7 @@ import { LoadApplication } from '../../../load-applications/models/load-applicat
 import { Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { AlertService } from '../../../../shared/components/alert/services/alert.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-load-details',
@@ -28,6 +29,7 @@ export class LoadDetails implements OnInit {
   load$!: Observable<Load>;
   userRole$?: Observable<UserRole | null>;
   loadApplications$!: Observable<LoadApplication[]>;
+  private modalService = inject(NgbModal);
 
   store = inject(Store);
 

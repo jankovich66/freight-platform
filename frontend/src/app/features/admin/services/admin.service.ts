@@ -26,6 +26,6 @@ export class AdminService {
     }
 
     deleteUser(userEmail: string) {
-        return this.http.delete(`${ this.usersApiUrl }`, { body: userEmail });
+        return this.http.delete<any>(`${ this.usersApiUrl }`, { body: { email: userEmail }});
     }
 }

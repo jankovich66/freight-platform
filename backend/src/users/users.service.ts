@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { User, UserRole } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -61,7 +61,13 @@ export class UsersService {
         if(user.role !== 'ADMIN') {
             throw new ForbiddenException('Ony admins can delete');
         }
+
+        const userToDelete = await this.usersRepository.findOneBy({ email: email });
+
+        if(!userToDelete) {
+            throw new NotFoundException('User not found');
+        }
         
-        return await this.usersRepository.delete(email);
+        return await this.usersRepository.delete({ email: email });
     }
 }

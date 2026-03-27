@@ -11,22 +11,25 @@
             </tr>
         </thead>
         @if(users$ | async; as users) {
-            @for(user of users; track user.email) {
-                <tbody>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.phoneNumber }}</td>
-                    <td>{{ user.role }}</td>
-                    <td>{{ user.companyName }}</td>
-                    <!-- <td><button class="btn btn-danger btn-sm" (click)="deleteUser(user.email)">Delete</button></td> -->
-                    <td><button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-user-email="">Delete user</button></td>
-                </tbody>
-            }
+            <tbody>
+                @for(user of users; track user.email) {
+                    <tr>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.phoneNumber }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ user.companyName }}</td>
+                        <!-- <td><button class="btn btn-danger btn-sm" (click)="deleteUser(user.email)">Delete</button></td> -->
+                        <!-- <td><button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-user-email="">Delete user</button></td> -->
+                        <td><button class="btn btn-danger btn-sm" (click)="openDeleteModal(deleteModal, user.email, $event)">Delete user</button></td>
+                    </tr>
+                }
+            </tbody>
         }
     </table>
 </div>
 
 <!-- Modal za potvrdu brisanja -->
-<div class="modal fade" id="deleteModal" tabindex="-1">
+<!-- <div class="modal fade" id="deleteModal" tabindex="-1">
 <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
         <div class="modal-header">
@@ -44,4 +47,20 @@
         </div>
     </div>
 </div>
-</div>
+</div> -->
+
+<ng-template #deleteModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Delete user</h5>
+        <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        Are u sure u want to delete this user?
+        <br>
+        <strong>This action cannot be undone</strong>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+        <button class="btn btn-danger" (click)="confirmDelete(modal)">Delete</button>
+    </div>
+</ng-template>
