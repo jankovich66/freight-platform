@@ -1,1 +1,19 @@
-<p>admin-loads works!</p>
+@if(user$ | async; as user) {
+    @if(loads$ | async; as loads) {
+        <div class="container">
+            <h2 class="mb-4">Loads</h2>
+            <div class="row">
+                @if(loads.length !== 0) {
+                    @for(load of loads; track load.id) {
+                        <div class="col-md-4 mb-4">
+                            <app-load-card [load]="load" [userRole]="user.role"></app-load-card>
+                        </div>
+                    }
+                }
+                @else {
+                    <p>No load</p>
+                }
+            </div>
+        </div>
+    }
+}

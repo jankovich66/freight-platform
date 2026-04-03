@@ -29,7 +29,7 @@ export class LoadApplicationsService {
             throw new ForbiddenException('Only admin can access');
         }
 
-        return this.queryService.findWithQuery(this.loadApplicationRepository, loadApplicationQueryDto, LOAD_APPLICATION_QUERY_CONFIG);
+        return this.queryService.findWithQuery(this.loadApplicationRepository, loadApplicationQueryDto, LOAD_APPLICATION_QUERY_CONFIG, (qb) => { qb.leftJoinAndSelect('loadApplication.load', 'load') });
     }
 
     async findOne(user: UserFromRequest, id: number): Promise<LoadApplication> {
