@@ -1,1 +1,17 @@
-<p>admin-assignments works!</p>
+@if (carriersWithAssignments$ | async; as carriers) {
+    <div class="container">
+        <h2 class="mb-4">Carriers with Assignments</h2>
+        <div class="row">
+            @if(carriers.length !== 0) {
+                @for(carrier of carriers; track carrier.id) {
+                    <div class="col-md-4 mb-4">
+                        <app-admin-carrier-card [carrier]="carrier" [type]="'assignment'"></app-admin-carrier-card>
+                    </div>
+                }
+            }
+            @else {
+                <p>No carriers with assignments found.</p>
+            }
+        </div>
+    </div>
+}

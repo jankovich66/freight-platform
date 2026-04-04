@@ -5,13 +5,15 @@ import { Not, Repository } from 'typeorm';
 import { CreateLoadApplicationDto } from './dto/create-load-application.dto';
 import { UpdateLoadApplicationDto } from './dto/update-load-application.dto';
 import { UserFromRequest } from 'src/auth/interfaces/user-from-request.interface';
-import { UserRole } from 'src/users/entities/user.entity';
+import { User, UserRole } from 'src/users/entities/user.entity';
 import { Load, LoadStatus } from 'src/loads/entities/load.entity';
 import { LoadAssignment } from 'src/load-assignments/entities/load-assignment.entity';
 import { DataSource } from 'typeorm';
 import { LoadApplicationQueryDto } from './dto/load-application-query.dto';
 import { QueryService } from 'src/common/query/query.service';
 import { LOAD_APPLICATION_QUERY_CONFIG } from './load-application-query.config';
+import { UserQueryDto } from 'src/users/dto/user-query.dto';
+import { USER_QUERY_CONFIG } from 'src/users/user-query.config';
 
 @Injectable()
 export class LoadApplicationsService {
@@ -21,6 +23,8 @@ export class LoadApplicationsService {
         private readonly loadApplicationRepository: Repository<LoadApplication>,
         @InjectRepository(Load)
         private readonly loadRepository: Repository<Load>,
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>,
         private dataSource: DataSource
     ) {}
 
@@ -30,6 +34,29 @@ export class LoadApplicationsService {
         }
 
         return this.queryService.findWithQuery(this.loadApplicationRepository, loadApplicationQueryDto, LOAD_APPLICATION_QUERY_CONFIG, (qb) => { qb.leftJoinAndSelect('loadApplication.load', 'load') });
+    }
+
+    async findCarrierWithApplications(user: UserFromRequest, userQueryDto: UserQueryDto) {
+        if(user.role !== UserRole.ADMIN) {
+            throw new ForbiddenException('Only admin can access');
+        }
+
+        const carriers = await this.queryService.findWithQuery(this.userRepository, userQueryDto, USER_QUERY_CONFIG, (qb) => { qb.innerJoin('user.loadApplications', 'loadApplication').andWhere('user.role = :role', { role: UserRole.CARRIER }).distinct(true) });
+        return {
+            ...carriers,
+            data: carriers.data.map(carrier => ({
+                id: carrier.id,
+                companyName: carrier.companyName
+            }))
+        };
+    }
+
+    async getApplicationsForCarrier(user: UserFromRequest, carrierId: number, loadApplicationQueryDto: LoadApplicationQueryDto) {
+        if(user.role !== UserRole.ADMIN) {
+            throw new ForbiddenException('Only admin can access');
+        }
+
+        return this.queryService.findWithQuery(this.loadApplicationRepository, loadApplicationQueryDto, LOAD_APPLICATION_QUERY_CONFIG, (qb) => { qb.leftJoinAndSelect('loadApplication.load', 'load').andWhere('loadApplication.carrier.id = :carrierId', { carrierId }) });
     }
 
     async findOne(user: UserFromRequest, id: number): Promise<LoadApplication> {

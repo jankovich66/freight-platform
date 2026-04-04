@@ -42,6 +42,6 @@ export class User {
     @OneToMany(() => LoadApplication, loadApplications => loadApplications.carrier)
     loadApplications: LoadApplication[];
 
-    @OneToMany(() => LoadAssignment, loadAssignment => loadAssignment.carrier)
-    loadAssignment: LoadAssignment[];
+    @OneToMany(() => LoadAssignment, loadAssignments => loadAssignments.carrier)
+    loadAssignments: LoadAssignment[];
 }

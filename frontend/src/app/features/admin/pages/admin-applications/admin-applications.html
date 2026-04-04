@@ -1,47 +1,17 @@
-<div class="container mt-4">
-    <h2 class="mb-4">Applications</h2>
-    <div class="card shadow-sm">
-        <div class="card-body">
-            @if(applications$ | async; as applications) {
-                @if(applications.length === 0) {
-                    <div class="text-center p-4 text-muted">There is no applications</div>
+@if (carriersWithApplications$ | async; as carriers) {
+    <div class="container">
+        <h2 class="mb-4">Carriers with Applications</h2>
+        <div class="row">
+            @if(carriers.length !== 0) {
+                @for(carrier of carriers; track carrier.id) {
+                    <div class="col-md-4 mb-4">
+                        <app-admin-carrier-card [carrier]="carrier" [type]="'application'"></app-admin-carrier-card>
+                    </div>
                 }
-                @else {
-
-                    <table class="table table-striped table-hover align-middle">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Pickup city</th>
-                                <th>Delivery city</th>
-                                <th>Weight</th>
-                                <th>Offered price</th>
-                                <th>Status</th>
-                                <th>Applied at</th>
-                            </tr>
-                        </thead>
-                        @for(application of applications; track application.id) {
-                            <tbody>
-                                <td>{{ application.load.pickupCity }}</td>
-                                <td>{{ application.load.deliveryCity }}</td>
-                                <td>{{ application.load.weight }}</td>
-                                <td>{{ application.offeredPrice }}</td>
-                                <td>
-                                    @if(application.status === 'PENDING') {
-                                        <span class="badge bg-warning text-dark">Pending</span>
-                                    }
-                                    @else if(application.status === 'ACCEPTED') {
-                                        <span class="badge bg-success">Accepted</span>
-                                    }
-                                    @else if(application.status === 'REJECTED') {
-                                        <span class="badge bg-danger">Rejected</span>
-                                    }
-                                </td>
-                                <td>{{ application.createdAt | date }}</td>
-                            </tbody>
-                        }
-                    </table>
-                }
+            }
+            @else {
+                <p>No carriers with applications found.</p>
             }
         </div>
     </div>
-</div>
+}

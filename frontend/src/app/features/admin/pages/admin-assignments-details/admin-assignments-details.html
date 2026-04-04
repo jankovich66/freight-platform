@@ -1,0 +1,49 @@
+<div class="container mt-4">
+    <h2 class="mb-4">Assignments</h2>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            @if(assignments$ | async; as assignments) {
+                @if(assignments.length === 0) {
+                    <div class="text-center p-4 text-muted">
+                        You have no assigned loads
+                    </div>
+                }
+                @else {
+                    <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                            <tr>
+                                <th>Pickup city</th>
+                                <th>Delivery city</th>
+                                <th>Weight (kg)</th>
+                                <th>Status</th>
+                                <th>Assigned at</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for(assignment of assignments; track assignment.id) {
+                                <td>{{ assignment.load.pickupCity }}</td>
+                                <td>{{ assignment.load.deliveryCity }}</td>
+                                <td>{{ assignment.load.weight }}</td>
+                                <td>
+                                    @if(assignment.load.status === 'ACCEPTED') {
+                                        <span class="badge bg-primary">Accepted</span>
+                                    }
+                                    @else if(assignment.load.status === 'IN_PROGRESS') {
+                                        <span class="badge bg-warning text-dark">In progress</span>
+                                    }
+                                    @else if(assignment.load.status === 'COMPLETED') {
+                                        <span class="badge bg-success">Completed</span>
+                                    }
+                                    @else if(assignment.load.status === 'CANCELED') {
+                                        <span class="badge bg-danger">Canceled</span>
+                                    }
+                                </td>
+                                <td>{{ assignment.assignedAt | date }}</td>
+                            }
+                        </tbody>
+                    </table>
+                }
+            }
+        </div>
+    </div>
+</div>

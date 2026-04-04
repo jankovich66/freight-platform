@@ -7,6 +7,7 @@ import { UserRole } from 'src/users/entities/user.entity';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { GetUser } from 'src/common/decorators/get-user.decorator';
 import { LoadApplicationQueryDto } from './dto/load-application-query.dto';
+import { UserQueryDto } from 'src/users/dto/user-query.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('load-applications')
@@ -17,6 +18,18 @@ export class LoadApplicationsController {
     @Get()
     findAll(@GetUser() user, @Query() loadApplicationQueryDto: LoadApplicationQueryDto) {
         return this.loadApplicationsService.findAll(user, loadApplicationQueryDto);
+    }
+
+    @Roles(UserRole.ADMIN)
+    @Get('carriers-with-applications')
+    findCarrierWithApplications(@GetUser() user, @Query() userQueryDto: UserQueryDto) {
+        return this.loadApplicationsService.findCarrierWithApplications(user, userQueryDto);
+    }
+
+    @Roles(UserRole.ADMIN)
+    @Get('applications-for-carrier/:carrierId')
+    getApplicationsForCarrier(@GetUser() user, @Param('carrierId', ParseIntPipe) carrierId: number, @Query() loadApplicationQueryDto: LoadApplicationQueryDto) {
+        return this.loadApplicationsService.getApplicationsForCarrier(user, carrierId, loadApplicationQueryDto);
     }
 
     @Roles(UserRole.ADMIN, UserRole.CARRIER)

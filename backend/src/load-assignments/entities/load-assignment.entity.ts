@@ -11,7 +11,7 @@ export class LoadAssignment {
     assignedAt: Date;
 
     @JoinColumn({ name: 'carrier_id' })
-    @ManyToOne(() => User, carrier => carrier.loadAssignment, { onDelete: 'CASCADE' })
+    @ManyToOne(() => User, carrier => carrier.loadAssignments, { onDelete: 'CASCADE' })
     carrier: User;
 
     @JoinColumn({ name: 'load_id' })
