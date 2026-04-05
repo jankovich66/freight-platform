@@ -9,7 +9,7 @@ export class QueryService {
     async findWithQuery<T extends ObjectLiteral>(repository: Repository<T>, queryDto: BaseQueryDto, config: QueryConfig<T>, baseQuery?: (qb: SelectQueryBuilder<T>) => void) {
         const {
             page = 1,
-            limit = 10,
+            limit = 9,
             sort,
             order = 'ASC',
             ...filters

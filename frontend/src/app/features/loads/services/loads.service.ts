@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
 import { Load } from "../models/load.model";
 import { CreateLoad } from "../models/create-load.model";
-import { LoadStatus } from "../enums/load-status.enum";
+import { PaginatedResponse } from "../../../core/models/paginated-response.model";
 
 @Injectable({ providedIn: 'root' })
 export class LoadsService {
@@ -15,12 +15,12 @@ export class LoadsService {
         return this.http.get<{ data: Load[] }>(this.apiUrl).pipe(map(response => response.data));
     }
 
-    getMyLoads(): Observable<Load[]> {
-        return this.http.get<{ data: Load[] }>(`${ this.apiUrl }/my`).pipe(map(response => response.data));
+    getMyLoads(params: any): Observable<PaginatedResponse<Load>> {
+        return this.http.get<PaginatedResponse<Load>/*{ data: Load[] }*/>(`${ this.apiUrl }/my`, { params })/*.pipe(map(response => response.data))*/;
     }
 
-    getOpenLoads(): Observable<Load[]> {
-        return this.http.get<{ data: Load[] }>(`${ this.apiUrl }/open`).pipe(map(response => response.data));
+    getOpenLoads(params: any): Observable<PaginatedResponse<Load>> {
+        return this.http.get<PaginatedResponse<Load>/*{ data: Load[] }*/>(`${ this.apiUrl }/open`, { params })/*.pipe(map(response => response.data))*/;
     }
 
     getLoadDetails(loadId: number): Observable<Load> {

@@ -1,18 +1,21 @@
-<!-- <h2>Open loads</h2>
-<div *ngFor="let load of loads$ | async">
-    <div>
-        {{ load.title }} - {{ load.price }}
-        <a [routerLink]="['/loads/details', load.id]">Details</a>
-    </div>
-</div> -->
 <div class="container">
     <div class="row">
         @if(user$ | async; as user) {
-            @for(load of loads$ | async; track load.id) {
-                <div class="col-md-4 mb-4">
-                    <app-load-card [load]="load" [userRole]="user.role"></app-load-card>
+            @if(loads.length === 0) {
+                <div class="col-12">
+                    <p class="text-center">No open loads available.</p>
                 </div>
+            } 
+            @else {
+                @for(load of loads; track load.id) {
+                    <div class="col-md-4 mb-4">
+                        <app-load-card [load]="load" [userRole]="user.role"></app-load-card>
+                    </div>
+                }
             }
         }
     </div>
+    @if(total > limit) {
+        <app-pagination [page]="page" [lastPage]="lastPage" (pageChange)="goToPage($event)"></app-pagination>
+    }
 </div>
