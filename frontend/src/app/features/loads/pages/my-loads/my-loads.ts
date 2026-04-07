@@ -8,11 +8,12 @@ import { User } from '../../../../core/models/user.model';
 import { Store } from '@ngrx/store';
 import { selectCurrentUser } from '../../../auth/store/auth.selectors';
 import { Pagination } from '../../../../core/components/pagination/pagination';
-import { tick } from '@angular/core/testing';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-my-loads',
-  imports: [CommonModule, LoadCard, Pagination],
+  imports: [CommonModule, LoadCard, Pagination, FormsModule],
   templateUrl: './my-loads.html',
   styleUrl: './my-loads.scss',
 })
@@ -25,6 +26,8 @@ export class MyLoads implements OnInit {
   limit = 9;
   total = 0;
   lastPage = 1;
+
+  isLoading = false;
 
   filters: any = {
     title: '',
@@ -55,12 +58,21 @@ export class MyLoads implements OnInit {
       ...this.filters,
     };
 
-    this.loadsService.getMyLoads(params).subscribe(response => {
+    Object.keys(params).forEach(key => {
+      if(!params[key]) {
+        delete params[key];
+      }
+    });
+
+    this.isLoading = true;
+
+    this.loadsService.getMyLoads(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(response => {
       this.loads = response.data;
       this.total = response.total;
       this.page = response.page;
       this.limit = response.limit;
       this.lastPage = response.lastPage;
+      this.isLoading = false;
     });
   }
 
@@ -69,5 +81,10 @@ export class MyLoads implements OnInit {
       this.page = newPage;
       this.fetchLoads();
     }
+  }
+
+  applyFilters() {
+    this.page = 1;
+    this.fetchLoads();
   }
 }

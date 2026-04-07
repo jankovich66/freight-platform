@@ -5,10 +5,11 @@ import { CommonModule } from '@angular/common';
 import { AdminCarrierCard } from '../../components/admin-carrier-card/admin-carrier-card';
 import { Pagination } from '../../../../core/components/pagination/pagination';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-assignments',
-  imports: [CommonModule, AdminCarrierCard, Pagination],
+  imports: [CommonModule, AdminCarrierCard, Pagination, FormsModule],
   templateUrl: './admin-assignments.html',
   styleUrl: './admin-assignments.scss',
 })
@@ -20,6 +21,8 @@ export class AdminAssignments implements OnInit {
   limit = 9;
   total = 0;
   lastPage = 1;
+
+  isLoading = false;
 
   filters: any = {
     companyName: '',
@@ -40,12 +43,21 @@ export class AdminAssignments implements OnInit {
       ...this.filters,
     };
 
+    Object.keys(params).forEach(key => {
+      if(!params[key]) {
+        delete params[key];
+      }
+    });
+
+    this.isLoading = true;
+
     this.adminService.getCarriersWithAssignments(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(response => {
       this.carriersWithAssignments = response.data;
       this.total = response.total;
       this.page = response.page;
       this.limit = response.limit;
       this.lastPage = response.lastPage;
+      this.isLoading = false;
     });
   }
 
@@ -54,5 +66,10 @@ export class AdminAssignments implements OnInit {
       this.page = newPage;
       this.fetchCarriersWithAssignments();
     }
+  }
+
+  applyFilters() {
+    this.page = 1;
+    this.fetchCarriersWithAssignments();
   }
 }

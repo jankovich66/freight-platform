@@ -1,15 +1,32 @@
 <div class="container">
     <h2 class="mb-4">Carriers with Applications</h2>
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Search company name" [(ngModel)]="filters.companyName">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100" (click)="applyFilters()">Search</button>
+        </div>
+    </div>
     <div class="row">
-        @if(carriersWithApplications.length !== 0) {
-            @for(carrier of carriersWithApplications; track carrier.id) {
-                <div class="col-md-4 mb-4">
-                    <app-admin-carrier-card [carrier]="carrier" [type]="'application'"></app-admin-carrier-card>
-                </div>
-            }
+        @if(isLoading) {    
+            <div class="text-center my-5">
+                <div class="spinner-border"></div>
+            </div>
         }
         @else {
-            <p>No carriers with applications found.</p>
+            @if(carriersWithApplications.length !== 0) {
+                @for(carrier of carriersWithApplications; track carrier.id) {
+                    <div class="col-md-4 mb-4">
+                        <app-admin-carrier-card [carrier]="carrier" [type]="'application'"></app-admin-carrier-card>
+                    </div>
+                }
+            }
+            @else {
+                <div class="col-12">
+                    <p class="text-center">No carriers with applications found.</p>
+                </div>
+            }
         }
     </div>
     @if(total > limit) {

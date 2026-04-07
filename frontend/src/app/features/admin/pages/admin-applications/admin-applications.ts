@@ -1,16 +1,15 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { LoadApplication } from '../../../load-applications/models/load-application.model';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../services/admin.service';
 import { CarrierWithAssignment } from '../../models/carrier-with-assignment.model';
 import { AdminCarrierCard } from '../../components/admin-carrier-card/admin-carrier-card';
 import { Pagination } from '../../../../core/components/pagination/pagination';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-applications',
-  imports: [CommonModule, AdminCarrierCard, Pagination],
+  imports: [CommonModule, AdminCarrierCard, Pagination, FormsModule],
   templateUrl: './admin-applications.html',
   styleUrl: './admin-applications.scss',
 })
@@ -22,6 +21,8 @@ export class AdminApplications implements OnInit {
   limit = 9;
   total = 0;
   lastPage = 1;
+
+  isLoading = false;
 
   filters: any = {
     companyName: '',
@@ -41,12 +42,22 @@ export class AdminApplications implements OnInit {
       limit: this.limit,
       ...this.filters,
     };
+
+    Object.keys(params).forEach(key => {
+      if(!params[key]) {
+        delete params[key];
+      }
+    });
+
+    this.isLoading = true;
+    
     this.adminService.getCarriersWithApplications(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe((response) => {
       this.carriersWithApplications = response.data;
       this.total = response.total;
       this.page = response.page;
       this.limit = response.limit;
       this.lastPage = response.lastPage;
+      this.isLoading = false;
     });
   }
 
@@ -55,5 +66,10 @@ export class AdminApplications implements OnInit {
       this.page = newPage;
       this.fetchCarriersWithApplications();
     }
+  }
+
+  applyFilters() {
+    this.page = 1;
+    this.fetchCarriersWithApplications();
   }
 }

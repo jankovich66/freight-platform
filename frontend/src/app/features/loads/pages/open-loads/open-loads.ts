@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Load } from '../../models/load.model';
 import { LoadsService } from '../../services/loads.service';
 import { User } from '../../../../core/models/user.model';
@@ -9,10 +9,11 @@ import { selectCurrentUser } from '../../../auth/store/auth.selectors';
 import { LoadCard } from '../../components/load-card/load-card';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Pagination } from '../../../../core/components/pagination/pagination';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-open-loads',
-  imports: [CommonModule, LoadCard, Pagination],
+  imports: [CommonModule, LoadCard, Pagination, FormsModule],
   templateUrl: './open-loads.html',
   styleUrl: './open-loads.scss',
 })
@@ -25,6 +26,8 @@ export class OpenLoads implements OnInit {
   limit = 9;
   total = 0;
   lastPage = 1;
+
+  isLoading = false;
 
   filters: any = {
     title: '',
@@ -54,6 +57,14 @@ export class OpenLoads implements OnInit {
       order: this.order,
       ...this.filters,
     };
+
+    Object.keys(params).forEach(key => {
+      if (!params[key]) {
+        delete params[key];
+      }
+    });
+
+    this.isLoading = true;
     
     this.loadsService.getOpenLoads(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(response => {
       this.loads = response.data;
@@ -61,6 +72,7 @@ export class OpenLoads implements OnInit {
       this.page = response.page;
       this.limit = response.limit;
       this.lastPage = response.lastPage;
+      this.isLoading = false;
     });
   }
 
@@ -69,5 +81,15 @@ export class OpenLoads implements OnInit {
       this.page = newPage;
       this.fetchLoads();
     }
+  }
+
+  applyFilters() {
+    this.page = 1;
+    this.fetchLoads();
+  }
+
+  toggleOrder() {
+    this.order = this.order === 'ASC' ? 'DESC' : 'ASC';
+    this.fetchLoads();
   }
 }
