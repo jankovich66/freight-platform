@@ -1,0 +1,26 @@
+@if(assignment$ | async; as assignment) {
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Assignment</h2>
+            <span class="badge bg-secondary">{{ assignment.load.status }}</span>
+        </div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Route: </strong>{{ assignment.load.pickupCity }} -> {{ assignment.load.deliveryCity }}</p>
+                        <p><strong>Pickup address: </strong>{{ assignment.load.pickupAddress }}</p>
+                        <p><strong>Delivery address: </strong>{{ assignment.load.deliveryAddress }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Pickup date: </strong>{{ assignment.load.pickupDate | date}}</p>
+                        <p><strong>Delivery date: </strong>{{ assignment.load.deliveryDate | date }}</p>
+                        <p><strong>Weight: </strong>{{ assignment.load.weight }}</p>
+                    </div>
+                </div>
+                <hr>
+                <p><strong>Assigned at: </strong>{{ assignment.assignedAt | date }}</p>
+            </div>
+        </div>
+    </div>
+}

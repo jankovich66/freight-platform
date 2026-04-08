@@ -8,10 +8,11 @@ import { LoadStatus } from '../../../loads/enums/load-status.enum';
 import { Load } from '../../../loads/models/load.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AlertService } from '../../../../shared/components/alert/services/alert.service';
+import { AssignmentCard } from '../../components/assignment-card/assignment-card';
 
 @Component({
   selector: 'app-my-assignments',
-  imports: [CommonModule],
+  imports: [CommonModule, AssignmentCard],
   templateUrl: './my-assignments.html',
   styleUrl: './my-assignments.scss',
 })

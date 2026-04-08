@@ -1,0 +1,27 @@
+@if(application$ | async; as application) {
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Application</h2>
+            <span class="badge bg-secondary">{{ application.status }}</span>
+        </div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Route: </strong>{{ application.load.pickupCity }} -> {{ application.load.deliveryCity }}</p>
+                        <p><strong>Pickup address: </strong>{{ application.load.pickupAddress }}</p>
+                        <p><strong>Delivery address: </strong>{{ application.load.deliveryAddress }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Pickup date: </strong>{{ application.load.pickupDate | date }}</p>
+                        <p><strong>Delivery date: </strong>{{ application.load.deliveryDate | date }}</p>
+                        <p><strong>Weight: </strong>{{ application.load.weight }}</p>
+                        <h5 class="text-primary">{{ application.offeredPrice }}</h5>
+                    </div>
+                </div>
+                <hr>
+                <p><strong>Applied at: </strong>{{ application.createdAt | date }}</p>
+            </div>
+        </div>
+    </div>
+}

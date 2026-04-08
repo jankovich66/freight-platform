@@ -1,61 +1,19 @@
 <div class="container mt-4">
     <h2 class="mb-4">My assignments</h2>
-    <div class="card shadow-sm">
-        <div class="card-body">
-            @if(assignments$ | async; as assignments) {
-                @if(assignments.length === 0) {
-                    <div class="text-center p-4 text-muted">
-                        You have no assigned loads
-                    </div>
-                }
-                @else {
-                    <table class="table table-hover align-middle">
-                    <thead class="table-dark">
-                            <tr>
-                                <th>Pickup city</th>
-                                <th>Delivery city</th>
-                                <th>Weight</th>
-                                <th>Status</th>
-                                <th>Assigned at</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for(assignment of assignments; track assignment.id) {
-                                <td>{{ assignment.load.pickupCity }}</td>
-                                <td>{{ assignment.load.deliveryCity }}</td>
-                                <td>{{ assignment.load.weight }}</td>
-                                <td>
-                                    @if(assignment.load.status === 'ACCEPTED') {
-                                        <span class="badge bg-primary">Accepted</span>
-                                    }
-                                    @else if(assignment.load.status === 'IN_PROGRESS') {
-                                        <span class="badge bg-warning text-dark">In progress</span>
-                                    }
-                                    @else if(assignment.load.status === 'COMPLETED') {
-                                        <span class="badge bg-success">Completed</span>
-                                    }
-                                    @else if(assignment.load.status === 'CANCELED') {
-                                        <span class="badge bg-danger">Canceled</span>
-                                    }
-                                </td>
-                                <td>{{ assignment.assignedAt | date }}</td>
-                                <td>
-                                    @if(assignment.load.status === 'ACCEPTED') {
-                                        <button class="btn btn-sm btn-primary w-50" (click)="startTransport(assignment.load)">Start</button>
-                                    }
-                                    @else if(assignment.load.status === 'IN_PROGRESS') {
-                                        <div class="d-flex">
-                                            <button class="btn btn-sm btn-success w-30" (click)="completeTransport(assignment.load)">Complete</button>
-                                            <button class="btn btn-sm btn-danger w-30" (click)="cancelTransport(assignment.load)">Cancel</button>
-                                        </div>
-                                    }
-                                </td>
-                            }
-                        </tbody>
-                    </table>
-                }
+    @if(assignments$ | async; as assignments) {
+        @if(assignments.length === 0) {
+            <div class="text-center p-4 text-muted">
+                You have no assigned loads
+            </div>
+        }
+        @else {
+            <div class="row g-4">
+            @for(assignment of assignments; track assignment.id) {
+                <div class="col-md-6 col-lg-4">
+                    <app-assignment-card [assignment]="assignment" (start)="startTransport($event)" (complete)="completeTransport($event)" (cancel)="cancelTransport($event)"></app-assignment-card>
+                </div>
             }
-        </div>
-    </div>
+            </div>
+        }
+    }
 </div>

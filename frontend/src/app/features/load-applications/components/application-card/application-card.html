@@ -1,0 +1,21 @@
+<div class="card shadow-sm h-100">
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title">{{ application.load.pickupCity }} -> {{ application.load.deliveryCity }}</h5>
+        <p class="mb-1"><strong>Weight: </strong>{{ application.load.weight }}</p>
+        <p class="mb-1"><strong>Your price: </strong>{{ application.offeredPrice }}</p>
+        <p class="mb-2"><strong>Applied: </strong>{{ application.createdAt| date }}</p>
+        <div class="mb-3">
+            @if(application.status === 'PENDING') {
+                <span class="badge bg-warning text-dark">Pending</span>
+            }
+            @else if(application.status === 'ACCEPTED') {
+                <span class="badge bg-success">Accepted</span>
+            }
+            @else if(application.status === 'REJECTED') {
+                <span class="badge bg-danger">Rejected</span>
+            }
+        </div>
+        <div class="mt-auto"></div>
+        <button class="btn btn-outline-primary w-100" [routerLink]="['/applications/details', application.id]">View details</button>
+    </div>
+</div>

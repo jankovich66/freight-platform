@@ -1,0 +1,35 @@
+<div class="card shadow-sm h-100">
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title">{{ assignment.load.pickupCity }} -> {{ assignment.load.deliveryCity }}</h5>
+        <p class="mb-1"><strong>Weight: </strong>{{ assignment.load.weight }}</p>
+        <p class="mb-2"><strong>Assigned: </strong>{{ assignment.assignedAt | date }}</p>
+        <div class="mb-3">
+            @if(assignment.load.status === 'ACCEPTED') {
+                <span class="badge bg-primary">Accepted</span>
+            }
+            @else if(assignment.load.status === 'IN_PROGRESS') {
+                <span class="badge bg-warning text-dark">In Progress</span>
+
+            }
+            @else if(assignment.load.status === 'COMPLETED') {
+                <span class="badge bg-success">Completed</span>
+            }
+            @else if(assignment.load.status === 'CANCELED') {
+                <span class="badge bg-danger">Canceled</span>
+            }
+        </div>
+        <div class="mt-auto"></div>
+        @if(isCarrierView) {
+            @if(assignment.load.status === 'ACCEPTED') {
+                <button class="btn btn-primary mb-2" (click)="onStart()">Start</button>
+            }
+            @else if(assignment.load.status === 'IN_PROGRESS') {
+                <div class="d-flex gap-2 mb-2">
+                    <button class="btn btn-success w-50" (click)="onComplete()">Complete</button>
+                    <button class="btn btn-danger w-50" (click)="onCancel()">Cancel</button>
+                </div>
+            }
+        }
+        <button class="btn btn-outline-primary w-100" [routerLink]="['/assignments/details', assignment.id]">View details</button>
+    </div>
+</div>

@@ -64,7 +64,10 @@ export class LoadApplicationsService {
             throw new ForbiddenException('Only shippers can access');
         }
         
-        const loadAplication = await this.loadApplicationRepository.findOneBy({ id });
+        const loadAplication = await this.loadApplicationRepository.findOne({
+            where: { id },
+            relations: ['load']
+        });
 
         if(!loadAplication) {
             throw new NotFoundException(`Load aplications with id ${ id } not found`);

@@ -12,4 +12,8 @@ export class LoadAssignmentsService {
     getMy() {
         return this.http.get<{ data: LoadAssignment[] }>(`${ this.apiUrl }/my`).pipe(map(response => response.data));
     }
+
+    getById(id: number) {
+        return this.http.get<LoadAssignment>(`${ this.apiUrl }/${ id }`);
+    }
 }

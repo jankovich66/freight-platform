@@ -3,10 +3,11 @@ import { Observable } from 'rxjs';
 import { LoadAssignment } from '../../../load-assignments/models/load-assignment.model';
 import { AdminService } from '../../services/admin.service';
 import { CommonModule } from '@angular/common';
+import { AssignmentCard } from '../../../load-assignments/components/assignment-card/assignment-card';
 
 @Component({
   selector: 'app-admin-assignments-details',
-  imports: [CommonModule],
+  imports: [CommonModule, AssignmentCard],
   templateUrl: './admin-assignments-details.html',
   styleUrl: './admin-assignments-details.scss',
 })

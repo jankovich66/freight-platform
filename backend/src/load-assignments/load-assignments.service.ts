@@ -23,6 +23,23 @@ export class LoadAssignmentsService {
         private readonly userRepository: Repository<User>
     ) {}
 
+    async findById(id: number, user: UserFromRequest) {
+        if(user.role !== UserRole.ADMIN && user.role !== UserRole.CARRIER) {
+            throw new ForbiddenException('Only carriers and admins can access');
+        }
+
+        const loadAssignment = await this.loadAssignmentsRepository.findOne({
+            where: { id },
+            relations: ['load']
+        });
+
+        if(!loadAssignment) {
+            throw new NotFoundException(`Load assignment with id ${ id } not found`);
+        }
+
+        return loadAssignment;
+    }
+
     async findCarriersWithAssignments(userFromRequers: UserFromRequest, userQueryDto: UserQueryDto) {
         if(userFromRequers.role !== UserRole.ADMIN) {
             throw new ForbiddenException('Only admins can access');

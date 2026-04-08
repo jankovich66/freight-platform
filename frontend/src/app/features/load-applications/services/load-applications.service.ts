@@ -25,4 +25,8 @@ export class LoadApplicationsService {
     accept(applicationId: number) {
         return this.http.patch<any>(`${ this.apiUrl }/${ applicationId }/accept`, null);
     }
+
+    getApplication(applicationId: number) {
+        return this.http.get<LoadApplication>(`${ this.apiUrl }/${ applicationId }`);
+    }
 }
