@@ -23,16 +23,14 @@ export class MyLoads implements OnInit {
 
   loads: Load[] = [];
   page = 1;
-  limit = 9;
+  limit = 6;
   total = 0;
   lastPage = 1;
 
   isLoading = false;
 
   filters: any = {
-    title: '',
-    pickUpCity: '',
-    deliveryCity: ''
+    search: ''
   };
 
   sort = 'pickupDate';
@@ -85,6 +83,11 @@ export class MyLoads implements OnInit {
 
   applyFilters() {
     this.page = 1;
+    this.fetchLoads();
+  }
+
+  toggleOrder() {
+    this.order = this.order === 'ASC' ? 'DESC' : 'ASC';
     this.fetchLoads();
   }
 }

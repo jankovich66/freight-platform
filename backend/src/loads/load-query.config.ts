@@ -11,6 +11,8 @@ export const LOAD_QUERY_CONFIG: QueryConfig<Load> = {
     },
 
     filterableFields: {
+        search: (qb, value) => qb.andWhere('load.title ILIKE :search OR load.pickupCity ILIKE :search OR load.deliveryCity ILIKE :search', { search: `%${ value }` }),
+
         title: (qb, value) => qb.andWhere('load.title ILIKE :title', { title: `%${ value }%` }),
 
         status: (qb, value) => qb.andWhere('load.status = :status', { status: value }),

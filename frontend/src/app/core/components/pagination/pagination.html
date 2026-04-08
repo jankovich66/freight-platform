@@ -1,11 +1,24 @@
 <div class="d-flex justify-content-center mt-4">
     <nav>
-        <ul class="pagination mb-0">
-            @for(number of numbers; track number) {
-                <li class="page-item" [class.active]="page === number + 1">
-                    <button class="page-link" (click)="change(number + 1)">{{ number + 1 }}</button>
+        <ul class="pagination">
+            <li class="page-item" [class.disabled]="page === 1">
+                <button class="page-link" (click)="change(page - 1)">Previous</button>
+            </li>
+
+            @for(p of pages; track p) {
+                <li class="page-item" [class.active]="page === p" [class.disabled]="p === '...'">
+                    @if(p !== '...' && typeof p === 'number') {
+                        <button class="page-link" (click)="change(p)">{{ p }}</button>
+                    }
+                    @else {
+                        <span class="page-link">...</span>
+                    }
                 </li>
             }
+
+            <li class="page-item" [class.disabled]="page === lastPage">
+                <button class="page-link" (click)="change(page + 1)">Next</button>
+            </li>
         </ul>
     </nav>
 </div>

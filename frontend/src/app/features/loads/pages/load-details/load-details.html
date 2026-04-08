@@ -1,22 +1,3 @@
-<!-- @if(load$ | async; as load) {
-    <div>
-        {{ load.title }}
-    </div>
-    @if(userRole$ | async; as userRole) {
-        @if(userRole === 'CARRIER') {
-            <input type="number" [(ngModel)]="offeredPrice">
-            <button (click)="apply()">Apply</button>
-        }
-        @else {
-            <p>Applications</p>
-            <div *ngFor="let loadApplication of loadApplications$ | async">
-                {{ loadApplication.offeredPrice }} - {{ loadApplication.status }}
-                <button (click)="accept(loadApplication.id)">Accept</button>
-            </div>
-        }
-    }
-} -->
-
 @if(load$ | async; as load) {
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">

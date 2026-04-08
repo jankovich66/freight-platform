@@ -6,6 +6,10 @@ import { Type } from "class-transformer";
 export class LoadQueryDto extends BaseQueryDto {
     @IsOptional()
     @IsString()
+    search?: string;
+
+    @IsOptional()
+    @IsString()
     title?: string;
 
     @IsOptional()

@@ -23,16 +23,14 @@ export class OpenLoads implements OnInit {
 
   loads: Load[] = [];
   page = 1;
-  limit = 9;
+  limit = 6;
   total = 0;
   lastPage = 1;
 
   isLoading = false;
 
   filters: any = {
-    title: '',
-    pickupCity: '',
-    deliveryCity: '',
+    search: ''
   };
 
   sort = 'pickupDate';
