@@ -12,7 +12,6 @@ import { selectUserRole } from '../../../auth/store/auth.selectors';
 import { UserRole } from '../../../../core/enums/user-role.enum';
 import { LoadApplication } from '../../../load-applications/models/load-application.model';
 import { Router } from '@angular/router';
-import * as bootstrap from 'bootstrap';
 import { AlertService } from '../../../../shared/components/alert/services/alert.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -80,6 +79,15 @@ export class LoadDetails implements OnInit {
       error: err => this.alertService.show('warning', err.error.message)
     })
   }
+
+  openDeleteModal(content: any) {
+    this.modalService.open(content, { centered: true });
+  }
+
+  confirmDelete(modal: any) {
+    this.deleteLoad();
+    modal.close();
+  }
   
   deleteLoad() {
     this.loadsService.deleteLoad(this.id)
@@ -87,13 +95,6 @@ export class LoadDetails implements OnInit {
       .subscribe({
         next: response => {
           this.alertService.show('success', 'You have successfully deleted this load', 4000);
-
-          const modalElement = document.getElementById('deleteModal');
-          const modal = bootstrap.Modal.getInstance(modalElement!);
-          modal?.hide();
-          document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-          document.body.classList.remove('modal-open');
-
           setTimeout(() => {
             this.router.navigate(['loads/my'])
           }, 5000);

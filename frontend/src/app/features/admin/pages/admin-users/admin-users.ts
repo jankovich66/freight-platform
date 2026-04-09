@@ -6,10 +6,11 @@ import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AlertService } from '../../../../shared/components/alert/services/alert.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserCard } from '../../components/user-card/user-card';
 
 @Component({
   selector: 'app-admin-users',
-  imports: [CommonModule],
+  imports: [CommonModule, UserCard],
   templateUrl: './admin-users.html',
   styleUrl: './admin-users.scss',
 })
@@ -27,8 +28,8 @@ export class AdminUsers implements OnInit {
     this.users$ = this.adminService.getUsers();
   }
 
-  openDeleteModal(content: TemplateRef<any>, email: string, event: Event) {
-    (event?.target as HTMLElement).blur();
+  openDeleteModal(content: TemplateRef<any>, email: string/*, event: Event*/) {
+    // (event?.target as HTMLElement).blur();
     
     this.selectedUserEmail = email;
     this.modalService.open(content, { centered: true });

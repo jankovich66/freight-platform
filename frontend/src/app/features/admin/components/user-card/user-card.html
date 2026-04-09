@@ -1,0 +1,10 @@
+<div class="card shadow-sm h-100">
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title">{{ user.companyName }}</h5>
+        <p class="mb-1"><strong>Phone number: </strong>{{ user.phoneNumber }}</p>
+        <p class="mb-1"><strong>Company name: </strong>{{ user.email }}</p>
+        <p class="mb-1"><strong>Role: </strong>{{ user.role }}</p>
+        <div class="mt-auto"></div>
+        <button class="btn btn-danger w-100" (click)="onDelete()">Delete user</button>
+    </div>
+</div>
