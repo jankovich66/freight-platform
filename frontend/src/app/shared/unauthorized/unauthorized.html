@@ -1,1 +1,13 @@
-<p>U dont have permission to access this page!</p>
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+    <div class="text-center">
+        <div class="mb-4">
+            <h1 class="display-1 fw-bold text-danger">403</h1>
+            <h3 class="mb-3">Access denied</h3>
+            <p class="text-muted">You dont have permission to access this page</p>
+        </div>
+        <div class="d-flex justify-content-center gap-3">
+            <a routerLink="/" class="btn btn-primary">Go home</a>
+            <button class="btn btn-outline-secondary" (click)="goBack()">Go back</button>
+        </div>
+    </div>
+</div>
