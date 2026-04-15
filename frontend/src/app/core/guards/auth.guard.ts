@@ -6,12 +6,34 @@ export const authGuard: CanActivateFn = () => {
     const authService = inject(AuthService);
     const router = inject(Router);
 
-    if(authService.isLoggedIn()) {
+    const token = authService.getToken();
+
+    if(!token) {
+        return router.createUrlTree(['auth/login']);
+    }
+
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const isExpired = payload * 1000 < Date.now();
+
+        if(isExpired) {
+            authService.logout();
+            return router.createUrlTree(['auth/login']);
+        }
+
         return true;
     }
-    // console.log('auth guard false');
-    // authService.logout();
-    // return router.navigate(['auth/login']);
-    return router.createUrlTree(['auth/login']);
-    // return false;
+    catch {
+        authService.logout();
+        return router.createUrlTree(['auth/login']);
+    }
+
+    // if(authService.isLoggedIn()) {
+    //     return true;
+    // }
+    // // console.log('auth guard false');
+    // // authService.logout();
+    // // return router.navigate(['auth/login']);
+    // return router.createUrlTree(['auth/login']);
+    // // return false;
 }
