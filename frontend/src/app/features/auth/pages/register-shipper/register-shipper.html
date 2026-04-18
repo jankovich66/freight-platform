@@ -1,38 +1,3 @@
-<!-- <div>
-    <h2>Register Shipper</h2>
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" class="form-control" formControlName="email">
-            @if(registerForm.controls['email'].touched && registerForm.controls['email'].invalid) {
-                <div class="error-message">Email is required.</div>
-            }
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" class="form-control" formControlName="password">
-            @if(registerForm.controls['password'].touched && registerForm.controls['password'].invalid) {
-                <div class="error-message">Password is required.</div>
-            }
-        </div>
-        <div class="form-group">
-            <label for="phone-number">Phone number:</label>
-            <input type="text" name="phone-number" id="phone-number" class="form-control" formControlName="phoneNumber">
-            @if(registerForm.controls['phoneNumber'].touched && registerForm.controls['phoneNumber'].invalid) {
-                <div class="error-message">Phone number is required.</div>
-            }
-        </div>
-        <div class="form-group">
-            <label for="company-name">Company name:</label>
-            <input type="text" name="company-name" id="company-name" class="form-control" formControlName="companyName">
-            @if(registerForm.controls['companyName'].touched && registerForm.controls['companyName'].invalid) {
-                <div class="error-message">Company name is required.</div>
-            }
-        </div>
-        <button type="submit" class="btn-submit" [disabled]="!registerForm.valid">Register</button>
-    </form>
-</div> -->
-
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-5">

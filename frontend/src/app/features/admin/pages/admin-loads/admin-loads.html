@@ -1,14 +1,5 @@
 @if(user$ | async; as user) {
     <div class="container">
-        <!-- <h2 class="mb-4">Loads</h2>
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <input type="text" class="form-control" placeholder="Search title" [(ngModel)]="filters.title">
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-primary w-100" (click)="fetchLoads()">Search</button>
-            </div>
-        </div> -->
         <div class="row mb-4 align-items-center">
         <div class="col-md-6">
             <input type="text" class="form-control" placeholder="Search" [(ngModel)]="filters.search" (keyup.enter)="applyFilters()">
