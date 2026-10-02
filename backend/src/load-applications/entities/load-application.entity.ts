@@ -11,26 +11,26 @@ export enum LoadApplicationStatus {
 @Entity({ name: 'load_application' })
 export class LoadApplication {
     @PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
 
     @Column({ name: 'offered_price' })
-    offeredPrice: number;
+    offeredPrice!: number;
 
     @Column({
         type: 'enum',
         enum: LoadApplicationStatus,
         default: LoadApplicationStatus.PENDING
     })
-    status: LoadApplicationStatus;
+    status!: LoadApplicationStatus;
     
     @CreateDateColumn({ name: 'created_at' })
-    createdAt: Date;
+    createdAt!: Date;
 
     @JoinColumn({ name: 'load_id' })
     @ManyToOne(() => Load, load => load.loadApplications, { onDelete: 'CASCADE' })
-    load: Load;
+    load!: Load;
 
     @JoinColumn({ name: 'carrier_id' })
     @ManyToOne(() => User, carrier => carrier.loadApplications, { onDelete: 'CASCADE' })
-    carrier: User;
+    carrier!: User;
 }

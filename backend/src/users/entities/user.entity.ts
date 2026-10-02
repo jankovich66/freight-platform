@@ -12,36 +12,36 @@ export enum UserRole {
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
 
     @Column()
-    email: string;
+    email!: string;
 
     @Column()
-    password: string;
+    password!: string;
 
     @Column({ name: 'phone_number' })
-    phoneNumber: string;
+    phoneNumber!: string;
 
     @Column({ name: 'company_name', nullable: true })
-    companyName: string;
+    companyName!: string;
 
     @Column({
         type: 'enum',
         enum: UserRole,
         default: UserRole.SHIPPER
     })
-    role: UserRole;
+    role!: UserRole;
 
     @CreateDateColumn({ name: 'created_at' })
-    createdAt: Date;
+    createdAt!: Date;
 
     @OneToMany(() => Load, loads => loads.shipper)
-    loads: Load[];
+    loads!: Load[];
 
     @OneToMany(() => LoadApplication, loadApplications => loadApplications.carrier)
-    loadApplications: LoadApplication[];
+    loadApplications!: LoadApplication[];
 
     @OneToMany(() => LoadAssignment, loadAssignments => loadAssignments.carrier)
-    loadAssignments: LoadAssignment[];
+    loadAssignments!: LoadAssignment[];
 }

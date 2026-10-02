@@ -1,12 +1,12 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LoadApplication, LoadApplicationStatus } from './entities/load-application.entity';
-import { Not, Repository } from 'typeorm';
+import { In, Not, Repository } from 'typeorm';
 import { CreateLoadApplicationDto } from './dto/create-load-application.dto';
 import { UpdateLoadApplicationDto } from './dto/update-load-application.dto';
 import { UserFromRequest } from 'src/auth/interfaces/user-from-request.interface';
 import { User, UserRole } from 'src/users/entities/user.entity';
-import { Load, LoadStatus } from 'src/loads/entities/load.entity';
+import { Load, LoadStatus, TransportType } from 'src/loads/entities/load.entity';
 import { LoadAssignment } from 'src/load-assignments/entities/load-assignment.entity';
 import { DataSource } from 'typeorm';
 import { LoadApplicationQueryDto } from './dto/load-application-query.dto';
@@ -163,6 +163,35 @@ export class LoadApplicationsService {
 
             if(application.status !== LoadApplicationStatus.PENDING) {
                 throw new BadRequestException('Application already accepted');
+            }
+
+            if(application.load.transportType === TransportType.LTL) {
+                const activeAssignments = await manager.find(LoadAssignment, {
+                    where: {
+                        carrier: { id: application.carrier.id },
+                        load: {
+                            status: In([LoadStatus.ACCEPTED, LoadStatus.IN_PROGRESS]),
+                            pickupCity: application.load.pickupCity,
+                            deliveryCity: application.load.deliveryCity,
+                            pickupDate: application.load.pickupDate,
+                        }
+                    },
+                    relations: ['load']
+                });
+
+                const currentSpace = activeAssignments.reduce((sum, assign) => sum + Number(assign.load.requiredSpaceLdm), 0);
+                const currentWeight = activeAssignments.reduce((sum, assign) => sum + Number(assign.load.weight), 0);
+            
+                const MAX_LDM = 13.6;
+                const MAX_WEIGHT = 24000;
+
+                if(currentSpace + Number(application.load.requiredSpaceLdm) > MAX_LDM) {
+                    throw new BadRequestException('Carrier has reached the maximum LDM capacity for this route');
+                }
+
+                if(currentWeight + Number(application.load.weight) > MAX_WEIGHT) {
+                    throw new BadRequestException('Carrier has reached the maximum weight capacity for this route');
+                }
             }
 
             application.status = LoadApplicationStatus.ACCEPTED;

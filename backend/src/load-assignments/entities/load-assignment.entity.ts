@@ -5,16 +5,16 @@ import { CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGener
 @Entity({ name: 'load_assignment' })
 export class LoadAssignment {
     @PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
 
     @CreateDateColumn({ name: 'assigned_at' })
-    assignedAt: Date;
+    assignedAt!: Date;
 
     @JoinColumn({ name: 'carrier_id' })
     @ManyToOne(() => User, carrier => carrier.loadAssignments, { onDelete: 'CASCADE' })
-    carrier: User;
+    carrier!: User;
 
     @JoinColumn({ name: 'load_id' })
     @OneToOne(() => Load, load => load.loadAssignment, { onDelete: 'CASCADE' })
-    load: Load;
+    load!: Load;
 }

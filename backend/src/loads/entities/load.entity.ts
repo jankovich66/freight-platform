@@ -11,58 +11,79 @@ export enum LoadStatus {
     CANCELED = 'CANCELED'
 }
 
+export enum TransportType {
+    FTL = 'FTL', // Zauzima ceo kamion
+    LTL = 'LTL' // Zauzima samo deo
+}
+
 @Entity()
 export class Load {
     @PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
 
     @Column()
-    title: string;
+    title!: string;
 
     @Column()
-    description: string;
+    description!: string;
 
     @Column({ name: 'pickup_address' })
-    pickupAddress: string;
+    pickupAddress!: string;
 
     @Column({ name: 'pickup_city' })
-    pickupCity: string;
+    pickupCity!: string;
 
     @Column({ name: 'delivery_address' })
-    deliveryAddress: string;
+    deliveryAddress!: string;
 
     @Column({ name: 'delivery_city' })
-    deliveryCity: string;
+    deliveryCity!: string;
+
+    @Column({
+        type: 'enum',
+        enum: TransportType,
+        default: TransportType.FTL
+    })
+    transportType!: TransportType;
+
+    @Column({ 
+        name: 'required_space_ldm',
+        type: 'numeric',
+        precision: 5,
+        scale: 2,
+        default: 13.60
+    })
+    requiredSpaceLdm!: number; // Prostor kamiona u metrima duznim
 
     @Column()
-    weight: number;
+    weight!: number; // Tezina u kilogramima
 
     @Column()
-    price: number;
+    price!: number;
 
     @Column({ name: 'pickup_date' })
-    pickupDate: Date;
+    pickupDate!: Date;
 
     @Column({ name: 'delivery_date' })
-    deliveryDate: Date;
+    deliveryDate!: Date;
 
     @Column({
         type: 'enum',
         enum: LoadStatus,
         default: LoadStatus.OPEN
     })
-    status: LoadStatus;
+    status!: LoadStatus;
 
     @CreateDateColumn({ name: 'created_at' })
-    createdAt: Date;
+    createdAt!: Date;
 
     @JoinColumn({ name: 'shipper_id' })
     @ManyToOne(() => User, shipper => shipper.loads, { onDelete: 'CASCADE' })
-    shipper: User;
+    shipper!: User;
 
     @OneToMany(() => LoadApplication, loadApplications => loadApplications.load)
-    loadApplications: LoadApplication[];
+    loadApplications!: LoadApplication[];
 
     @OneToOne(() => LoadAssignment, loadAssignment => loadAssignment.load)
-    loadAssignment: LoadAssignment;
+    loadAssignment!: LoadAssignment;
 }
