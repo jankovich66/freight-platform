@@ -1,4 +1,4 @@
-<div class="container vh-100 d-flex justify-content-center align-items-center">
+<!-- <div class="container vh-100 d-flex justify-content-center align-items-center">
     <div class="text-center">
         <div class="mb-4">
             <h1 class="display-1 fw-bold text-danger">403</h1>
@@ -10,4 +10,20 @@
             <button class="btn btn-outline-secondary" (click)="goBack()">Go back</button>
         </div>
     </div>
+</div> -->
+<div class="unauthorized-wrapper">
+    <mat-card class="unauthorized-card mat-elevation-z4">
+        <mat-card-content class="text-center content-box">
+            <div class="icon-badge">
+                <mat-icon class="shield-icon">gpp_bad</mat-icon>
+            </div>
+            <h1 class="error-code">403</h1>
+            <h2 class="error-title">Access Denied</h2>
+            <p class="error-message">You don't have permission to access this page.</p>
+            <div class="action-buttons">
+                <a mat-flat-button class="home-btn" routerLink="/"><mat-icon>home</mat-icon> Go Home</a>
+                <button mat-stroked-button class="back-btn" (click)="goBack()"><mat-icon>arrow_back</mat-icon> Go Back</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
 </div>

@@ -7,17 +7,19 @@ import { selectCurrentUser, selectIsLoggedIn } from '../../../features/auth/stor
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../features/auth/services/auth.service';
 import { logout } from '../../../features/auth/store/auth.actions';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, MatToolbarModule, MatButtonModule, MatIconModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
   private store = inject(Store);
-
-  constructor(private authService: AuthService) {}
+  private authService =  inject(AuthService);
 
   user$: Observable<User | null> = this.store.select(selectCurrentUser);
 

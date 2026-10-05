@@ -11,21 +11,21 @@ import { LoadAssignmentsModule } from './load-assignments/load-assignments.modul
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USER'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_NAME'),
+        host: 'db',//configService.get<string>('DB_HOST'),
+        port: 5432,//configService.get<number>('DB_PORT'),
+        username: 'admin',//configService.get<string>('DB_USER'),
+        password: 'admin',//configService.get<string>('DB_PASSWORD'),
+        database: 'freight_platform',//configService.get<string>('DB_NAME'),
         autoLoadEntities: true,
         synchronize: true
       })
-    }),
-    ConfigModule.forRoot({
-      isGlobal: true
     }),
     AuthModule,
     UsersModule,

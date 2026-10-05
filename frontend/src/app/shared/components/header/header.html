@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <div class="col-md-3 mb-2 mb-md-0">
             <a routerLink="/" class="d-inline-flex link-body-emphasis text-decoration-none">FreightPlatform</a>
@@ -60,4 +60,45 @@
             }
         </div>
     </header>
-</div>
+</div> -->
+
+<mat-toolbar class="main-header mat-elevation-z3">
+  <div class="header-container">
+    <div class="brand-section">
+        <a routerLink="/" class="brand-logo">
+            <mat-icon class="logo-icon">local_shipping</mat-icon>
+            <span>FreightPlatform</span>
+        </a>
+    </div>
+    <nav class="nav-section">
+        @if(user$ | async; as user) {
+            @if(user.role === 'CARRIER') {
+                <a mat-button routerLink="loads/open" routerLinkActive="active-nav">Open loads</a>
+                <a mat-button routerLink="applications/my-applications" routerLinkActive="active-nav">My applications</a>
+                <a mat-button routerLink="assignments/my-assignments" routerLinkActive="active-nav">My assignments</a>
+            }
+            @else if(user.role === 'SHIPPER') {
+                <a mat-button routerLink="loads/my" routerLinkActive="active-nav">My loads</a>
+                <a mat-button routerLink="loads/create" routerLinkActive="active-nav">Create load</a>
+            }
+            @else if(user.role === 'ADMIN') {
+                <a mat-button routerLink="admin/dashboard" routerLinkActive="active-nav">Dashboard</a>
+                <a mat-button routerLink="admin/users" routerLinkActive="active-nav">Users</a>
+                <a mat-button routerLink="admin/loads" routerLinkActive="active-nav">Loads</a>
+                <a mat-button routerLink="admin/applications" routerLinkActive="active-nav">Applications</a>
+                <a mat-button routerLink="admin/assignments" routerLinkActive="active-nav">Assignments</a>
+            }
+        }
+    </nav>
+    <div class="auth-section">
+        @if((isLoggedIn$ | async) !== true) {
+            <a mat-button routerLink="auth/login" class="login-btn">Login</a>
+            <a mat-stroked-button routerLink="auth/register" class="register-btn">Register</a>
+        }
+        @else {
+            <a mat-button routerLink="profile" class="profile-btn"><mat-icon>account_circle</mat-icon>Profile</a>
+            <button mat-stroked-button class="logout-btn" (click)="logout()"><mat-icon>logout</mat-icon>Logout</button>
+        }
+    </div>
+  </div>
+</mat-toolbar>

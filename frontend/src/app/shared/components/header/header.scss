@@ -1,0 +1,103 @@
+.main-header {
+    background-color: #6973e7;
+    color: #ffffff !important;
+    height: 70px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0;
+}
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+.brand-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    .brand-logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: opacity 0.2s;
+        &:hover {
+            opacity: 0.9;
+        }
+        .logo-icon {
+            color: #00e676;
+        }
+    }
+}
+.nav-section {
+    display: flex;
+    gap: 6px;
+    a {
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        &:hover {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+        &.active-nav {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.18);
+            font-weight: 600;
+        }
+    }
+}
+.auth-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    .login-btn {
+        background-color: #1eabe7;
+        color: #1a237e;
+        font-weight: 500;
+        border-radius: 8px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .profile-btn {
+        background-color: #ffffff;
+        color: #1a237e;
+        font-weight: 500;
+        border-radius: 8px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        mat-icon {
+            color: #1a237e;
+            //margin-right: 4px;
+        }
+    }
+    .register-btn {
+        background-color: #2240eb;
+        color: #ffffff;
+        font-weight: 500;
+        border-radius: 8px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        &:hover {
+            background-color: #3a0eb1;
+        }
+    }
+    .logout-btn {
+        background-color: #d32f2f;
+        color: #ffffff;
+        font-weight: 500;
+        border-radius: 8px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        &:hover {
+            background-color: #b71c1c;
+        }
+    }
+}
