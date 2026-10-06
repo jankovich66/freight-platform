@@ -1,6 +1,6 @@
 import { Type } from "class-transformer";
-import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, MinDate } from "class-validator";
-import { LoadStatus } from "../entities/load.entity";
+import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, Max, Min, MinDate } from "class-validator";
+import { LoadStatus, TransportType } from "../entities/load.entity";
 
 export class CreateLoadDto {
     @IsNotEmpty({ message: 'Title cannot be empty' })
@@ -41,4 +41,15 @@ export class CreateLoadDto {
     @IsEnum(LoadStatus)
     @IsOptional()
     readonly status?: LoadStatus;
+
+    @IsEnum(TransportType, { message: 'Transport type must be either FTL or LTL' })
+    @IsNotEmpty({ message: 'Transport type cannot be empty' })
+    readonly transportType: TransportType;
+
+    @Type(() => Number)
+    @IsNumber({}, { message: 'Required space must be a number' })
+    @Min(0.1, { message: 'Required space must be at least 0.1 LDM' })
+    @Max(13.6, { message: 'Required space cannot exceed 13.6 LDM' })
+    @IsNotEmpty({ message: 'Required space cannot be empty' })
+    readonly requiredSpaceLdm: number;
 }

@@ -1,6 +1,6 @@
-import { IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsNumber, IsOptional, IsString, Max, Min } from "class-validator";
 import { BaseQueryDto } from "src/common/query/dto/base-query.dto";
-import { LoadStatus } from "../entities/load.entity";
+import { LoadStatus, TransportType } from "../entities/load.entity";
 import { Type } from "class-transformer";
 
 export class LoadQueryDto extends BaseQueryDto {
@@ -51,4 +51,15 @@ export class LoadQueryDto extends BaseQueryDto {
     @Type(() => Number)
     @IsNumber()
     maxPrice?: number;
+
+    @IsOptional()
+    @IsEnum(TransportType)
+    transportType?: TransportType;
+    
+    @IsOptional()
+    @Type(() => Number)
+    @IsNumber()
+    @Min(0.1)
+    @Max(13.6)
+    maxRequiredSpaceLdm?: number;
 }
