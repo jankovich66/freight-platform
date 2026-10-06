@@ -6,6 +6,22 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
+.snack-success {
+  .mdc-snackbar__surface {
+    background-color: #2e7d32 !important;
+  }
+  .mdc-snackbar__label { color: #ffffff !important; }
+  .mdc-snackbar__actions button { color: #ffffff !important; }
+}
+
+.snack-warning {
+   .mdc-snackbar__surface {
+    background-color: #ef6c00 !important;
+  }
+  .mdc-snackbar__label { color: #ffffff !important; }
+  .mdc-snackbar__actions button { color: #ffffff !important; }
+}
+
 html {
   @include mat.theme((
     color: (
