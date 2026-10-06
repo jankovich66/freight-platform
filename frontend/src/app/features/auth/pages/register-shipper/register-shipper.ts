@@ -4,10 +4,16 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { login } from '../../store/auth.actions';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register-shipper',
-  imports: [ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MatIconModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './register-shipper.html',
   styleUrl: './register-shipper.scss',
 })
@@ -15,6 +21,8 @@ export class RegisterShipper {
   registerForm: FormGroup;
 
   private store = inject(Store);
+
+  hidePassword = true;
 
   constructor(
     private authService: AuthService,

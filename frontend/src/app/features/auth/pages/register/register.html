@@ -1,22 +1,30 @@
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <div class="card shadow h-100">
-                <div class="card-body text-center d-flex flex-column justify-content-center">
-                    <h3>Register as Shipper</h3>
-                    <p>Create and manage loads</p>
-                    <a routerLink="shipper" class="btn btn-primary mt-3">Continue as Shipper</a>
-                </div>
-            </div>
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center g-4">
+        
+        <div class="col-md-5 col-lg-4 mb-4">
+            <mat-card class="selection-card h-100 text-center mat-elevation-z2">
+                <mat-card-content class="p-4 d-flex flex-column justify-content-center align-items-center">
+                    <div class="selection-icon-box mb-3 shipper-bg">
+                        <mat-icon color="primary" style="transform: scale(2);">business</mat-icon>
+                    </div>
+                    <h3 class="font-weight-medium">Register as Shipper</h3>
+                    <p class="text-muted mb-4">Create, manage, and track your commercial loads</p>
+                    <a mat-flat-button color="primary" routerLink="shipper" class="w-100 py-2 mt-auto" style="border-radius: 8px;">Continue as Shipper</a>
+                </mat-card-content>
+            </mat-card>
         </div>
-        <div class="col-md-6 mb-4">
-            <div class="card shadow h-100">
-                <div class="card-body text-center d-flex flex-column justify-content-center">
-                    <h3>Register as Carrier</h3>
-                    <p>Browse and apply for loads</p>
-                    <a routerLink="carrier" class="btn btn-outline-primary mt-3">Continue as Carrier</a>
-                </div>
-            </div>
+
+        <div class="col-md-5 col-lg-4 mb-4">
+            <mat-card class="selection-card h-100 text-center mat-elevation-z2">
+                <mat-card-content class="p-4 d-flex flex-column justify-content-center align-items-center">
+                    <div class="selection-icon-box mb-3 carrier-bg">
+                        <mat-icon color="accent" style="transform: scale(2);">local_shipping</mat-icon>
+                    </div>
+                    <h3 class="font-weight-medium">Register as Carrier</h3>
+                    <p class="text-muted mb-4">Browse marketplace and apply for available loads</p>
+                    <a mat-stroked-button color="primary" routerLink="carrier" class="w-100 py-2 mt-auto text-primary border-primary" style="border-radius: 8px;">Continue as Carrier</a>
+                </mat-card-content>
+            </mat-card>
         </div>
     </div>
 </div>

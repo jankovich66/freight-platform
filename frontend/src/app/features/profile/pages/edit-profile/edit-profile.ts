@@ -8,10 +8,16 @@ import { AlertService } from '../../../../shared/components/alert/services/alert
 import { selectCurrentUser } from '../../../auth/store/auth.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { take } from 'rxjs';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-edit-profile',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatIconModule, MatDividerModule, MatButtonModule, MatInputModule],
   templateUrl: './edit-profile.html',
   styleUrl: './edit-profile.scss',
 })

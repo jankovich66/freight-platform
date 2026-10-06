@@ -1,14 +1,49 @@
 @if(user$ | async; as user) {
-    <div class="container mt-4">
-        <div class="card shadow">
-            <div class="card-body">
-                <h3 class="mb-3">Profile</h3>
-                <p><strong>Email: </strong>{{ user.email }}</p>
-                <p><strong>Phone: </strong>{{ user.phoneNumber }}</p>
-                <p><strong>Company name: </strong>{{ user.companyName }}</p>
-                <p><strong>Role: </strong>{{ user.role }}</p>
-            
-                <button class="btn btn-primary me-2" [routerLink]="['edit']">Edit profile</button>
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <mat-card class="profile-material-card mat-elevation-z3">
+                    <mat-card-content class="p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="m-0 font-weight-medium text-dark d-flex align-items-center">
+                                <mat-icon color="primary" class="me-2 fs-4" style="width:auto;height:auto;">account_circle</mat-icon>
+                                User Profile
+                            </h3>
+                            <span class="role-badge" [ngClass]="user.role.toLowerCase()">
+                                {{ user.role }}
+                            </span>
+                        </div>
+
+                        <div class="profile-info-list text-muted mb-4">
+                            <div class="d-flex align-items-center py-2 border-bottom-light">
+                                <mat-icon class="me-3 text-secondary">email</mat-icon>
+                                <div>
+                                    <span class="d-block text-label" style="font-size: 11px;">Email Address</span>
+                                    <strong class="text-dark fs-6">{{ user.email }}</strong>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center py-2 border-bottom-light">
+                                <mat-icon class="me-3 text-secondary">phone</mat-icon>
+                                <div>
+                                    <span class="d-block text-label" style="font-size: 11px;">Phone Number</span>
+                                    <strong class="text-dark fs-6">{{ user.phoneNumber }}</strong>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center py-2 border-bottom-light">
+                                <mat-icon class="me-3 text-secondary">corporate_fare</mat-icon>
+                                <div>
+                                    <span class="d-block text-label" style="font-size: 11px;">Company Name</span>
+                                    <strong class="text-dark fs-6">{{ user.companyName || 'Not Specified' }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <button mat-flat-button color="primary" class="w-100 py-3 btn-profile-action" [routerLink]="['edit']">
+                            <mat-icon>edit</mat-icon> Edit Profile
+                        </button>
+                    </mat-card-content>
+                </mat-card>
             </div>
         </div>
     </div>

@@ -5,10 +5,15 @@ import { selectCurrentUser, selectIsLoading } from '../../store/auth.selectors';
 import { login } from '../../store/auth.actions';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -18,6 +23,8 @@ export class Login {
   private readonly store = inject(Store);
   user$ = this.store.select(selectCurrentUser);
   isLoading$!: Observable<boolean>;
+
+  hidePassword = true;
 
   constructor(
     private fb: FormBuilder

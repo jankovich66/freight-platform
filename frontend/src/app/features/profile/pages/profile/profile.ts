@@ -5,10 +5,16 @@ import { User } from '../../../../core/models/user.model';
 import { selectCurrentUser } from '../../../auth/store/auth.selectors';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from "@angular/router";
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule, MatIconModule, MatInputModule, MatFormFieldModule, MatDividerModule],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
