@@ -1,14 +1,20 @@
-<div class="container mt-4">
-    <h2 class="mb-4">My applications</h2>
+<div class="container mt-4 mb-5">
+    <h2 class="mb-4 font-weight-medium text-dark d-flex align-items-center">
+        <mat-icon color="primary" class="me-2 fs-3" style="width:auto;height:auto;">local_offer</mat-icon>
+        My applications
+    </h2>
+  
     <div class="row g-4">            
         @if(applications$ | async; as applications) {
             @if(applications.length === 0) {
-                <div class="text-center p-4 text-muted">You have not applied to any loads yet</div>
+                <div class="col-12 text-center py-5 rounded bg-light border">
+                    <mat-icon class="text-secondary fs-1 mb-2" style="width:auto;height:auto;">mail_outline</mat-icon>
+                    <p class="text-muted fs-5 m-0">You still havent applied.</p>
+                </div>
             }
             @else {
                 @for(application of applications; track application.id) {
-                    <div class="col-md-6 col-lg-4">
-
+                    <div class="col-12 col-sm-6 col-lg-4">
                         <app-application-card [application]="application"></app-application-card>
                     </div>
                 }

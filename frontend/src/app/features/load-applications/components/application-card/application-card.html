@@ -1,4 +1,4 @@
-<div class="card shadow-sm h-100">
+<!-- <div class="card shadow-sm h-100">
     <div class="card-body d-flex flex-column">
         <h5 class="card-title">{{ application.load.pickupCity }} -> {{ application.load.deliveryCity }}</h5>
         <p class="mb-1"><strong>Weight: </strong>{{ application.load.weight }}</p>
@@ -18,4 +18,55 @@
         <div class="mt-auto"></div>
         <button class="btn btn-outline-primary w-100" [routerLink]="['/applications/details', application.id]">View details</button>
     </div>
-</div>
+</div> -->
+
+<mat-card class="application-material-card h-100 d-flex flex-column mat-elevation-z2">
+
+    <mat-card-header class="p-3 pb-2 w-100">
+        <div class="route-header d-flex align-items-center w-100 p-2 rounded bg-light">
+            <mat-icon color="primary" class="me-2 fs-5">navigation</mat-icon>
+            <span class="fw-bold text-dark text-truncate" style="max-width: 42%;">{{ application.load.pickupCity }}</span>
+            <mat-icon class="mx-2 text-muted fs-6">arrow_forward</mat-icon>
+            <span class="fw-bold text-dark text-truncate" style="max-width: 42%;">{{ application.load.deliveryCity }}</span>
+        </div>
+    </mat-card-header>
+
+    <mat-card-content class="flex-grow-1 px-3 pb-2">
+        <div class="info-list text-muted">
+            <div class="d-flex align-items-center mb-2">
+                <mat-icon class="me-2 fs-5 text-secondary">scale</mat-icon>
+                <span><strong>Weight:</strong> {{ application.load.weight }} kg</span>
+            </div>
+            
+            <div class="d-flex align-items-center mb-2">
+                <mat-icon class="me-2 fs-5 text-secondary">calendar_today</mat-icon>
+                <span><strong>Applied:</strong> {{ application.createdAt | date:'mediumDate' }}</span>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <mat-icon class="me-2 fs-5 text-secondary">view_column</mat-icon>
+                <span><strong>Load space:</strong> {{ application.load.requiredSpaceLdm || 13.6 }} LDM</span>
+            </div>
+        </div>
+
+        <div class="mb-2">
+            <span class="status-badge" [ngClass]="application.status!.toLowerCase()">
+                {{ application.status }}
+            </span>
+        </div>
+    </mat-card-content>
+
+    <mat-card-actions class="p-3 pt-0 d-flex align-items-center justify-content-between border-top-light mt-auto">
+        <div class="price-box">
+            <span class="price-label text-muted d-block" style="font-size: 11px;">Your price:</span>
+            <div class="price-tag">
+                <span class="currency">€</span>
+                <span class="amount">{{ application.offeredPrice }}</span>
+            </div>
+        </div>
+        
+        <a mat-stroked-button class="view-details-btn" [routerLink]="['/applications/details', application.id]">
+            <mat-icon>visibility</mat-icon> Details
+        </a>
+    </mat-card-actions>
+</mat-card>

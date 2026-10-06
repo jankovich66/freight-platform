@@ -4,10 +4,11 @@ import { LoadApplication } from '../../models/load-application.model';
 import { LoadApplicationsService } from '../../services/load-applications.service';
 import { CommonModule } from '@angular/common';
 import { ApplicationCard } from '../../components/application-card/application-card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-my-applications',
-  imports: [CommonModule, ApplicationCard],
+  imports: [CommonModule, ApplicationCard, MatIconModule],
   templateUrl: './my-applications.html',
   styleUrl: './my-applications.scss',
 })

@@ -1,4 +1,4 @@
-@if(application$ | async; as application) {
+<!-- @if(application$ | async; as application) {
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2>Application</h2>
@@ -23,5 +23,77 @@
                 <p><strong>Applied at: </strong>{{ application.createdAt | date }}</p>
             </div>
         </div>
+    </div>
+} -->
+@if(application$ | async; as application) {
+    <div class="container mt-4 mb-5">
+        
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+            <h2 class="m-0 font-weight-medium">Application Details</h2>
+            <span class="status-badge" [ngClass]="application.status!.toLowerCase()">
+                {{ application.status }}
+            </span>
+        </div>
+
+        <mat-card class="details-application-card mat-elevation-z2">
+            <mat-card-content class="p-4">
+                <div class="row g-4">
+                
+                    <div class="col-md-6 border-end-md">
+                        <div class="route-timeline mb-3">
+                            <div class="route-step d-flex align-items-start mb-3">
+                                <mat-icon color="primary" class="me-3 mt-1">location_on</mat-icon>
+                                <div>
+                                    <div class="fw-bold text-dark fs-5">{{ application.load.pickupCity }}</div>
+                                    <div class="text-muted fs-6">{{ application.load.pickupAddress }}</div>
+                                </div>
+                            </div>
+
+                            <div class="route-step d-flex align-items-start">
+                                <mat-icon color="warn" class="me-3 mt-1">place</mat-icon>
+                                <div>
+                                    <div class="fw-bold text-dark fs-5">{{ application.load.deliveryCity }}</div>
+                                    <div class="text-muted fs-6">{{ application.load.deliveryAddress }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 ps-md-4">
+                        <div class="info-list text-muted mb-3">
+                            <p class="d-flex align-items-center mb-2">
+                                <mat-icon class="me-2 text-secondary">calendar_today</mat-icon>
+                                <span><strong>Pickup:</strong> {{ application.load.pickupDate | date:'medium' }}</span>
+                            </p>
+                            <p class="d-flex align-items-center mb-2">
+                                <mat-icon class="me-2 text-secondary">event_available</mat-icon>
+                                <span><strong>Delivery:</strong> {{ application.load.deliveryDate | date:'medium' }}</span>
+                            </p>
+                            <p class="d-flex align-items-center mb-2">
+                                <mat-icon class="me-2 text-secondary">scale</mat-icon>
+                                <span><strong>Weight:</strong> {{ application.load.weight }} kg</span>
+                            </p>
+                            <p class="d-flex align-items-center mb-2">
+                                <mat-icon class="me-2 text-secondary">view_column</mat-icon>
+                                <span><strong>Load space:</strong> {{ application.load.requiredSpaceLdm || 13.6 }} LDM</span>
+                            </p>
+                        </div>
+
+                        <mat-divider class="my-3"></mat-divider>
+                        
+                        <div class="d-flex align-items-baseline text-success">
+                            <span class="fs-5 fw-bold me-2">Offered price: €</span>
+                            <span class="display-6 fw-bold">{{ application.offeredPrice }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <mat-divider class="my-4"></mat-divider>
+                <div class="footer-info-bar p-3 rounded d-flex align-items-center text-muted bg-light">
+                    <mat-icon class="me-2 fs-5">history</mat-icon>
+                    <span><strong>Applied at:</strong> {{ application.createdAt | date:'medium' }}</span>
+                </div>
+            </mat-card-content>
+        </mat-card>
     </div>
 }

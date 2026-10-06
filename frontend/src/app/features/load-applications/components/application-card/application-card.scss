@@ -1,0 +1,47 @@
+.application-material-card {
+  border-radius: 12px !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(26, 35, 126, 0.1) !important;
+  }
+}
+.route-header {
+  font-size: 14px;
+  background-color: #f8f9fa;
+  width: 100%;
+}
+.border-top-light {
+  border-top: 1px solid #f0f0f2;
+}
+.status-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  text-transform: uppercase;
+  &.pending { background-color: #fff3e0; color: #e65100; }
+  &.accepted { background-color: #e8f5e9; color: #2e7d32; }
+  &.rejected { background-color: #ffebee; color: #c62828; }
+}
+.price-tag {
+  color: #1a237e;
+  display: flex;
+  align-items: baseline; 
+  .currency {
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 1px;
+  }
+  .amount {
+    font-size: 20px;
+    font-weight: 700;
+  }
+}
+.view-details-btn {
+  color: #1a237e !important;
+  border-color: #1a237e !important;
+  border-radius: 8px !important;
+}

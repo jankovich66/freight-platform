@@ -1,0 +1,27 @@
+.font-weight-medium {
+  font-weight: 500;
+}
+.details-application-card {
+  border-top: 6px solid #1a237e;
+  border-radius: 12px !important;
+}
+.footer-info-bar {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  font-size: 14px;
+}
+.status-badge {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  &.pending { background-color: #fff3e0; color: #e65100; }
+  &.accepted { background-color: #e8f5e9; color: #2e7d32; }
+  &.rejected { background-color: #ffebee; color: #c62828; }
+}
+@media (min-width: 768px) {
+  .border-end-md {
+    border-right: 1px solid #e0e0e0;
+  }
+}

@@ -3,10 +3,14 @@ import { LoadApplication } from '../../models/load-application.model';
 import { Observable } from 'rxjs/internal/Observable';
 import { LoadApplicationsService } from '../../services/load-applications.service';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-application-details',
-  imports: [CommonModule],
+  imports: [CommonModule, MatCardModule, MatIconModule, MatDividerModule, MatButtonModule],
   templateUrl: './application-details.html',
   styleUrl: './application-details.scss',
 })
