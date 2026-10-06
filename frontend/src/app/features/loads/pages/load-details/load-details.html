@@ -1,88 +1,172 @@
 @if(load$ | async; as load) {
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>{{ load.title }}</h2>
-            <span class="badge bg-secondary">{{ load.status }}</span>
-        </div>
-        <div class="card mb-4">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p><strong>Route: </strong>{{ load.pickupCity }} -> {{ load.deliveryCity }}</p>
-                        <p><strong>Pickup address: </strong>{{ load.pickupAddress }}</p>
-                        <p><strong>Delivery address: </strong>{{ load.deliveryAddress }}</p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong>Pickup date: </strong>{{ load.pickupDate | date }}</p>
-                        <p><strong>Delivery date: </strong>{{ load.deliveryDate | date }}</p>
-                        <p><strong>Weight: </strong>{{ load.weight }}</p>
-                        <h5 class="text-primary">{{ load.price }}</h5>
-                    </div>
-                </div>
-                <hr>
-                <p>{{ load.description }}</p>
+    <div class="container mt-4 mb-5">
+    
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+            <div class="d-flex align-items-center gap-3">
+                <h2 class="m-0 font-weight-medium">{{ load.title }}</h2>
+                <span class="transport-badge" [ngClass]="load.transportType!.toLowerCase()">
+                {{ load.transportType || 'FTL' }}
+                </span>
             </div>
+            <span class="status-badge" [ngClass]="load.status!.toLowerCase()">
+                {{ load.status }}
+            </span>
         </div>
 
-        @if(userRole$ | async; as role) {
-            @if(role === 'CARRIER') {
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5>Make an offer</h5>
-                        <div class="input-group mt-3">
-                            <input type="number" class="form-control" [(ngModel)]="offeredPrice" placeholder="Your price">
-                            <button class="btn btn-primary" (click)="apply()">Apply</button>
+        <mat-card class="details-main-card mat-elevation-z2 mb-4">
+            <mat-card-content class="p-4">
+                <div class="row g-4">
+                
+                <div class="col-md-6 border-end-md">
+                    <div class="route-timeline mb-4">
+                        <div class="route-step d-flex align-items-start mb-3">
+                            <mat-icon color="primary" class="me-3 mt-1">location_on</mat-icon>
+                            <div>
+                                <div class="fw-bold text-dark fs-5">{{ load.pickupCity }}</div>
+                                <div class="text-muted fs-6">{{ load.pickupAddress }}</div>
+                            </div>
+                        </div>
+
+                        <div class="route-step d-flex align-items-start">
+                            <mat-icon color="warn" class="me-3 mt-1">place</mat-icon>
+                            <div>
+                                <div class="fw-bold text-dark fs-5">{{ load.deliveryCity }}</div>
+                                <div class="text-muted fs-6">{{ load.deliveryAddress }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                    <div class="col-md-6 ps-md-4">
+                        <div class="info-list text-muted mb-3">
+                            <p class="d-flex align-items-center mb-2">
+                                <mat-icon class="me-2 text-secondary">calendar_today</mat-icon>
+                                <span><strong>Pickup:</strong> {{ load.pickupDate | date:'medium' }}</span>
+                            </p>
+                            <p class="d-flex align-items-center mb-2">
+                                <mat-icon class="me-2 text-secondary">event_available</mat-icon>
+                                <span><strong>Delivery:</strong> {{ load.deliveryDate | date:'medium' }}</span>
+                            </p>
+                            <p class="d-flex align-items-center mb-2">
+                                <mat-icon class="me-2 text-secondary">scale</mat-icon>
+                                <span><strong>Weight:</strong> {{ load.weight }} kg</span>
+                            </p>
+                            <p class="d-flex align-items-center mb-2">
+                                <mat-icon class="me-2 text-secondary">view_column</mat-icon>
+                                <span><strong>Space required:</strong> {{ load.requiredSpaceLdm || 13.6 }} ldm</span>
+                            </p>
+                        </div>
+
+                        <mat-divider class="my-3"></mat-divider>
+                        
+                        <div class="d-flex align-items-baseline text-primary">
+                            <span class="fs-5 fw-bold me-1">Price: €</span>
+                            <span class="display-6 fw-bold">{{ load.price }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                @if(load.description) {
+                    <mat-divider class="my-4"></mat-divider>
+                    <div class="description-box p-3 rounded">
+                        <h6 class="text-secondary mb-2">Description:</h6>
+                        <p class="m-0 text-dark-gray">{{ load.description }}</p>
+                    </div>
+                }
+            </mat-card-content>
+        </mat-card>
+
+        @if(userRole$ | async; as role) {
+        
+            @if(role === 'CARRIER') {
+                <mat-card class="action-card mat-elevation-z2 mb-4 border-left-accent">
+                    <mat-card-content class="p-4">
+                        <h5 class="mb-3 font-weight-medium d-flex align-items-center">
+                            <mat-icon color="accent" class="me-2">local_offer</mat-icon> Make an offer
+                        </h5>
+                        
+                        <div class="row align-items-center g-3 mt-1">
+                            <div class="col-sm-8 col-md-6">
+                                <mat-form-field appearance="outline" class="w-100" subscriptSizing="dynamic">
+                                    <mat-label>Your price (€)</mat-label>
+                                    <input matInput type="number" [(ngModel)]="offeredPrice" placeholder="Enter the price in euros">
+                                    <mat-icon matPrefix class="text-muted me-1">payments</mat-icon>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-4 col-md-3">
+                                <button mat-flat-button color="accent" class="w-100 py-3" style="height: 48px; border-radius: 8px;" (click)="apply()">
+                                    <mat-icon>send</mat-icon> Apply
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
             }
             @else if(role === 'SHIPPER') {
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5>Applications</h5>
+                <mat-card class="action-card mat-elevation-z2 mb-4">
+                    <mat-card-content class="p-4">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                            <h5 class="m-0 font-weight-medium d-flex align-items-center">
+                                <mat-icon color="primary" class="me-2">assignment_ind</mat-icon> Applications
+                            </h5>
                             @if(load.status === 'OPEN' || load.status === 'CANCELED') {
-                                <button class="btn btn-danger btn-sm" (click)="openDeleteModal(deleteModal)">Delete load</button>
+                                <button mat-flat-button color="warn" style="border-radius: 8px;" (click)="openDeleteDialog(deleteDialog)">
+                                    <mat-icon>delete</mat-icon> Delete load
+                                </button>
                             }
                         </div>
+
                         @if(loadApplications$ | async; as apps) {
                             @if(apps.length === 0) {
-                                <div class="text-muted mt-3">No applications yet</div>
+                                <div class="text-muted text-center py-4 rounded bg-light border">
+                                    <mat-icon class="text-secondary fs-3 mb-2" style="width:auto;height:auto;">mail_outline</mat-icon>
+                                    <p class="m-0">No applications yet.</p>
+                                </div>
                             }
                             @else {
-                                @for(app of apps; track app.id) {
-                                    <div class="border rounded p-3 mt-3 d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <!-- <p class="mb-1"><strong>Carrier: </strong>{{ app. }}</p> -->
-                                            <p class="mb-1"><strong>Offered price: </strong>{{ app.offeredPrice }}</p>
-                                            <span class="badge bg-info">{{ app.status }}</span>
+                                <div class="row">
+                                    @for(app of apps; track app.id) {
+                                        <div class="col-12 mb-3">
+                                            <div class="application-item border rounded p-3 d-flex justify-content-between align-items-center bg-white shadow-sm transition-hover">
+                                                <div>
+                                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                                        <span class="text-muted">Carriers offer:</span>
+                                                        <strong class="fs-5 text-dark">€ {{ app.offeredPrice }}</strong>
+                                                    </div>
+                                                    <span class="app-status-badge" [ngClass]="app.status!.toLowerCase()">
+                                                        {{ app.status }}
+                                                    </span>
+                                                </div>
+                                                @if(app.status === 'PENDING') {
+                                                    <button mat-flat-button color="primary" style="border-radius: 8px;" (click)="accept(app.id)">
+                                                        <mat-icon>check_circle</mat-icon> Accept
+                                                    </button>
+                                                }
+                                            </div>
                                         </div>
-                                        @if(app.status === 'PENDING') {
-                                            <button class="btn btn-success btn-sm" (click)="accept(app.id)">Accept</button>
-                                        }
-                                    </div>
-                                }
+                                    }
+                                </div>
                             }
                         }
-                    </div>
-                </div>
+                    </mat-card-content>
+                </mat-card>
             }
         }
     </div>
 }
 
-<ng-template #deleteModal let-modal>
-    <div class="modal-header">
-        <h5 class="modal-title">Delete load</h5>
-        <button class="btn-close" (click)="modal.dismiss()"></button>
-    </div>
-    <div class="modal-body">
-        Areu sure u want to delete this load?
-        <br>
-        <strong>This action cannot be undone</strong>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
-        <button class="btn btn-danger" (click)="confirmDelete(modal)">Delete</button>
-    </div>
+<ng-template #deleteDialog let-dialogRef>
+    <h2 mat-dialog-title class="text-danger d-flex align-items-center">
+        <mat-icon class="me-2">warning</mat-icon> Delete load
+    </h2>
+    <mat-dialog-content>
+        <p class="fs-6">Areu sure u want to delete this load?</p>
+        <strong class="text-danger">This action cannot be undone.</strong>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end" class="pb-3 pe-3 gap-2">
+        <button mat-stroked-button mat-dialog-close>Cancel</button>
+        <button mat-flat-button color="warn" style="border-radius: 6px;" (click)="confirmDelete(dialogRef)">
+            <mat-icon>delete_forever</mat-icon> Delete
+        </button>
+    </mat-dialog-actions>
 </ng-template>

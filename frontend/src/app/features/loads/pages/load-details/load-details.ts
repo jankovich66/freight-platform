@@ -13,11 +13,17 @@ import { UserRole } from '../../../../core/enums/user-role.enum';
 import { LoadApplication } from '../../../load-applications/models/load-application.model';
 import { Router } from '@angular/router';
 import { AlertService } from '../../../../shared/components/alert/services/alert.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-load-details',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule, MatIconModule, MatInputModule, MatFormFieldModule, MatDialogModule, MatDividerModule],
   templateUrl: './load-details.html',
   styleUrl: './load-details.scss',
 })
@@ -28,7 +34,8 @@ export class LoadDetails implements OnInit {
   load$!: Observable<Load>;
   userRole$?: Observable<UserRole | null>;
   loadApplications$!: Observable<LoadApplication[]>;
-  private modalService = inject(NgbModal);
+  // private modalService = inject(NgbModal);
+  private dialog = inject(MatDialog);
 
   store = inject(Store);
 
@@ -80,13 +87,17 @@ export class LoadDetails implements OnInit {
     })
   }
 
-  openDeleteModal(content: any) {
-    this.modalService.open(content, { centered: true });
+  openDeleteDialog(templateRef: any) {
+    // this.modalService.open(content, { centered: true });
+    this.dialog.open(templateRef, {
+      width: '400px',
+      disableClose: true
+    })
   }
 
-  confirmDelete(modal: any) {
+  confirmDelete(dialogRef: MatDialogRef<any>) {
     this.deleteLoad();
-    modal.close();
+    dialogRef.close();
   }
   
   deleteLoad() {
