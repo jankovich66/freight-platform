@@ -2,10 +2,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { LoadAssignment } from '../../models/load-assignment.model';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-assignment-card',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule, MatIconModule],
   templateUrl: './assignment-card.html',
   styleUrl: './assignment-card.scss',
 })

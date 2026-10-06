@@ -1,4 +1,4 @@
-<div class="card shadow-sm h-100">
+<!-- <div class="card shadow-sm h-100">
     <div class="card-body d-flex flex-column">
         <h5 class="card-title">{{ assignment.load.pickupCity }} -> {{ assignment.load.deliveryCity }}</h5>
         <p class="mb-1"><strong>Weight: </strong>{{ assignment.load.weight }}</p>
@@ -32,4 +32,65 @@
         }
         <button class="btn btn-outline-primary w-100" [routerLink]="['/assignments/details', assignment.id]">View details</button>
     </div>
-</div>
+</div> -->
+<mat-card class="assignment-material-card h-100 d-flex flex-column mat-elevation-z2">
+  <mat-card-header class="p-3 pb-2 w-100">
+        <div class="route-header d-flex align-items-center w-100 p-2 rounded bg-light">
+            <mat-icon color="primary" class="me-2 fs-5">local_shipping</mat-icon>
+            <span class="fw-bold text-dark text-truncate" style="max-width: 42%;">{{ assignment.load.pickupCity }}</span>
+            <mat-icon class="mx-2 text-muted fs-6">arrow_forward</mat-icon>
+            <span class="fw-bold text-dark text-truncate" style="max-width: 42%;">{{ assignment.load.deliveryCity }}</span>
+        </div>
+    </mat-card-header>
+
+    <mat-card-content class="flex-grow-1 px-3 pb-2">
+        <div class="info-list text-muted">
+            <div class="d-flex align-items-center mb-2">
+                <mat-icon class="me-2 fs-5 text-secondary">scale</mat-icon>
+                <span><strong>Weight:</strong> {{ assignment.load.weight }} kg</span>
+            </div>
+            
+            <div class="d-flex align-items-center mb-2">
+                <mat-icon class="me-2 fs-5 text-secondary">calendar_today</mat-icon>
+                <span><strong>Assigned at:</strong> {{ assignment.assignedAt | date:'mediumDate' }}</span>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <mat-icon class="me-2 fs-5 text-secondary">view_column</mat-icon>
+                <span><strong>Load space:</strong> {{ assignment.load.requiredSpaceLdm || 13.6 }} ldm</span>
+            </div>
+        </div>
+
+        <div class="mb-2">
+            <span class="status-badge" [ngClass]="assignment.load.status!.toLowerCase()">
+                {{ assignment.load.status }}
+            </span>
+        </div>
+    </mat-card-content>
+
+    <mat-card-actions class="p-3 pt-0 d-flex flex-column border-top-light mt-auto w-100">
+        @if(isCarrierView) {
+            <div class="w-100 mb-2">
+                @if(assignment.load.status === 'ACCEPTED') {
+                    <button mat-flat-button color="primary" class="w-100 py-3" style="border-radius: 8px; font-weight: 500;" (click)="onStart()">
+                        <mat-icon>play_arrow</mat-icon> Start
+                    </button>
+                }
+                @else if(assignment.load.status === 'IN_PROGRESS') {
+                    <div class="d-flex gap-2 w-100">
+                        <button mat-flat-button class="btn-complete w-50" style="border-radius: 8px;" (click)="onComplete()">
+                            <mat-icon>check</mat-icon> Complete
+                        </button>
+                        <button mat-flat-button color="warn" class="w-50" style="border-radius: 8px;" (click)="onCancel()">
+                            <mat-icon>close</mat-icon> Cancel
+                        </button>
+                    </div>
+                }
+            </div>
+        }
+        
+        <a mat-stroked-button class="view-details-btn w-100" style="height: 40px; border-radius: 8px;" [routerLink]="['/assignments/details', assignment.id]">
+            <mat-icon>visibility</mat-icon> Details
+        </a>
+    </mat-card-actions>
+</mat-card>

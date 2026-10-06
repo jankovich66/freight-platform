@@ -1,26 +1,71 @@
 @if(assignment$ | async; as assignment) {
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>Assignment</h2>
-            <span class="badge bg-secondary">{{ assignment.load.status }}</span>
+    <div class="container mt-4 mb-5">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+            <h2 class="m-0 font-weight-medium">Assignment Overview</h2>
+            <span class="status-badge" [ngClass]="assignment.load.status!.toLowerCase()">
+                {{ assignment.load.status }}
+            </span>
         </div>
-        <div class="card mb-4">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p><strong>Route: </strong>{{ assignment.load.pickupCity }} -> {{ assignment.load.deliveryCity }}</p>
-                        <p><strong>Pickup address: </strong>{{ assignment.load.pickupAddress }}</p>
-                        <p><strong>Delivery address: </strong>{{ assignment.load.deliveryAddress }}</p>
+
+        <mat-card class="details-assignment-card mat-elevation-z2">
+            <mat-card-content class="p-4">
+                <div class="row g-4">
+                    
+                    <div class="col-md-6 border-end-md">
+                        <div class="route-timeline mb-3">
+                            <div class="route-step d-flex align-items-start mb-3">
+                                <mat-icon color="primary" class="me-3 mt-1">location_on</mat-icon>
+                                <div>
+                                    <div class="fw-bold text-dark fs-5">{{ assignment.load.pickupCity }}</div>
+                                    <div class="text-muted fs-6">{{ assignment.load.pickupAddress }}</div>
+                                </div>
+                            </div>
+
+                            <div class="route-step d-flex align-items-start">
+                                <mat-icon color="warn" class="me-3 mt-1">place</mat-icon>
+                                <div>
+                                    <div class="fw-bold text-dark fs-5">{{ assignment.load.deliveryCity }}</div>
+                                    <div class="text-muted fs-6">{{ assignment.load.deliveryAddress }}</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <p><strong>Pickup date: </strong>{{ assignment.load.pickupDate | date}}</p>
-                        <p><strong>Delivery date: </strong>{{ assignment.load.deliveryDate | date }}</p>
-                        <p><strong>Weight: </strong>{{ assignment.load.weight }}</p>
+
+                    <div class="col-md-6 ps-md-4">
+                        <div class="info-list text-muted mb-3">
+                            <p class="d-flex align-items-center mb-2">
+                                <mat-icon class="me-2 text-secondary">calendar_today</mat-icon>
+                                <span><strong>Pickup:</strong> {{ assignment.load.pickupDate | date:'medium' }}</span>
+                            </p>
+                            <p class="d-flex align-items-center mb-2">
+                                <mat-icon class="me-2 text-secondary">event_available</mat-icon>
+                                <span><strong>Delivery:</strong> {{ assignment.load.deliveryDate | date:'medium' }}</span>
+                            </p>
+                            <p class="d-flex align-items-center mb-2">
+                                <mat-icon class="me-2 text-secondary">scale</mat-icon>
+                                <span><strong>Weight:</strong> {{ assignment.load.weight }} kg</span>
+                            </p>
+                            <p class="d-flex align-items-center mb-2">
+                                <mat-icon class="me-2 text-secondary">view_column</mat-icon>
+                                <span><strong>Load space:</strong> {{ assignment.load.requiredSpaceLdm || 13.6 }} LDM</span>
+                            </p>
+                        </div>
+
+                        <mat-divider class="my-3"></mat-divider>
+                        
+                        <div class="d-flex align-items-baseline text-primary">
+                            <span class="fs-5 fw-bold me-2">Price: €</span>
+                            <span class="display-6 fw-bold">{{ assignment.load.price }}</span>
+                        </div>
                     </div>
                 </div>
-                <hr>
-                <p><strong>Assigned at: </strong>{{ assignment.assignedAt | date }}</p>
-            </div>
-        </div>
+
+                <mat-divider class="my-4"></mat-divider>
+                <div class="footer-info-bar p-3 rounded d-flex align-items-center text-muted bg-light">
+                    <mat-icon class="me-2 fs-5">history</mat-icon>
+                    <span><strong>Assigned at:</strong> {{ assignment.assignedAt | date:'medium' }}</span>
+                </div>
+            </mat-card-content>
+        </mat-card>
     </div>
 }

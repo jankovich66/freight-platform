@@ -1,18 +1,24 @@
-<div class="container mt-4">
-    <h2 class="mb-4">My assignments</h2>
+<div class="container mt-4 mb-5">
+    <h2 class="mb-4 font-weight-medium text-dark d-flex align-items-center">
+        <mat-icon color="primary" class="me-2 fs-3" style="width:auto;height:auto;">assignment</mat-icon>
+        My assignments
+    </h2>
+    
     @if(assignments$ | async; as assignments) {
         @if(assignments.length === 0) {
-            <div class="text-center p-4 text-muted">
-                You have no assigned loads
+            <div class="text-center py-5 rounded bg-light border">
+                <mat-icon class="text-secondary fs-1 mb-2" style="width:auto;height:auto;">assignment_late</mat-icon>
+                <p class="text-muted fs-5 m-0">You have no assigned loads for transport.</p>
             </div>
         }
         @else {
             <div class="row g-4">
-            @for(assignment of assignments; track assignment.id) {
-                <div class="col-md-6 col-lg-4">
-                    <app-assignment-card [assignment]="assignment" (start)="startTransport($event)" (complete)="completeTransport($event)" (cancel)="cancelTransport($event)"></app-assignment-card>
+                @for(assignment of assignments; track assignment.id) {
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <app-assignment-card [assignment]="assignment" (start)="startTransport($event)" (complete)="completeTransport($event)" (cancel)="cancelTransport($event)">
+                    </app-assignment-card>
                 </div>
-            }
+                }
             </div>
         }
     }
