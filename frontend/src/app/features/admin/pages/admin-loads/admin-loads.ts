@@ -10,10 +10,16 @@ import { selectCurrentUser } from '../../../auth/store/auth.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Pagination } from '../../../../core/components/pagination/pagination';
 import { FormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-admin-loads',
-  imports: [CommonModule, LoadCard, Pagination, FormsModule],
+  imports: [CommonModule, LoadCard, Pagination, FormsModule, MatSelectModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule, MatIconModule],
   templateUrl: './admin-loads.html',
   styleUrl: './admin-loads.scss',
 })
@@ -31,6 +37,7 @@ export class AdminLoads implements OnInit {
 
   filters: any = {
     search: '',
+    transportType: ''
   };
 
   sort = 'pickupDate';

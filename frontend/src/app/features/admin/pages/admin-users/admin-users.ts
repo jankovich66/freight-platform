@@ -7,10 +7,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AlertService } from '../../../../shared/components/alert/services/alert.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserCard } from '../../components/user-card/user-card';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-admin-users',
-  imports: [CommonModule, UserCard],
+  imports: [CommonModule, UserCard, MatDialogModule, MatButtonModule, MatIconModule],
   templateUrl: './admin-users.html',
   styleUrl: './admin-users.scss',
 })
@@ -20,7 +23,8 @@ export class AdminUsers implements OnInit {
 
   private adminService = inject(AdminService);
   private alertService = inject(AlertService);
-  private modalService = inject(NgbModal);
+  // private modalService = inject(NgbModal);
+  private dialog = inject(MatDialog);
 
   selectedUserEmail: string | null = null;
 
@@ -28,18 +32,21 @@ export class AdminUsers implements OnInit {
     this.users$ = this.adminService.getUsers();
   }
 
-  openDeleteModal(content: TemplateRef<any>, email: string/*, event: Event*/) {
+  openDeleteDialog(templateRef: TemplateRef<any>, email: string) {
     // (event?.target as HTMLElement).blur();
     
     this.selectedUserEmail = email;
-    this.modalService.open(content, { centered: true });
+    this.dialog.open(templateRef, {
+      width: '400px',
+      disableClose: true
+    })
   }
 
-  confirmDelete(modal: any) {
+  confirmDelete(dialogRef: MatDialogRef<any>) {
     if(!this.selectedUserEmail) return;
 
     this.deleteUser(this.selectedUserEmail);
-    modal.close();
+    dialogRef.close();
   }
   
   deleteUser(email: string) {

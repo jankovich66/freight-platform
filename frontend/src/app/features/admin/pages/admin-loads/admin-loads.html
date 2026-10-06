@@ -1,4 +1,4 @@
-@if(user$ | async; as user) {
+<!-- @if(user$ | async; as user) {
     <div class="container">
         <div class="row mb-4 align-items-center">
         <div class="col-md-6">
@@ -46,6 +46,95 @@
         </div>
         @if(total > limit) {
             <app-pagination [page]="page" [lastPage]="lastPage" (pageChange)="goToPage($event)"></app-pagination>
+        }
+    </div>
+} -->
+@if(user$ | async; as user) {
+    <div class="container mt-4 mb-5">
+        <h2 class="mb-4 font-weight-medium text-dark d-flex align-items-center">
+            <mat-icon color="primary" class="me-2 fs-3" style="width:auto;height:auto;">subtitles</mat-icon>
+            Global Loads Management
+        </h2>
+
+        <div class="row mb-4 align-items-center g-3">
+        
+            <div class="col-12 col-md-4">
+                <mat-form-field appearance="outline" class="w-100" subscriptSizing="dynamic">
+                <mat-label>Search loads...</mat-label>
+                <input matInput type="text" placeholder="Enter title, cities or description..." [(ngModel)]="filters.search" (keyup.enter)="applyFilters()">
+                <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div class="col-12 col-md-8">
+                <div class="d-flex flex-wrap gap-2 justify-content-start justify-content-md-end align-items-center">
+                    
+                    <div class="admin-filter-select">
+                        <mat-form-field appearance="outline" class="w-100" subscriptSizing="dynamic">
+                            <mat-select [(ngModel)]="filters.transportType" (selectionChange)="applyFilters()" placeholder="Transport Type">
+                                <mat-option value="">All Types (FTL & LTL)</mat-option>
+                                <mat-option value="FTL">FTL</mat-option>
+                                <mat-option value="LTL">LTL</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="admin-filter-select">
+                        <mat-form-field appearance="outline" class="w-100" subscriptSizing="dynamic">
+                            <mat-select [(ngModel)]="sort" (selectionChange)="fetchLoads()">
+                                <mat-option value="pickupDate">Pickup date</mat-option>
+                                <mat-option value="price">Price</mat-option>
+                                <mat-option value="weight">Weight</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <button mat-stroked-button class="admin-order-btn" (click)="toggleOrder()">
+                        <mat-icon>{{ order === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+                        <span class="ms-1">{{ order }}</span>
+                    </button>
+
+                    <div class="admin-limit-select">
+                        <mat-form-field appearance="outline" class="w-100" subscriptSizing="dynamic">
+                            <mat-select [(ngModel)]="limit" (selectionChange)="fetchLoads()">
+                                <mat-option [value]="6">6</mat-option>
+                                <mat-option [value]="12">12</mat-option>
+                                <mat-option [value]="18">18</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @if(isLoading) {
+                <div class="col-12 d-flex justify-content-center my-5">
+                    <mat-spinner diameter="50" strokeWidth="4"></mat-spinner>
+                </div>
+            }
+            @else {
+                @if(loads.length !== 0) {
+                    @for(load of loads; track load.id) {
+                        <div class="col-12 col-sm-6 col-md-4 mb-4">
+                            <app-load-card [load]="load" [userRole]="user.role"></app-load-card>
+                        </div>
+                    }
+                }
+                @else {
+                    <div class="col-12">
+                        <div class="text-center my-5 py-4 border rounded bg-light">
+                            <mat-icon color="primary" style="transform: scale(2); margin-bottom: 12px;">subtitles_off</mat-icon>
+                            <p class="text-muted fs-5 mt-2 mb-0">No loads found matching admin search criteria.</p>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        @if(total > limit) {
+            <div class="d-flex justify-content-center mt-4">
+                <app-pagination [page]="page" [lastPage]="lastPage" (pageChange)="goToPage($event)"></app-pagination>
+            </div>
         }
     </div>
 }

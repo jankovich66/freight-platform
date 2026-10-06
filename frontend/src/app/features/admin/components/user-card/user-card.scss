@@ -1,0 +1,37 @@
+.admin-user-material-card {
+  border-radius: 12px !important;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06) !important;
+  }
+}
+.font-weight-medium {
+  font-weight: 500;
+}
+.border-top-light {
+  border-top: 1px solid #f0f0f2;
+}
+.btn-delete-user {
+  background-color: #d32f2f !important;
+  color: #ffffff !important;
+  height: 40px !important;
+  border-radius: 8px !important;
+  font-weight: 500;
+  &:hover {
+    background-color: #b71c1c !important;
+  }
+}
+.admin-role-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: white;
+  &.admin { background-color: #e53935; }
+  &.carrier { background-color: #0288d1; }
+  &.shipper { background-color: #f57c00; }
+}
