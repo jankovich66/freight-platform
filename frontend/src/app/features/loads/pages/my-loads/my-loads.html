@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
     <div class="row mb-4 align-items-center">
         <div class="col-md-6">
             <input type="text" class="form-control" placeholder="Search" [(ngModel)]="filters.search" (keyup.enter)="applyFilters()">
@@ -47,5 +47,151 @@
     </div>
     @if(lastPage > 1) {
         <app-pagination [page]="page" [lastPage]="lastPage" (pageChange)="goToPage($event)"></app-pagination>
+    }
+</div> -->
+<!-- <div class="container mt-4 mb-5">
+    <div class="row mb-4 align-items-center g-3">
+        <div class="col-12 col-md-5">
+            <mat-form-field appearance="outline" class="w-100" subscriptSizing="dynamic">
+                <mat-label>Search load...</mat-label>
+                <input matInput type="text" placeholder="Enter title or description..." [(ngModel)]="filters.search" (keyup.enter)="applyFilters()">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="col-12 col-md-7">
+            <div class="d-flex flex-wrap gap-2 justify-content-start justify-content-md-end align-items-center">
+            
+                <div style="min-width: 140px;">
+                    <mat-form-field appearance="outline" class="w-100" subscriptSizing="dynamic">
+                        <mat-select [(ngModel)]="sort" (selectionChange)="fetchLoads()">
+                            <mat-option value="pickupDate">Pickup date</mat-option>
+                            <mat-option value="price">Price</mat-option>
+                            <mat-option value="weight">Weight</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <button mat-stroked-button color="primary" style="height: 48px; border-radius: 8px;" (click)="toggleOrder()">
+                    <mat-icon>{{ order === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+                    {{ order }}
+                </button>
+
+                <div style="min-width: 80px;">
+                    <mat-form-field appearance="outline" class="w-100" subscriptSizing="dynamic">
+                        <mat-select [(ngModel)]="limit" (selectionChange)="fetchLoads()">
+                            <mat-option [value]="6">6</mat-option>
+                            <mat-option [value]="12">12</mat-option>
+                            <mat-option [value]="18">18</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @if(user$ | async; as user) {
+            @if(isLoading) {    
+                <div class="col-12 d-flex justify-content-center my-5">
+                <mat-spinner diameter="50"></mat-spinner>
+                </div>
+            }
+            @else {
+                @if(loads.length === 0) {
+                    <div class="col-12">
+                        <p class="text-center text-muted my-5 fs-5">No loads found matching criteria.</p>
+                    </div>
+                }
+                @else {
+                    @for(load of loads; track load.id) {
+                        <div class="col-12 col-sm-6 col-md-4 mb-4">
+                        <app-load-card [load]="load" [userRole]="user.role"></app-load-card>
+                        </div>
+                    }
+                }
+            }
+        }
+    </div>
+
+    @if(lastPage > 1) {
+        <div class="d-flex justify-content-center mt-4">
+        <app-pagination [page]="page" [lastPage]="lastPage" (pageChange)="goToPage($event)"></app-pagination>
+        </div>
+    }
+</div> -->
+<div class="container mt-4 mb-5">
+    <div class="row mb-4 align-items-center g-3">
+        <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100" subscriptSizing="dynamic">
+                <mat-label>Search load...</mat-label>
+                <input matInput type="text" placeholder="Enter title, city..." [(ngModel)]="filters.search" (keyup.enter)="applyFilters()">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="col-12 col-md-8">
+            <div class="d-flex flex-wrap gap-2 justify-content-start justify-content-md-end align-items-center">
+                <div class="filter-select-box">
+                    <mat-form-field appearance="outline" class="w-100" subscriptSizing="dynamic">
+                        <mat-select [(ngModel)]="filters.transportType" (selectionChange)="applyFilters()" placeholder="Transport Type">
+                        <mat-option value="">All Types (FTL & LTL)</mat-option>
+                        <mat-option value="FTL">FTL</mat-option>
+                        <mat-option value="LTL">LTL</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="filter-select-box">
+                    <mat-form-field appearance="outline" class="w-100" subscriptSizing="dynamic">
+                        <mat-select [(ngModel)]="sort" (selectionChange)="fetchLoads()">
+                        <mat-option value="pickupDate">Pickup date</mat-option>
+                        <mat-option value="price">Price</mat-option>
+                        <mat-option value="weight">Weight</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <button mat-stroked-button class="order-toggle-btn" (click)="toggleOrder()">
+                    <mat-icon>{{ order === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+                    <span class="ms-1">{{ order }}</span>
+                </button>
+                <div class="limit-select-box">
+                    <mat-form-field appearance="outline" class="w-100" subscriptSizing="dynamic">
+                        <mat-select [(ngModel)]="limit" (selectionChange)="fetchLoads()">
+                        <mat-option [value]="6">6</mat-option>
+                        <mat-option [value]="12">12</mat-option>
+                        <mat-option [value]="18">18</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @if(user$ | async; as user) {
+            @if(isLoading) {    
+                <div class="col-12 d-flex justify-content-center my-5">
+                <mat-spinner diameter="50" strokeWidth="4"></mat-spinner>
+                </div>
+            }
+            @else {
+                @if(loads.length === 0) {
+                <div class="col-12">
+                    <div class="text-center my-5 py-4 border rounded bg-light">
+                    <mat-icon color="primary" style="transform: scale(2); margin-bottom: 12px;">subtitles_off</mat-icon>
+                    <p class="text-muted fs-5 mt-2 mb-0">No loads available matching your filters.</p>
+                    </div>
+                </div>
+                }
+                @else {
+                    @for(load of loads; track load.id) {
+                        <div class="col-12 col-sm-6 col-md-4 mb-4">
+                        <app-load-card [load]="load" [userRole]="user.role"></app-load-card>
+                        </div>
+                    }
+                }
+            }
+        }
+    </div>
+    @if(lastPage > 1) {
+        <div class="d-flex justify-content-center mt-4">
+        <app-pagination [page]="page" [lastPage]="lastPage" (pageChange)="goToPage($event)"></app-pagination>
+        </div>
     }
 </div>

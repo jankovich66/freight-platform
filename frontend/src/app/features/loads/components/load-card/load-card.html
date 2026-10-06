@@ -1,4 +1,4 @@
-<div class="card shadow-sm h-100">
+<!-- <div class="card shadow-sm h-100">
     <div class="card-body d-flex flex-column">
         <h5 class="card-title mb-3">{{ load.title }}</h5>
         <p class="card-text mb-2"><strong>Route: </strong>{{ load.pickupCity }} -> {{ load.deliveryCity }}</p>
@@ -16,4 +16,54 @@
         }
         <a [routerLink]="['/loads/details', load.id]" class="btn btn-outline-primary mt-3 w-100">View details</a>
     </div>
-</div>
+</div> -->
+<mat-card class="load-material-card h-100 d-flex flex-column mat-elevation-z2">
+    <mat-card-header class="d-flex justify-content-between align-items-start w-100 p-3">
+        <mat-card-title class="fs-5 font-weight medium text-truncate" style="max-width: 75%;">
+            {{ load.title }}
+        </mat-card-title>
+        <span class="transport-type-badge" [ngClass]="load.transportType!.toLowerCase()">
+            {{ load.transportType || 'FTL' }}
+        </span>
+    </mat-card-header>
+    <mat-card-content class="flex-grow-1 px-3 pb-2">
+        <div class="route-box d-flex align-items-center mb-3 p-2 rounded">
+            <mat-icon color="primary" class="me-2">navigation</mat-icon>
+            <span class="fw-bold text-dark">{{ load.pickupCity }}</span>
+            <mat-icon class="mx-2 text-muted fs-6">arrow_forward</mat-icon>
+            <span class="fw-bold text-dark">{{ load.deliveryCity }}</span>
+        </div>
+        <div class="info-grid text-muted">
+            <div class="d-flex align-items-center mb-2">
+                <mat-icon class="me-2 fs-5 text-secondary">calendar_today</mat-icon>
+                <span><strong>Pickup:</strong> {{ load.pickupDate | date:'mediumDate' }}</span>
+            </div>
+
+            <div class="d-flex align-items-center mb-2">
+                <mat-icon class="me-2 fs-5 text-secondary">scale</mat-icon>
+                <span><strong>Weight:</strong> {{ load.weight }} kg</span>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+                <mat-icon class="me-2 fs-5 text-secondary">view_column</mat-icon>
+                <span><strong>Required Space:</strong> {{ load.requiredSpaceLdm || 13.6 }} LDM</span>
+            </div>
+        </div>
+        @if(userRole === 'SHIPPER') {
+            <div class="mt-3">
+                <span class="status-chip" [ngClass]="load.status!.toLowerCase()">
+                {{ load.status }}
+                </span>
+            </div>
+        }
+    </mat-card-content>
+    <mat-card-actions class="p-3 pt-0 d-flex align-items-center justify-content-between border-top-light mt-auto">
+        <div class="price-tag">
+        <span class="currency">€</span>
+        <span class="amount">{{ load.price }}</span>
+        </div>
+        
+        <a mat-stroked-button class="view-details-btn" [routerLink]="['/loads/details', load.id]">
+        <mat-icon>visibility</mat-icon> Details
+        </a>
+    </mat-card-actions>
+</mat-card>

@@ -10,10 +10,16 @@ import { selectCurrentUser } from '../../../auth/store/auth.selectors';
 import { Pagination } from '../../../../core/components/pagination/pagination';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-my-loads',
-  imports: [CommonModule, LoadCard, Pagination, FormsModule],
+  imports: [CommonModule, LoadCard, Pagination, FormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule],
   templateUrl: './my-loads.html',
   styleUrl: './my-loads.scss',
 })
@@ -30,7 +36,8 @@ export class MyLoads implements OnInit {
   isLoading = false;
 
   filters: any = {
-    search: ''
+    search: '',
+    transportType: ''
   };
 
   sort = 'pickupDate';

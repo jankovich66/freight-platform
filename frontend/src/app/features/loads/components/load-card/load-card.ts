@@ -3,10 +3,14 @@ import { Load } from '../../models/load.model';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { UserRole } from '../../../../core/enums/user-role.enum';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-load-card',
-  imports: [CommonModule, RouterModule, DatePipe],
+  imports: [CommonModule, RouterModule, DatePipe, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule],
   templateUrl: './load-card.html',
   styleUrl: './load-card.scss',
 })

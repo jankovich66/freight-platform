@@ -1,4 +1,5 @@
 import { LoadStatus } from "../enums/load-status.enum";
+import { TransportType } from "../enums/transport-type";
 
 export interface Load {
     id: number,
@@ -13,4 +14,6 @@ export interface Load {
     pickupDate: Date;
     deliveryDate: Date;
     status: LoadStatus;
+    transportType: TransportType;
+    requiredSpaceLdm: number;
 }

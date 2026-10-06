@@ -1,0 +1,24 @@
+.filter-select-box {
+  min-width: 160px;
+  flex: 1;
+  @media (min-width: 768px) {
+    flex: initial;
+    width: 180px;
+  }
+}
+.limit-select-box {
+  min-width: 80px;
+  @media (min-width: 768px) {
+    width: 80px;
+  }
+}
+.order-toggle-btn {
+  height: 48px !important;
+  color: #1a237e !important;
+  border-color: #1a237e !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  &:hover {
+    background-color: rgba(26, 35, 126, 0.04) !important;
+  }
+}
