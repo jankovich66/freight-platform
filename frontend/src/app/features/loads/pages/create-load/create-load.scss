@@ -1,3 +1,21 @@
-input.ng-invalid.ng-touched {
-    border-color: red;
+.border-top-primary {
+    border-top: 6px solid #1a237e;
+    border-radius: 12px;
+}
+font-weight-medium {
+    font-weight: 500;
+    color: #212121;
+}
+.btn-submit {
+    background-color: #1a237e;
+    color: #fff;
+    padding: 24px 0;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 8px;
+    letter-spacing: 0.3px;
+}
+mat-hint {
+    font-size: 11px;
+    color: #757575;
 }

@@ -4,10 +4,16 @@ import { LoadsService } from '../../services/loads.service';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AlertService } from '../../../../shared/components/alert/services/alert.service';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-create-load',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, MatIconModule],
   templateUrl: './create-load.html',
   styleUrl: './create-load.scss',
 })
@@ -31,8 +37,24 @@ export class CreateLoad {
       weight: ['', Validators.required],
       price: ['', Validators.required],
       pickupDate: ['', Validators.required],
-      deliveryDate: ['', Validators.required]
+      deliveryDate: ['', Validators.required],
+      transportType: ['FTL', Validators.required],
+      requiredSpaceLdm: [{ value: 13.6, disabled: true }, [Validators.required, Validators.min(0.1), Validators.max(13.6)]],
     });
+
+    this.registerForm.get('transportType')?.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(type => {
+        const spaceControl = this.registerForm.get('requiredSpaceLdm');
+        if (type === 'FTL') {
+          spaceControl?.setValue(13.6);
+          spaceControl?.disable();
+        }
+        else {
+          spaceControl?.enable();
+          spaceControl?.setValue(2.4);
+        }
+      })
   }
 
   onSubmit() {
@@ -41,7 +63,9 @@ export class CreateLoad {
       return;
     }
 
-    this.loadsService.createLoad({ title: this.registerForm.value.title, description: this.registerForm.value.description, pickupAddress: this.registerForm.value.pickupAddress, pickupCity: this.registerForm.value.pickupCity, deliveryAddress: this.registerForm.value.deliveryAddress, deliveryCity: this.registerForm.value.deliveryCity, weight: this.registerForm.value.weight, price: this.registerForm.value.price, pickupDate: this.registerForm.value.pickupDate, deliveryDate: this.registerForm.value.deliveryDate })
+    const body = this.registerForm.getRawValue();
+
+    this.loadsService.createLoad(body)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
