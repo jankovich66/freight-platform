@@ -1,0 +1,37 @@
+.nav-page-btn {
+  height: 40px !important;
+  border-color: #1a237e !important;
+  color: #1a237e !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  display: inline-flex;
+  align-items: center;
+  &:disabled {
+    border-color: rgba(0, 0, 0, 0.12) !important;
+    color: rgba(0, 0, 0, 0.26) !important;
+  }
+}
+.number-page-btn {
+  width: 40px !important;
+  height: 40px !important;
+  line-height: 40px !important;
+  border-radius: 50% !important;
+  justify-content: center;
+  font-weight: 500;
+  color: #424242;
+  transition: all 0.2s ease;
+  &:hover:not(.active-page-btn) {
+    background-color: rgba(26, 35, 126, 0.04);
+    color: #1a237e;
+  }
+}
+.active-page-btn {
+  background-color: #1a237e !important;
+  color: #ffffff !important;
+  box-shadow: 0px 2px 4px rgba(26, 35, 126, 0.2);
+}
+.pagination-dots {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}

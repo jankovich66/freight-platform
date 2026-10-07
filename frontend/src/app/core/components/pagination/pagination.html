@@ -1,24 +1,19 @@
-<div class="d-flex justify-content-center mt-4">
-    <nav>
-        <ul class="pagination">
-            <li class="page-item" [class.disabled]="page === 1">
-                <button class="page-link" (click)="change(page - 1)">Previous</button>
-            </li>
+<div class="d-flex justify-content-center align-items-center mt-4 mb-4 gap-1 flex-wrap">
+    <button mat-stroked-button color="primary" class="nav-page-btn" [disabled]="page === 1" (click)="change(page - 1)">
+        <mat-icon class="me-1">chevron_left</mat-icon>Previous
+    </button>
 
-            @for(p of pages; track p) {
-                <li class="page-item" [class.active]="page === p" [class.disabled]="p === '...'">
-                    @if(p !== '...' && typeof p === 'number') {
-                        <button class="page-link" (click)="change(p)">{{ p }}</button>
-                    }
-                    @else {
-                        <span class="page-link">...</span>
-                    }
-                </li>
-            }
-
-            <li class="page-item" [class.disabled]="page === lastPage">
-                <button class="page-link" (click)="change(page + 1)">Next</button>
-            </li>
-        </ul>
-    </nav>
+    @for(p of pages; track p) {
+        @if(p !== '...' && typeof p === 'number') {
+            <button mat-icon-button [color]="page === p ? 'primary' : ''" [class.active-page-btn]="page === p" class="number-page-btn" (click)="change(p)">
+                {{ p }}
+            </button>
+        }
+        @else {
+            <span class="pagination-dots text-muted px-2">...</span>
+        }
+    }
+    <button mat-stroked-button color="primary" class="nav-page-btn" [disabled]="page === lastPage" (click)="change(page + 1)">
+        Next<mat-icon class="ms-1">chevron_right</mat-icon>
+    </button>
 </div>

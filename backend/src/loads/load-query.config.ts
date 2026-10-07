@@ -31,7 +31,11 @@ export const LOAD_QUERY_CONFIG: QueryConfig<Load> = {
 
         minPrice: (qb, value) => qb.andWhere('load.price >= :minPrice', { minPrice: value }),
 
-        maxPrice: (qb, value) => qb.andWhere('load.price <= :maxPrice', { maxPrice: value })
+        maxPrice: (qb, value) => qb.andWhere('load.price <= :maxPrice', { maxPrice: value }),
+    
+        transportType: (qb, value) => qb.andWhere('load.transportType = :transportType', { transportType: value }),
+
+        maxRequiredSpaceLdm: (qb, value) => qb.andWhere('load.requiredSpaceLdm <= :maxRequiredSpaceLdm', { maxRequiredSpaceLdm: value }),
     },
 
     defaultSort: {
